@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2017/08/14/ID3/</loc>
+    
+    <lastmod>2017-08-18T03:26:56.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2017/08/16/python-time-complexity/</loc>
     
     <lastmod>2017-08-18T02:43:59.000Z</lastmod>
@@ -33,13 +40,6 @@
     <loc>http://yoursite.com/tags/index.html</loc>
     
     <lastmod>2017-08-15T01:22:40.000Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/2017/08/14/ID3/</loc>
-    
-    <lastmod>2017-08-14T11:09:41.000Z</lastmod>
     
   </url>
   
