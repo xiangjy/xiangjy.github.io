@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="算法,机器学习,python," />
+  <meta name="keywords" content="python,算法,机器学习," />
 
 
 
@@ -97,14 +97,14 @@
 
 
 <meta name="description" content="k最邻近算法余弦相似度：通过测量两个向量的夹角的余弦值来度量它们之间的相似性。0度角的余弦值是1，而其他任何角度的余弦值都不大于1；并且其最小值是-1.从而两个向量之间的角度的余弦值确定两个向量是否大致指向相同的方向。两个向量有相同的指向时，余弦相似度的值为1；两个向量夹角为90°时，余弦相似度的值为0；两个向量指向完全相反的方向时，余弦相似度的值为-1。这结果是与向量的长度无关的，仅仅与向量的">
-<meta name="keywords" content="算法,机器学习,python">
+<meta name="keywords" content="python,算法,机器学习">
 <meta property="og:type" content="article">
 <meta property="og:title" content="k邻近算法">
 <meta property="og:url" content="http://yoursite.com/2017/08/14/knn/index.html">
 <meta property="og:site_name" content="Xiangjy&#39;s Blog">
 <meta property="og:description" content="k最邻近算法余弦相似度：通过测量两个向量的夹角的余弦值来度量它们之间的相似性。0度角的余弦值是1，而其他任何角度的余弦值都不大于1；并且其最小值是-1.从而两个向量之间的角度的余弦值确定两个向量是否大致指向相同的方向。两个向量有相同的指向时，余弦相似度的值为1；两个向量夹角为90°时，余弦相似度的值为0；两个向量指向完全相反的方向时，余弦相似度的值为-1。这结果是与向量的长度无关的，仅仅与向量的">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-08-14T08:20:33.000Z">
+<meta property="og:updated_time" content="2017-08-14T11:08:56.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="k邻近算法">
 <meta name="twitter:description" content="k最邻近算法余弦相似度：通过测量两个向量的夹角的余弦值来度量它们之间的相似性。0度角的余弦值是1，而其他任何角度的余弦值都不大于1；并且其最小值是-1.从而两个向量之间的角度的余弦值确定两个向量是否大致指向相同的方向。两个向量有相同的指向时，余弦相似度的值为1；两个向量夹角为90°时，余弦相似度的值为0；两个向量指向完全相反的方向时，余弦相似度的值为-1。这结果是与向量的长度无关的，仅仅与向量的">
@@ -187,7 +187,7 @@
       </a>
     </div>
       
-        <p class="site-subtitle">good good study, day day up</p>
+        <p class="site-subtitle">Good Good Study, Day Day Up</p>
       
   </div>
 
@@ -217,8 +217,28 @@
         </li>
       
         
+        <li class="menu-item menu-item-categories">
+          <a href="/categories" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+        
         <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
+          <a href="/archives" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
             
@@ -228,11 +248,31 @@
       
         
         <li class="menu-item menu-item-tags">
-          <a href="/tags/" rel="section">
+          <a href="/tags" rel="section">
             
               <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
             
             标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-sitemap">
+          <a href="/sitemap.xml" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-sitemap"></i> <br />
+            
+            站点地图
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-commonweal">
+          <a href="/404" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-heartbeat"></i> <br />
+            
+            公益404
           </a>
         </li>
       
@@ -338,7 +378,9 @@
       
         <p><script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script></p>
 <h4 id="k最邻近算法"><a href="#k最邻近算法" class="headerlink" title="k最邻近算法"></a>k最邻近算法</h4><p>余弦相似度：通过测量两个向量的夹角的余弦值来度量它们之间的相似性。0度角的余弦值是1，而其他任何角度的余弦值都不大于1；并且其最小值是-1.从而两个向量之间的角度的余弦值确定两个向量是否大致指向相同的方向。两个向量有相同的指向时，余弦相似度的值为1；两个向量夹角为90°时，余弦相似度的值为0；两个向量指向完全相反的方向时，余弦相似度的值为-1。这结果是与向量的长度无关的，仅仅与向量的指向方向相关。余弦相似度通常用于正空间，因此给出的值为0到1之间。</p>
-<p>$$cosA=\frac{b^2+c^2}{a^2}$$</p>
+<p>$$cos{\theta}=\frac{a^2+b^2-c^2}{2ab}$$</p>
+<p>$$cos{\theta}=\frac{x_1x_2+y_1y_2}{\sqrt{x_1^2+y_1^2}*\sqrt{x_2^2+y_2^2}}$$</p>
+<p>$$cos{\theta}=\frac{AB}{\vert{A}\vert*\vert{B}\vert}$$</p>
 
       
     </div>
@@ -356,11 +398,11 @@
       
         <div class="post-tags">
           
+            <a href="/tags/python/" rel="tag"># python</a>
+          
             <a href="/tags/算法/" rel="tag"># 算法</a>
           
             <a href="/tags/机器学习/" rel="tag"># 机器学习</a>
-          
-            <a href="/tags/python/" rel="tag"># python</a>
           
         </div>
       
@@ -457,8 +499,8 @@
 
           
             <div class="site-state-item site-state-posts">
-              <a href="/archives/">
-                <span class="site-state-item-count">2</span>
+              <a href="/archives">
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -470,10 +512,10 @@
             
             
             <div class="site-state-item site-state-tags">
-              
-                <span class="site-state-item-count">3</span>
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">4</span>
                 <span class="site-state-item-name">标签</span>
-              
+              </a>
             </div>
           
 

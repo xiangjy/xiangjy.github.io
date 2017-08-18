@@ -2,16 +2,51 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2017/08/16/python-time-complexity/</loc>
+    
+    <lastmod>2017-08-18T02:43:59.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2017/08/15/svm/</loc>
+    
+    <lastmod>2017-08-15T04:08:34.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/404/index.html</loc>
+    
+    <lastmod>2017-08-15T03:19:33.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/categories/index.html</loc>
+    
+    <lastmod>2017-08-15T01:29:17.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/tags/index.html</loc>
+    
+    <lastmod>2017-08-15T01:22:40.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2017/08/14/ID3/</loc>
     
-    <lastmod>2017-08-14T08:25:38.000Z</lastmod>
+    <lastmod>2017-08-14T11:09:41.000Z</lastmod>
     
   </url>
   
   <url>
     <loc>http://yoursite.com/2017/08/14/knn/</loc>
     
-    <lastmod>2017-08-14T08:20:33.000Z</lastmod>
+    <lastmod>2017-08-14T11:08:56.000Z</lastmod>
     
   </url>
   

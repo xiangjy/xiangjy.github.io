@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
   <title>Xiangjy&#39;s Blog</title>
-  <subtitle>good good study, day day up</subtitle>
+  <subtitle>Good Good Study, Day Day Up</subtitle>
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2017-08-14T08:25:38.000Z</updated>
+  <updated>2017-08-18T02:43:59.000Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -16,11 +16,290 @@
   <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
+    <title>Python内置方法的时间复杂度</title>
+    <link href="http://yoursite.com/2017/08/16/python-time-complexity/"/>
+    <id>http://yoursite.com/2017/08/16/python-time-complexity/</id>
+    <published>2017-08-16T01:38:35.000Z</published>
+    <updated>2017-08-18T02:43:59.000Z</updated>
+    
+    <content type="html"><![CDATA[<h4 id="列表-list"><a href="#列表-list" class="headerlink" title="列表(list)"></a>列表(list)</h4><p>以完全随机的列表考虑平均情况。<br>列表是以数组(Array)实现的。最大的开销发生在超过当前分配大小的增长，这种情况下所有元素都需要移动；或者是在起始位置附近插入或者删除元素，这种情况下所有在该位置后面的元素都需要移动。如果你需要在一个队列的两端进行增删的操作，应当使用collections.deque(双向队列)</p>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>平均情况</th>
+<th>最坏情况</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>复制</td>
+<td>O(n)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>append</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>插入</td>
+<td>O(1)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>取元素</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>更改元素</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>输出元素</td>
+<td>O(n)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>遍历</td>
+<td>O(n)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>取切片</td>
+<td>O(k)</td>
+<td>O(k)</td>
+</tr>
+<tr>
+<td>删除切片</td>
+<td>O(n)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>更改切片</td>
+<td>O(k+n)</td>
+<td>O(k+n)</td>
+</tr>
+<tr>
+<td>extend</td>
+<td>O(k)</td>
+<td>O(k)</td>
+</tr>
+<tr>
+<td>排序</td>
+<td>O(n log n)</td>
+<td>O(n log n)</td>
+</tr>
+<tr>
+<td>列表乘法</td>
+<td>O(nk)</td>
+<td>O(nk)</td>
+</tr>
+<tr>
+<td>x in s</td>
+<td>O(n)</td>
+<td></td>
+</tr>
+<tr>
+<td>min(s),max(s)</td>
+<td>O(n)</td>
+<td></td>
+</tr>
+<tr>
+<td>长度计算</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="双向队列-collections-deque"><a href="#双向队列-collections-deque" class="headerlink" title="双向队列(collections.deque)"></a>双向队列(collections.deque)</h4><p>deque(double-ended queue，双向队列)是以双向链表的形式实现的(Well,a list of arrays rather than objects,for greater efficiency)。双向队列的两端都是可达的，但从查找队列中间的元素较为缓慢，增删元素就更慢了。</p>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>平均情况</th>
+<th>最坏情况</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>复制</td>
+<td>O(n)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>append</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>appendleft</td>
+<td>O(1)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>pop</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>popleft</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>extend</td>
+<td>O(k)</td>
+<td>O(k)</td>
+</tr>
+<tr>
+<td>extendleft</td>
+<td>O(k)</td>
+<td>O(k)</td>
+</tr>
+<tr>
+<td>rotate</td>
+<td>O(k)</td>
+<td>O(k)</td>
+</tr>
+<tr>
+<td>remove</td>
+<td>O(n)</td>
+<td>O(n)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="集合-set"><a href="#集合-set" class="headerlink" title="集合(set)"></a>集合(set)</h4><p>未列出的操作可参考dict——二者的实现非常相似。</p>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>平均情况</th>
+<th>最坏情况</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>x in s</td>
+<td>O(1)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>并集s&#124;t</td>
+<td>O(len(s)+len(t))</td>
+<td></td>
+</tr>
+<tr>
+<td>交集s&amp;t</td>
+<td>O(min(len(s), len(t)))</td>
+<td>O(len(s)*len(t))</td>
+</tr>
+<tr>
+<td>差集s-t</td>
+<td>O(len(s))</td>
+<td></td>
+</tr>
+<tr>
+<td>s.difference_update(t)</td>
+<td>O(len(t))</td>
+<td></td>
+</tr>
+<tr>
+<td>对称差集s^t</td>
+<td>O(len(s))</td>
+<td>O(len(s)*len(t))</td>
+</tr>
+<tr>
+<td>s.symmetric_difference_update(t)</td>
+<td>O(len(t))</td>
+<td>O(len(t)*len(s))</td>
+</tr>
+</tbody>
+</table>
+<p>由源码得知，求差集(s-t，或s.difference(t))运算与更新为差集(s.difference_update(t))运算的时间复杂度并不相同！前者是将在s中，但不在t中的元素添加到新的集合中，因此时间复杂度为O(len(s))；后者是将在t中的元素从s中移除，因此时间复杂度为O(len(t)。因此，使用时请留心，根据两个集合的大小以及是否需要新集合来选择合适的方法。<br>集合的s-t运算中，并不要求t也一定是集合。只要t是可遍历的对象即可。</p>
+<h4 id="字典-dict"><a href="#字典-dict" class="headerlink" title="字典(dict)"></a>字典(dict)</h4><p>下列字典的平均情况基于以下假设：<br>1.对象的散列函数足够撸棒(robust)，不会发生冲突。<br>2.字典的键是从所有可能的键的集合中随机选择的。<br>只使用字符串最为字典的键。这么做虽然不会影响算法的时间复杂度，但会对常数项产生显著的影响，这决定了你的一段程序能对快跑完。</p>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>平均情况</th>
+<th>最坏情况</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>复制</td>
+<td>O(n)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>取元素</td>
+<td>O(1)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>更改元素</td>
+<td>O(1)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>删除元素</td>
+<td>O(1)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>遍历</td>
+<td>O(n)</td>
+<td>O(n)</td>
+</tr>
+</tbody>
+</table>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;h4 id=&quot;列表-list&quot;&gt;&lt;a href=&quot;#列表-list&quot; class=&quot;headerlink&quot; title=&quot;列表(list)&quot;&gt;&lt;/a&gt;列表(list)&lt;/h4&gt;&lt;p&gt;以完全随机的列表考虑平均情况。&lt;br&gt;列表是以数组(Array)实现的。最大的开销发生在超过当前
+    
+    </summary>
+    
+    
+      <category term="python" scheme="http://yoursite.com/tags/python/"/>
+    
+      <category term="算法" scheme="http://yoursite.com/tags/%E7%AE%97%E6%B3%95/"/>
+    
+  </entry>
+  
+  <entry>
+    <title>支持向量机(SVM)</title>
+    <link href="http://yoursite.com/2017/08/15/svm/"/>
+    <id>http://yoursite.com/2017/08/15/svm/</id>
+    <published>2017-08-15T03:55:14.000Z</published>
+    <updated>2017-08-15T04:08:34.000Z</updated>
+    
+    <content type="html"><![CDATA[<p>什么是支持向量机(SVM)<br>1、支持向量机(Support Vector Machine，常简称SVM)是一种监督式学习的方法，可广泛的应用与统计分类以及回归分析。支持向量机属于一般化线性分类器，这种分类器的特点是他们能够同时最小化经验误差与最大化几何边缘区，因此支持向量机也被称为最大边缘区分类器。<br>2、支持向量机将向量映射到一个更高维的空间里，在这个空间里建立有一个最大间隔超平面。在分开数据的超平面两边建有两个互相平行的超平面，分隔超平面使两个平行超平面的距离最大化。假定平行超平面间的距离或差距越大，分类器的总误差越小。</p>
+]]></content>
+    
+    <summary type="html">
+    
+      &lt;p&gt;什么是支持向量机(SVM)&lt;br&gt;1、支持向量机(Support Vector Machine，常简称SVM)是一种监督式学习的方法，可广泛的应用与统计分类以及回归分析。支持向量机属于一般化线性分类器，这种分类器的特点是他们能够同时最小化经验误差与最大化几何边缘区，因此支持
+    
+    </summary>
+    
+    
+      <category term="机器学习" scheme="http://yoursite.com/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
+    
+      <category term="数据挖掘" scheme="http://yoursite.com/tags/%E6%95%B0%E6%8D%AE%E6%8C%96%E6%8E%98/"/>
+    
+  </entry>
+  
+  <entry>
     <title>决策树ID3算法</title>
     <link href="http://yoursite.com/2017/08/14/ID3/"/>
     <id>http://yoursite.com/2017/08/14/ID3/</id>
     <published>2017-08-14T08:12:20.000Z</published>
-    <updated>2017-08-14T08:25:38.000Z</updated>
+    <updated>2017-08-14T11:09:41.000Z</updated>
     
     <content type="html"><![CDATA[<h4 id="决策树ID3算法和python实现"><a href="#决策树ID3算法和python实现" class="headerlink" title="决策树ID3算法和python实现"></a>决策树ID3算法和python实现</h4><p>决策树是一棵树，其叶子节点决定了该类的归属，其内部节点则根据特征的值对数据进行子树寻找，以决定在哪棵子树上继续该决策过程。</p>
 ]]></content>
@@ -32,11 +311,11 @@
     </summary>
     
     
+      <category term="python" scheme="http://yoursite.com/tags/python/"/>
+    
       <category term="算法" scheme="http://yoursite.com/tags/%E7%AE%97%E6%B3%95/"/>
     
       <category term="机器学习" scheme="http://yoursite.com/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
-    
-      <category term="python" scheme="http://yoursite.com/tags/python/"/>
     
   </entry>
   
@@ -45,11 +324,13 @@
     <link href="http://yoursite.com/2017/08/14/knn/"/>
     <id>http://yoursite.com/2017/08/14/knn/</id>
     <published>2017-08-14T04:04:05.000Z</published>
-    <updated>2017-08-14T08:20:33.000Z</updated>
+    <updated>2017-08-14T11:08:56.000Z</updated>
     
     <content type="html"><![CDATA[<p><script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script></p>
 <h4 id="k最邻近算法"><a href="#k最邻近算法" class="headerlink" title="k最邻近算法"></a>k最邻近算法</h4><p>余弦相似度：通过测量两个向量的夹角的余弦值来度量它们之间的相似性。0度角的余弦值是1，而其他任何角度的余弦值都不大于1；并且其最小值是-1.从而两个向量之间的角度的余弦值确定两个向量是否大致指向相同的方向。两个向量有相同的指向时，余弦相似度的值为1；两个向量夹角为90°时，余弦相似度的值为0；两个向量指向完全相反的方向时，余弦相似度的值为-1。这结果是与向量的长度无关的，仅仅与向量的指向方向相关。余弦相似度通常用于正空间，因此给出的值为0到1之间。</p>
-<p>$$cosA=\frac{b^2+c^2}{a^2}$$</p>
+<p>$$cos{\theta}=\frac{a^2+b^2-c^2}{2ab}$$</p>
+<p>$$cos{\theta}=\frac{x_1x_2+y_1y_2}{\sqrt{x_1^2+y_1^2}*\sqrt{x_2^2+y_2^2}}$$</p>
+<p>$$cos{\theta}=\frac{AB}{\vert{A}\vert*\vert{B}\vert}$$</p>
 ]]></content>
     
     <summary type="html">
@@ -60,11 +341,11 @@
     </summary>
     
     
+      <category term="python" scheme="http://yoursite.com/tags/python/"/>
+    
       <category term="算法" scheme="http://yoursite.com/tags/%E7%AE%97%E6%B3%95/"/>
     
       <category term="机器学习" scheme="http://yoursite.com/tags/%E6%9C%BA%E5%99%A8%E5%AD%A6%E4%B9%A0/"/>
-    
-      <category term="python" scheme="http://yoursite.com/tags/python/"/>
     
   </entry>
   
