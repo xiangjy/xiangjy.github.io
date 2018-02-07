@@ -2,9 +2,44 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2018/02/07/nginx-pan-domain-name/</loc>
+    
+    <lastmod>2018-02-07T10:27:41.024Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2017/09/19/algorithm/</loc>
+    
+    <lastmod>2017-09-19T07:42:56.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2017/09/12/scrapy/</loc>
+    
+    <lastmod>2017-09-12T02:10:38.000Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2017/08/21/fibonacci/</loc>
     
-    <lastmod>2017-08-21T11:38:05.000Z</lastmod>
+    <lastmod>2017-09-10T15:07:44.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2017/09/08/pypi_server/</loc>
+    
+    <lastmod>2017-09-10T15:02:03.000Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://yoursite.com/2017/09/08/gitlib-runner/</loc>
+    
+    <lastmod>2017-09-08T10:55:29.000Z</lastmod>
     
   </url>
   

@@ -78,12 +78,10 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="nginx," />
 
 
 
-
-  
 
 
   <link rel="alternate" href="/atom.xml" title="Xiangjy's Blog" type="application/atom+xml" />
@@ -98,14 +96,18 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="Tags">
-<meta property="og:url" content="http://yoursite.com/tags/index.html">
+<meta name="description" content="主要目的：在微信中做H5游戏页面，为了防止微信封域名导致网站全部H5都被禁。 主要实现：xxx.domain2.domain1.com -&amp;gt; domain2.domain1.com/xxxxxx.domain2.domain1.com -&amp;gt; domain2.domain1.com/?id=xxx nginx rewrite实现二级或三级域名泛解析在nginx的相对应的配置文件的serv">
+<meta name="keywords" content="nginx">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Nginx进行泛域名解析">
+<meta property="og:url" content="http://yoursite.com/2018/02/07/nginx-pan-domain-name/index.html">
 <meta property="og:site_name" content="Xiangjy&#39;s Blog">
+<meta property="og:description" content="主要目的：在微信中做H5游戏页面，为了防止微信封域名导致网站全部H5都被禁。 主要实现：xxx.domain2.domain1.com -&amp;gt; domain2.domain1.com/xxxxxx.domain2.domain1.com -&amp;gt; domain2.domain1.com/?id=xxx nginx rewrite实现二级或三级域名泛解析在nginx的相对应的配置文件的serv">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-08-15T01:22:40.000Z">
+<meta property="og:updated_time" content="2018-02-07T10:27:41.024Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Tags">
+<meta name="twitter:title" content="Nginx进行泛域名解析">
+<meta name="twitter:description" content="主要目的：在微信中做H5游戏页面，为了防止微信封域名导致网站全部H5都被禁。 主要实现：xxx.domain2.domain1.com -&amp;gt; domain2.domain1.com/xxxxxx.domain2.domain1.com -&amp;gt; domain2.domain1.com/?id=xxx nginx rewrite实现二级或三级域名泛解析在nginx的相对应的配置文件的serv">
 
 
 
@@ -134,13 +136,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/tags/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/02/07/nginx-pan-domain-name/"/>
 
 
 
 
 
-  <title>Tags | Xiangjy's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>Nginx进行泛域名解析 | Xiangjy's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -295,40 +297,147 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/07/nginx-pan-domain-name/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xiangjy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Xiangjy's Blog">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline">Tags</h1>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
-          <div class="tag-cloud">
-            <div class="tag-cloud-title">
-                目前共计 6 个标签
-            </div>
-            <div class="tag-cloud-tags">
-              <a href="/tags/nginx/" style="font-size: 12px; color: #ccc">nginx</a> <a href="/tags/python/" style="font-size: 30px; color: #111">python</a> <a href="/tags/持续集成/" style="font-size: 12px; color: #ccc">持续集成</a> <a href="/tags/数据挖掘/" style="font-size: 12px; color: #ccc">数据挖掘</a> <a href="/tags/机器学习/" style="font-size: 21px; color: #6f6f6f">机器学习</a> <a href="/tags/算法/" style="font-size: 30px; color: #111">算法</a>
-            </div>
-          </div>
+          <h1 class="post-title" itemprop="name headline">Nginx进行泛域名解析</h1>
         
-      </div>
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-07T17:55:52+08:00">
+                2018-02-07
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <h3 id="主要目的："><a href="#主要目的：" class="headerlink" title="主要目的："></a>主要目的：</h3><p>在微信中做H5游戏页面，为了防止微信封域名导致网站全部H5都被禁。</p>
+<p>主要实现：<br>xxx.domain2.domain1.com -&gt; domain2.domain1.com/xxx<br>xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx</p>
+<p>nginx rewrite实现二级或三级域名泛解析<br>在nginx的相对应的配置文件的server中添加<br>if ($host ~* ^([^.]+).([^.]+).([^.]+).([^.]+)$) {  #三级域名<br>    set $subdomain $1;<br>    set $domain $2;<br>}</p>
+<p>location / { #添加rewrite<br>    rewrite ^/(.*)$ /index.html/$1$subdomain last;<br>    break;<br>}</p>
+
       
     </div>
     
     
     
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/nginx/" rel="tag"># nginx</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/19/algorithm/" rel="next" title="algorithm">
+                <i class="fa fa-chevron-left"></i> algorithm
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -337,6 +446,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -357,8 +470,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -418,6 +540,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#主要目的："><span class="nav-number">1.</span> <span class="nav-text">主要目的：</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -531,10 +669,10 @@
   
 
   
-    <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
 <script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
 
-  
+
 
   
 

@@ -78,12 +78,10 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="持续集成," />
 
 
 
-
-  
 
 
   <link rel="alternate" href="/atom.xml" title="Xiangjy's Blog" type="application/atom+xml" />
@@ -98,14 +96,18 @@
 
 
 
-<meta property="og:type" content="website">
-<meta property="og:title" content="Tags">
-<meta property="og:url" content="http://yoursite.com/tags/index.html">
+<meta name="description" content="1.使用docker运行gitlab-runner123456789101112gitlab-runner:    container_name: gitlab-runner    image: gitlab/gitlab-runner:latest    restart: always    volumes:        - /etc/localtime:/etc/localtime">
+<meta name="keywords" content="持续集成">
+<meta property="og:type" content="article">
+<meta property="og:title" content="gitlib-runner">
+<meta property="og:url" content="http://yoursite.com/2017/09/08/gitlib-runner/index.html">
 <meta property="og:site_name" content="Xiangjy&#39;s Blog">
+<meta property="og:description" content="1.使用docker运行gitlab-runner123456789101112gitlab-runner:    container_name: gitlab-runner    image: gitlab/gitlab-runner:latest    restart: always    volumes:        - /etc/localtime:/etc/localtime">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-08-15T01:22:40.000Z">
+<meta property="og:updated_time" content="2017-09-08T10:55:29.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Tags">
+<meta name="twitter:title" content="gitlib-runner">
+<meta name="twitter:description" content="1.使用docker运行gitlab-runner123456789101112gitlab-runner:    container_name: gitlab-runner    image: gitlab/gitlab-runner:latest    restart: always    volumes:        - /etc/localtime:/etc/localtime">
 
 
 
@@ -134,13 +136,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/tags/"/>
+  <link rel="canonical" href="http://yoursite.com/2017/09/08/gitlib-runner/"/>
 
 
 
 
 
-  <title>Tags | Xiangjy's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>gitlib-runner | Xiangjy's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -295,40 +297,153 @@
 
   <div id="posts" class="posts-expand">
     
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/09/08/gitlib-runner/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xiangjy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Xiangjy's Blog">
+    </span>
+
     
-    
-    <div class="post-block page">
       <header class="post-header">
 
-	<h1 class="post-title" itemprop="name headline">Tags</h1>
-
-
-
-</header>
-
-      
-      
-      
-      <div class="post-body">
         
         
-          <div class="tag-cloud">
-            <div class="tag-cloud-title">
-                目前共计 6 个标签
-            </div>
-            <div class="tag-cloud-tags">
-              <a href="/tags/nginx/" style="font-size: 12px; color: #ccc">nginx</a> <a href="/tags/python/" style="font-size: 30px; color: #111">python</a> <a href="/tags/持续集成/" style="font-size: 12px; color: #ccc">持续集成</a> <a href="/tags/数据挖掘/" style="font-size: 12px; color: #ccc">数据挖掘</a> <a href="/tags/机器学习/" style="font-size: 21px; color: #6f6f6f">机器学习</a> <a href="/tags/算法/" style="font-size: 30px; color: #111">算法</a>
-            </div>
-          </div>
+          <h1 class="post-title" itemprop="name headline">gitlib-runner</h1>
         
-      </div>
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-08T17:26:17+08:00">
+                2017-09-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
       
       
+
+      
+        <h3 id="1-使用docker运行gitlab-runner"><a href="#1-使用docker运行gitlab-runner" class="headerlink" title="1.使用docker运行gitlab-runner"></a>1.使用docker运行gitlab-runner</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">gitlab-runner:</div><div class="line">    container_name: gitlab-runner</div><div class="line">    image: gitlab/gitlab-runner:latest</div><div class="line">    restart: always</div><div class="line">    volumes:</div><div class="line">        - /etc/localtime:/etc/localtime</div><div class="line">        - /home/data/docker/gitlab-runner/home/.pypirc:/root/.pypirc</div><div class="line">        - /var/run/docker.sock:/var/run/docker.sock</div><div class="line">        - /home/data/docker/gitlab-runner/config:/etc/gitlab-runner</div><div class="line">    command: [run, --working-directory=/home/gitlab-runner]</div><div class="line">    dns:</div><div class="line">        - 192.168.0.100</div></pre></td></tr></table></figure>
+<h3 id="2-进入docker"><a href="#2-进入docker" class="headerlink" title="2.进入docker"></a>2.进入docker</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo docker exec -it gitlab-runner bash</div></pre></td></tr></table></figure>
+<h3 id="3-执行gitlab-runner或gitlab-ci-multi-runner-reigster"><a href="#3-执行gitlab-runner或gitlab-ci-multi-runner-reigster" class="headerlink" title="3.执行gitlab-runner或gitlab-ci-multi-runner reigster"></a>3.执行gitlab-runner或gitlab-ci-multi-runner reigster</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">$ sudo gitlab-runner register</div><div class="line"></div><div class="line">Please enter the gitlab-ci coordinator URL (e.g. https://gitlab.com )</div><div class="line">## 输入gitlab地址</div><div class="line">Please enter the gitlab-ci token for this runner</div><div class="line">## gitlab的token(在gitlab的Admin Area中) 或者仓库的token(仓库-&gt;设置-&gt;Runner)</div><div class="line">Please enter the gitlab-ci description for this runner</div><div class="line">## Runner描述信息</div><div class="line">Please enter the gitlab-ci tags for this runner (comma separated):</div><div class="line">## Runner的标签 可以指定仓库，之后在.gitlab-ci.yml中配置相对应tags </div><div class="line">Please enter the executor: parallels, shell, ssh, virtualbox, docker+machine, docker-ssh+machine, docker, docker-ssh, kubernetes:</div><div class="line">docker  ## 执行类型 </div><div class="line">Please enter the Docker image (eg. ruby:2.1):</div><div class="line">build-image  ## 编译环境的镜像</div><div class="line">Runner registered successfully. Feel free to start it, but if it&apos;s running already the config should be automatically reloaded!</div></pre></td></tr></table></figure>
+<p>注册runner执行类型有多种方式，具体参考：<a href="https://docs.gitlab.com/ce/ci/docker/using_docker_build.html" target="_blank" rel="external">Using Docker Build</a></p>
+<h3 id="4-查看已经注册的runner"><a href="#4-查看已经注册的runner" class="headerlink" title="4.查看已经注册的runner"></a>4.查看已经注册的runner</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">gitlab-runner list</div><div class="line">Listing configured runners                          ConfigFile=/mypath/.gitlab-runner/config.toml</div></pre></td></tr></table></figure>
+<h3 id="5-配置-gitlab-ci-yml"><a href="#5-配置-gitlab-ci-yml" class="headerlink" title="5.配置.gitlab-ci.yml"></a>5.配置.gitlab-ci.yml</h3><p>详情参考：<a href="https://docs.gitlab.com/ce/ci/yaml/README.html" target="_blank" rel="external">gitlab-ci说明文档</a></p>
+
       
     </div>
     
     
     
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/持续集成/" rel="tag"># 持续集成</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/21/fibonacci/" rel="next" title="Python实现斐波那契">
+                <i class="fa fa-chevron-left"></i> Python实现斐波那契
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/09/08/pypi_server/" rel="prev" title="pypi私有服务器">
+                pypi私有服务器 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
   </div>
 
 
@@ -337,6 +452,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -357,8 +476,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -418,6 +546,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-使用docker运行gitlab-runner"><span class="nav-number">1.</span> <span class="nav-text">1.使用docker运行gitlab-runner</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-进入docker"><span class="nav-number">2.</span> <span class="nav-text">2.进入docker</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-执行gitlab-runner或gitlab-ci-multi-runner-reigster"><span class="nav-number">3.</span> <span class="nav-text">3.执行gitlab-runner或gitlab-ci-multi-runner reigster</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-查看已经注册的runner"><span class="nav-number">4.</span> <span class="nav-text">4.查看已经注册的runner</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-配置-gitlab-ci-yml"><span class="nav-number">5.</span> <span class="nav-text">5.配置.gitlab-ci.yml</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -531,10 +675,10 @@
   
 
   
-    <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
 <script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
 
-  
+
 
   
 
