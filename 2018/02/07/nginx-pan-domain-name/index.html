@@ -96,18 +96,18 @@
 
 
 
-<meta name="description" content="主要目的：在微信中做H5游戏页面，为了防止微信封域名导致网站全部H5都被禁。 主要实现：xxx.domain2.domain1.com -&amp;gt; domain2.domain1.com/xxxxxx.domain2.domain1.com -&amp;gt; domain2.domain1.com/?id=xxx nginx rewrite实现二级或三级域名泛解析在nginx的相对应的配置文件的serv">
+<meta name="description" content="主要目的：在微信中做H5游戏页面，为了防止微信封域名导致网站全部H5都被禁。 主要实现：    xxx.domain2.domain1.com -&amp;gt; domain2.domain1.com/xxx    xxx.domain2.domain1.com -&amp;gt; domain2.domain1.com/?id=xxx nginx rewrite实现二级或三级域名泛解析在nginx的相对应的配">
 <meta name="keywords" content="nginx">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Nginx进行泛域名解析">
 <meta property="og:url" content="http://yoursite.com/2018/02/07/nginx-pan-domain-name/index.html">
 <meta property="og:site_name" content="Xiangjy&#39;s Blog">
-<meta property="og:description" content="主要目的：在微信中做H5游戏页面，为了防止微信封域名导致网站全部H5都被禁。 主要实现：xxx.domain2.domain1.com -&amp;gt; domain2.domain1.com/xxxxxx.domain2.domain1.com -&amp;gt; domain2.domain1.com/?id=xxx nginx rewrite实现二级或三级域名泛解析在nginx的相对应的配置文件的serv">
+<meta property="og:description" content="主要目的：在微信中做H5游戏页面，为了防止微信封域名导致网站全部H5都被禁。 主要实现：    xxx.domain2.domain1.com -&amp;gt; domain2.domain1.com/xxx    xxx.domain2.domain1.com -&amp;gt; domain2.domain1.com/?id=xxx nginx rewrite实现二级或三级域名泛解析在nginx的相对应的配">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-02-07T10:27:41.024Z">
+<meta property="og:updated_time" content="2018-02-07T12:30:00.025Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx进行泛域名解析">
-<meta name="twitter:description" content="主要目的：在微信中做H5游戏页面，为了防止微信封域名导致网站全部H5都被禁。 主要实现：xxx.domain2.domain1.com -&amp;gt; domain2.domain1.com/xxxxxx.domain2.domain1.com -&amp;gt; domain2.domain1.com/?id=xxx nginx rewrite实现二级或三级域名泛解析在nginx的相对应的配置文件的serv">
+<meta name="twitter:description" content="主要目的：在微信中做H5游戏页面，为了防止微信封域名导致网站全部H5都被禁。 主要实现：    xxx.domain2.domain1.com -&amp;gt; domain2.domain1.com/xxx    xxx.domain2.domain1.com -&amp;gt; domain2.domain1.com/?id=xxx nginx rewrite实现二级或三级域名泛解析在nginx的相对应的配">
 
 
 
@@ -377,9 +377,8 @@
 
       
         <h3 id="主要目的："><a href="#主要目的：" class="headerlink" title="主要目的："></a>主要目的：</h3><p>在微信中做H5游戏页面，为了防止微信封域名导致网站全部H5都被禁。</p>
-<p>主要实现：<br>xxx.domain2.domain1.com -&gt; domain2.domain1.com/xxx<br>xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx</p>
-<p>nginx rewrite实现二级或三级域名泛解析<br>在nginx的相对应的配置文件的server中添加<br>if ($host ~* ^([^.]+).([^.]+).([^.]+).([^.]+)$) {  #三级域名<br>    set $subdomain $1;<br>    set $domain $2;<br>}</p>
-<p>location / { #添加rewrite<br>    rewrite ^/(.*)$ /index.html/$1$subdomain last;<br>    break;<br>}</p>
+<p>主要实现：<br>    xxx.domain2.domain1.com -&gt; domain2.domain1.com/xxx<br>    xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx</p>
+<p>nginx rewrite实现二级或三级域名泛解析<br>在nginx的相对应的配置文件的server中添加<br><figure class="highlight nginx"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="attribute">if</span> (<span class="variable">$host</span> <span class="regexp">~* ^([^\.]+)\.([^\.]+)\.([^\.]+)\.([^\.]+)$)</span> &#123;  <span class="comment">#三级域名</span></div><div class="line">    <span class="attribute">set</span> <span class="variable">$subdomain</span> <span class="variable">$1</span>;</div><div class="line">    <span class="attribute">set</span> <span class="variable">$domain</span> <span class="variable">$2</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="attribute">location</span> / &#123; <span class="comment">#添加rewrite</span></div><div class="line">    <span class="attribute">rewrite</span><span class="regexp"> ^/(.*)$</span> /index.html/<span class="variable">$1</span><span class="variable">$subdomain</span> <span class="literal">last</span>;</div><div class="line">    break;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 
       
     </div>
