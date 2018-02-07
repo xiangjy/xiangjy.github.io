@@ -306,137 +306,6 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/07/pypi私有服务器/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Xiangjy">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Xiangjy's Blog">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/02/07/pypi私有服务器/" itemprop="url">pypi私有服务器</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-02-07T20:40:08+08:00">
-                2018-02-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h2 id="pypi-server搭建"><a href="#pypi-server搭建" class="headerlink" title="pypi-server搭建"></a>pypi-server搭建</h2><h3 id="pypi官方说明"><a href="#pypi官方说明" class="headerlink" title="pypi官方说明"></a><a href="http://wiki.python.org/moin/PyPiImplementations" target="_blank" rel="external">pypi官方说明</a></h3><h3 id="1-基础安装和启动"><a href="#1-基础安装和启动" class="headerlink" title="1.基础安装和启动"></a>1.基础安装和启动</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ pip install pypiserver</div><div class="line">$ mkdir ~/pypi/packages</div><div class="line"><span class="comment"># copy some source packages or eggs to this directory</span></div><div class="line">$ pypi-server -p <span class="number">3141</span> ~/pypi/packages</div><div class="line">$ pip install -i http://localhost:<span class="number">8001</span>/simple/ ...</div></pre></td></tr></table></figure>
-<h3 id="2-添加上传密码"><a href="#2-添加上传密码" class="headerlink" title="2.添加上传密码"></a>2.添加上传密码</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ pip install passlib</div><div class="line">$ apt-get install apache2-utils     <span class="comment"># Mac OS不用安装</span></div><div class="line">$ htpasswd -sc ~/pypi/.htaccess user   <span class="comment"># 回车后会提示输入密码，输入123</span></div></pre></td></tr></table></figure>
-<h3 id="3-启动pypi-server时加载密钥文件"><a href="#3-启动pypi-server时加载密钥文件" class="headerlink" title="3.启动pypi server时加载密钥文件"></a>3.启动pypi server时加载密钥文件</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pypi-server -p <span class="number">3141</span> -P ~/pypi/.htaccess ./packages</div></pre></td></tr></table></figure>
-<h3 id="4-在用户根目录下创建-pypirc文件"><a href="#4-在用户根目录下创建-pypirc文件" class="headerlink" title="4.在用户根目录下创建.pypirc文件"></a>4.在用户根目录下创建.pypirc文件</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[distutils]</div><div class="line">index-servers =</div><div class="line">  privatepypi</div><div class="line">[privatepypi]</div><div class="line">repository:http://<span class="number">127.0</span><span class="number">.0</span><span class="number">.1</span>:<span class="number">3141</span></div><div class="line">username:user</div><div class="line">password:<span class="number">123</span></div></pre></td></tr></table></figure>
-<h3 id="5-上传package"><a href="#5-上传package" class="headerlink" title="5.上传package"></a>5.上传package</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">python setup.py sdist upload -r privatepypi</div></pre></td></tr></table></figure>
-<h3 id="6-下载package"><a href="#6-下载package" class="headerlink" title="6.下载package"></a>6.下载package</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ pip install -i http://localhost:<span class="number">3134</span>/simple/ package-name</div></pre></td></tr></table></figure>
-<h3 id="7-setup-py文件示例"><a href="#7-setup-py文件示例" class="headerlink" title="7.setup.py文件示例"></a>7.setup.py文件示例</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">import</span> sys</div><div class="line"><span class="keyword">import</span> importlib</div><div class="line"><span class="keyword">from</span> setuptools <span class="keyword">import</span> setup, find_packages</div><div class="line">PROJECT = <span class="string">'libs'</span></div><div class="line">requires = []</div><div class="line"><span class="comment"># 读取requirements.txt文件，获得需要安装基础包</span></div><div class="line"><span class="keyword">with</span> open(<span class="string">'requirements.txt'</span>) <span class="keyword">as</span> f:</div><div class="line">    <span class="keyword">for</span> line <span class="keyword">in</span> f.readlines():</div><div class="line">        requires.append(line.strip())</div><div class="line"><span class="comment"># 打包时替换version.py文件</span></div><div class="line"><span class="keyword">if</span> sys.argv[<span class="number">1</span>] == <span class="string">'sdist'</span>:</div><div class="line">    version_py = importlib.import_module(<span class="string">'&#123;project&#125;.version'</span>.format(project=PROJECT))</div><div class="line">    version_py.update_version_file(<span class="string">'&#123;project&#125;/version.py'</span>.format(project=PROJECT))</div><div class="line"><span class="comment"># reload version模块，确保在替换version.py文件后获得最新的version号</span></div><div class="line">version = reload(importlib.import_module(<span class="string">'&#123;pro&#125;.version'</span>.format(pro=PROJECT))).get_version()</div><div class="line"><span class="keyword">with</span> open(<span class="string">'README.md'</span>, <span class="string">'r'</span>) <span class="keyword">as</span> f:</div><div class="line">    readme = f.read()</div><div class="line">setup(</div><div class="line">    name=<span class="string">'libs'</span>,</div><div class="line">    version=version,</div><div class="line">    description=<span class="string">'libs is the common lib for Django project'</span>,</div><div class="line">    long_description=readme,</div><div class="line">    author=<span class="string">'xxx'</span>,</div><div class="line">    author_email=<span class="string">'xxx@gmail.com'</span>,</div><div class="line">    url=<span class="string">''</span>,</div><div class="line">    packages=find_packages(),</div><div class="line">    include_package_data=<span class="keyword">True</span>,</div><div class="line">    install_requires=requires,</div><div class="line">    test_suite=<span class="string">'nose.collector'</span>,</div><div class="line">    license=<span class="string">'All rights reserved by xxx.'</span>,</div><div class="line">    zip_safe=<span class="keyword">False</span>,</div><div class="line">    classifiers=(</div><div class="line">        <span class="string">'Development Status :: 5 - Production/Stable'</span>,</div><div class="line">        <span class="string">'Intended Audience :: Developers'</span>,</div><div class="line">        <span class="string">'Natural Language :: English'</span>,</div><div class="line">        <span class="string">'Programming Language :: Python'</span>,</div><div class="line">        <span class="string">'Programming Language :: Python :: 2.7'</span>,</div><div class="line">    ),</div><div class="line">)</div></pre></td></tr></table></figure>
-<h3 id="setup-py官方文档"><a href="#setup-py官方文档" class="headerlink" title="setup.py官方文档"></a><a href="https://docs.python.org/2/distutils/setupscript.html" target="_blank" rel="external">setup.py官方文档</a></h3><h2 id="使用supervisor管理pypi-server"><a href="#使用supervisor管理pypi-server" class="headerlink" title="使用supervisor管理pypi-server"></a>使用supervisor管理pypi-server</h2><h3 id="1-生成run-pypi-sh文件，supervisor执行命令文件"><a href="#1-生成run-pypi-sh文件，supervisor执行命令文件" class="headerlink" title="1.生成run-pypi.sh文件，supervisor执行命令文件"></a>1.生成run-pypi.sh文件，supervisor执行命令文件</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line"><span class="comment">#!/bin/sh</span></div><div class="line"><span class="comment"># 启动virtualenv</span></div><div class="line">. ~/pypi/pypienv/bin/activate</div><div class="line"><span class="keyword">exec</span> pypi-server -p <span class="number">3141</span> ~/pypi/packages</div></pre></td></tr></table></figure>
-<h3 id="2-生成supervisor配置文件，-etc-supervisor-conf-d-pypi-server-conf"><a href="#2-生成supervisor配置文件，-etc-supervisor-conf-d-pypi-server-conf" class="headerlink" title="2.生成supervisor配置文件，/etc/supervisor/conf.d/pypi-server.conf"></a>2.生成supervisor配置文件，/etc/supervisor/conf.d/pypi-server.conf</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">[program:pypi-server]</div><div class="line">  directory=~/pypi/</div><div class="line">  command=sh run-pypi.sh</div><div class="line">  autostart=true</div><div class="line">  autorestart=true</div><div class="line">  redirect_stderr=true</div></pre></td></tr></table></figure>
-<h3 id="3-启动和停止supervisor"><a href="#3-启动和停止supervisor" class="headerlink" title="3.启动和停止supervisor"></a>3.启动和停止supervisor</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">$ sudo /etc/init.d/supervisor start</div><div class="line">$ sudo /etc/init.d/supervisor stop</div></pre></td></tr></table></figure>
-<h2 id="公有云pypi"><a href="#公有云pypi" class="headerlink" title="公有云pypi"></a>公有云pypi</h2><h3 id="1-将包的相关信息-根据PyPI账户的注册信息-在PyPI主页上注册。"><a href="#1-将包的相关信息-根据PyPI账户的注册信息-在PyPI主页上注册。" class="headerlink" title="1.将包的相关信息, 根据PyPI账户的注册信息, 在PyPI主页上注册。"></a>1.将包的相关信息, 根据PyPI账户的注册信息, 在PyPI主页上注册。</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ python setup.py register -r pypi</div></pre></td></tr></table></figure>
-<h3 id="2-将包的源代码内容打包上传。"><a href="#2-将包的源代码内容打包上传。" class="headerlink" title="2.将包的源代码内容打包上传。"></a>2.将包的源代码内容打包上传。</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ python setup.py sdist upload -r pypi</div></pre></td></tr></table></figure>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/02/07/nginx-pan-domain-name/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1760,6 +1629,126 @@ xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
 
 
     
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/15/svm/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Xiangjy">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Xiangjy's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/08/15/svm/" itemprop="url">支持向量机(SVM)</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-15T11:55:14+08:00">
+                2017-08-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>什么是支持向量机(SVM)<br>1、支持向量机(Support Vector Machine，常简称SVM)是一种监督式学习的方法，可广泛的应用与统计分类以及回归分析。支持向量机属于一般化线性分类器，这种分类器的特点是他们能够同时最小化经验误差与最大化几何边缘区，因此支持向量机也被称为最大边缘区分类器。<br>2、支持向量机将向量映射到一个更高维的空间里，在这个空间里建立有一个最大间隔超平面。在分开数据的超平面两边建有两个互相平行的超平面，分隔超平面使两个平行超平面的距离最大化。假定平行超平面间的距离或差距越大，分类器的总误差越小。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
   </section>
 
   
@@ -1810,7 +1799,7 @@ xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
           
             <div class="site-state-item site-state-posts">
               <a href="/archives">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">12</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content=",,," />
 
 
 
@@ -96,13 +96,18 @@
 
 
 
+<meta name="description" content="k最邻近算法余弦相似度：通过测量两个向量的夹角的余弦值来度量它们之间的相似性。0度角的余弦值是1，而其他任何角度的余弦值都不大于1；并且其最小值是-1.从而两个向量之间的角度的余弦值确定两个向量是否大致指向相同的方向。两个向量有相同的指向时，余弦相似度的值为1；两个向量夹角为90°时，余弦相似度的值为0；两个向量指向完全相反的方向时，余弦相似度的值为-1。这结果是与向量的长度无关的，仅仅与向量的">
+<meta name="keywords" content="算法,机器学习,python">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Xiangjy&#39;s Blog">
-<meta property="og:url" content="http://yoursite.com/tags/nginx/index.html">
+<meta property="og:title" content="k邻近算法">
+<meta property="og:url" content="http://yoursite.com/p_back/knn.html">
 <meta property="og:site_name" content="Xiangjy&#39;s Blog">
+<meta property="og:description" content="k最邻近算法余弦相似度：通过测量两个向量的夹角的余弦值来度量它们之间的相似性。0度角的余弦值是1，而其他任何角度的余弦值都不大于1；并且其最小值是-1.从而两个向量之间的角度的余弦值确定两个向量是否大致指向相同的方向。两个向量有相同的指向时，余弦相似度的值为1；两个向量夹角为90°时，余弦相似度的值为0；两个向量指向完全相反的方向时，余弦相似度的值为-1。这结果是与向量的长度无关的，仅仅与向量的">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-02-07T13:04:04.012Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Xiangjy&#39;s Blog">
+<meta name="twitter:title" content="k邻近算法">
+<meta name="twitter:description" content="k最邻近算法余弦相似度：通过测量两个向量的夹角的余弦值来度量它们之间的相似性。0度角的余弦值是1，而其他任何角度的余弦值都不大于1；并且其最小值是-1.从而两个向量之间的角度的余弦值确定两个向量是否大致指向相同的方向。两个向量有相同的指向时，余弦相似度的值为1；两个向量夹角为90°时，余弦相似度的值为0；两个向量指向完全相反的方向时，余弦相似度的值为-1。这结果是与向量的长度无关的，仅仅与向量的">
 
 
 
@@ -131,13 +136,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/tags/nginx/"/>
+  <link rel="canonical" href="http://yoursite.com/p_back/knn.html"/>
 
 
 
 
 
-  <title>标签: nginx | Xiangjy's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>k邻近算法 | Xiangjy's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -162,7 +167,7 @@
     
   
 
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left  ">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
     <!----------- add Fork me on Github ------------>
 
@@ -290,54 +295,41 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block tag">
+  <div id="posts" class="posts-expand">
+    
+    
+    
+    <div class="post-block page">
+      <header class="post-header">
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>nginx<small>标签</small>
-        </h1>
-      </div>
+	<h1 class="post-title" itemprop="name headline">k邻近算法</h1>
+
+
+
+</header>
 
       
+      
+      
+      <div class="post-body">
         
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
         
-            <a class="post-title-link" href="/2018/02/07/nginx-pan-domain-name/" itemprop="url">
-              
-                <span itemprop="name">Nginx进行泛域名解析</span>
-              
-            </a>
-        
-      </h2>
+          <p><script type="text/javascript" async src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML"></script></p>
+<h4 id="k最邻近算法"><a href="#k最邻近算法" class="headerlink" title="k最邻近算法"></a>k最邻近算法</h4><p>余弦相似度：通过测量两个向量的夹角的余弦值来度量它们之间的相似性。0度角的余弦值是1，而其他任何角度的余弦值都不大于1；并且其最小值是-1.从而两个向量之间的角度的余弦值确定两个向量是否大致指向相同的方向。两个向量有相同的指向时，余弦相似度的值为1；两个向量夹角为90°时，余弦相似度的值为0；两个向量指向完全相反的方向时，余弦相似度的值为-1。这结果是与向量的长度无关的，仅仅与向量的指向方向相关。余弦相似度通常用于正空间，因此给出的值为0到1之间。</p>
+<p>$$cos{\theta}=\frac{a^2+b^2-c^2}{2ab}$$</p>
+<p>$$cos{\theta}=\frac{x_1x_2+y_1y_2}{\sqrt{x_1^2+y_1^2}*\sqrt{x_2^2+y_2^2}}$$</p>
+<p>$$cos{\theta}=\frac{AB}{\vert{A}\vert*\vert{B}\vert}$$</p>
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-02-07T17:55:52+08:00"
-              content="2018-02-07" >
-          02-07
-        </time>
+        
       </div>
-
-    </header>
-  </article>
-
-
+      
+      
       
     </div>
-
+    
+    
+    
   </div>
-  
-  
-  
-
-  
 
 
           </div>
@@ -345,6 +337,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -365,8 +361,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -426,6 +431,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#k最邻近算法"><span class="nav-number">1.</span> <span class="nav-text">k最邻近算法</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

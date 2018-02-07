@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content=",,,,," />
 
 
 
@@ -96,13 +96,18 @@
 
 
 
+<meta name="description" content="主要目的：在微信中做H5游戏页面，为了防止微信封域名导致网站全部H5都被禁。 主要实现：xxx.domain2.domain1.com -&amp;gt; domain2.domain1.com/xxx xxx.domain2.domain1.com -&amp;gt; domain2.domain1.com/?id=xxx nginx rewrite实现二级或三级域名泛解析在nginx的相对应的配置文件的ser">
+<meta name="keywords" content="nginx">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Xiangjy&#39;s Blog">
-<meta property="og:url" content="http://yoursite.com/tags/nginx/index.html">
+<meta property="og:title" content="Nginx进行泛域名解析">
+<meta property="og:url" content="http://yoursite.com/p_back/nginx-pan-domain-name.html">
 <meta property="og:site_name" content="Xiangjy&#39;s Blog">
+<meta property="og:description" content="主要目的：在微信中做H5游戏页面，为了防止微信封域名导致网站全部H5都被禁。 主要实现：xxx.domain2.domain1.com -&amp;gt; domain2.domain1.com/xxx xxx.domain2.domain1.com -&amp;gt; domain2.domain1.com/?id=xxx nginx rewrite实现二级或三级域名泛解析在nginx的相对应的配置文件的ser">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-02-07T13:04:04.007Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Xiangjy&#39;s Blog">
+<meta name="twitter:title" content="Nginx进行泛域名解析">
+<meta name="twitter:description" content="主要目的：在微信中做H5游戏页面，为了防止微信封域名导致网站全部H5都被禁。 主要实现：xxx.domain2.domain1.com -&amp;gt; domain2.domain1.com/xxx xxx.domain2.domain1.com -&amp;gt; domain2.domain1.com/?id=xxx nginx rewrite实现二级或三级域名泛解析在nginx的相对应的配置文件的ser">
 
 
 
@@ -131,13 +136,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/tags/nginx/"/>
+  <link rel="canonical" href="http://yoursite.com/p_back/nginx-pan-domain-name.html"/>
 
 
 
 
 
-  <title>标签: nginx | Xiangjy's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>Nginx进行泛域名解析 | Xiangjy's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -162,7 +167,7 @@
     
   
 
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left  ">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
     <!----------- add Fork me on Github ------------>
 
@@ -290,54 +295,40 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block tag">
+  <div id="posts" class="posts-expand">
+    
+    
+    
+    <div class="post-block page">
+      <header class="post-header">
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>nginx<small>标签</small>
-        </h1>
-      </div>
+	<h1 class="post-title" itemprop="name headline">Nginx进行泛域名解析</h1>
+
+
+
+</header>
 
       
+      
+      
+      <div class="post-body">
         
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
         
-            <a class="post-title-link" href="/2018/02/07/nginx-pan-domain-name/" itemprop="url">
-              
-                <span itemprop="name">Nginx进行泛域名解析</span>
-              
-            </a>
-        
-      </h2>
+          <h3 id="主要目的："><a href="#主要目的：" class="headerlink" title="主要目的："></a>主要目的：</h3><p>在微信中做H5游戏页面，为了防止微信封域名导致网站全部H5都被禁。</p>
+<h3 id="主要实现："><a href="#主要实现：" class="headerlink" title="主要实现："></a>主要实现：</h3><pre><code>xxx.domain2.domain1.com -&gt; domain2.domain1.com/xxx
+xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
+</code></pre><p>nginx rewrite实现二级或三级域名泛解析<br>在nginx的相对应的配置文件的server中添加<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> ($host ~* ^([^\.]+)\.([^\.]+)\.([^\.]+)\.([^\.]+)$) &#123;  <span class="comment">#三级域名</span></div><div class="line">    set $subdomain $<span class="number">1</span>;</div><div class="line">    set $domain $<span class="number">2</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line">location / &#123; <span class="comment">#添加rewrite</span></div><div class="line">    rewrite ^/(.*)$ /index.html/$<span class="number">1</span>$subdomain last;</div><div class="line">    <span class="keyword">break</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-02-07T17:55:52+08:00"
-              content="2018-02-07" >
-          02-07
-        </time>
+        
       </div>
-
-    </header>
-  </article>
-
-
+      
+      
       
     </div>
-
+    
+    
+    
   </div>
-  
-  
-  
-
-  
 
 
           </div>
@@ -345,6 +336,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -365,8 +360,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -426,6 +430,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#主要目的："><span class="nav-number">1.</span> <span class="nav-text">主要目的：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#主要实现："><span class="nav-number">2.</span> <span class="nav-text">主要实现：</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       

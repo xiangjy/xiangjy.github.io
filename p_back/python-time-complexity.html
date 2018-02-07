@@ -78,7 +78,7 @@
 <link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content=",," />
 
 
 
@@ -96,13 +96,18 @@
 
 
 
+<meta name="description" content="列表(list)以完全随机的列表考虑平均情况。列表是以数组(Array)实现的。最大的开销发生在超过当前分配大小的增长，这种情况下所有元素都需要移动；或者是在起始位置附近插入或者删除元素，这种情况下所有在该位置后面的元素都需要移动。如果你需要在一个队列的两端进行增删的操作，应当使用collections.deque(双向队列)    操作 平均情况 最坏情况     复制 O(n) O(n)">
+<meta name="keywords" content="python,算法">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Xiangjy&#39;s Blog">
-<meta property="og:url" content="http://yoursite.com/tags/nginx/index.html">
+<meta property="og:title" content="Python内置方法的时间复杂度">
+<meta property="og:url" content="http://yoursite.com/p_back/python-time-complexity.html">
 <meta property="og:site_name" content="Xiangjy&#39;s Blog">
+<meta property="og:description" content="列表(list)以完全随机的列表考虑平均情况。列表是以数组(Array)实现的。最大的开销发生在超过当前分配大小的增长，这种情况下所有元素都需要移动；或者是在起始位置附近插入或者删除元素，这种情况下所有在该位置后面的元素都需要移动。如果你需要在一个队列的两端进行增删的操作，应当使用collections.deque(双向队列)    操作 平均情况 最坏情况     复制 O(n) O(n)">
 <meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-02-07T13:04:04.013Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Xiangjy&#39;s Blog">
+<meta name="twitter:title" content="Python内置方法的时间复杂度">
+<meta name="twitter:description" content="列表(list)以完全随机的列表考虑平均情况。列表是以数组(Array)实现的。最大的开销发生在超过当前分配大小的增长，这种情况下所有元素都需要移动；或者是在起始位置附近插入或者删除元素，这种情况下所有在该位置后面的元素都需要移动。如果你需要在一个队列的两端进行增删的操作，应当使用collections.deque(双向队列)    操作 平均情况 最坏情况     复制 O(n) O(n)">
 
 
 
@@ -131,13 +136,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/tags/nginx/"/>
+  <link rel="canonical" href="http://yoursite.com/p_back/python-time-complexity.html"/>
 
 
 
 
 
-  <title>标签: nginx | Xiangjy's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+  <title>Python内置方法的时间复杂度 | Xiangjy's Blog</title><!-- hexo-inject:begin --><!-- hexo-inject:end -->
   
 
 
@@ -162,7 +167,7 @@
     
   
 
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left  ">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
     <!----------- add Fork me on Github ------------>
 
@@ -290,54 +295,270 @@
           <div id="content" class="content">
             
 
-  
-  
-  
-  <div class="post-block tag">
+  <div id="posts" class="posts-expand">
+    
+    
+    
+    <div class="post-block page">
+      <header class="post-header">
 
-    <div id="posts" class="posts-collapse">
-      <div class="collection-title">
-        <h1>nginx<small>标签</small>
-        </h1>
-      </div>
+	<h1 class="post-title" itemprop="name headline">Python内置方法的时间复杂度</h1>
+
+
+
+</header>
 
       
+      
+      
+      <div class="post-body">
         
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h2 class="post-title">
         
-            <a class="post-title-link" href="/2018/02/07/nginx-pan-domain-name/" itemprop="url">
-              
-                <span itemprop="name">Nginx进行泛域名解析</span>
-              
-            </a>
-        
-      </h2>
+          <h4 id="列表-list"><a href="#列表-list" class="headerlink" title="列表(list)"></a>列表(list)</h4><p>以完全随机的列表考虑平均情况。<br>列表是以数组(Array)实现的。最大的开销发生在超过当前分配大小的增长，这种情况下所有元素都需要移动；或者是在起始位置附近插入或者删除元素，这种情况下所有在该位置后面的元素都需要移动。如果你需要在一个队列的两端进行增删的操作，应当使用collections.deque(双向队列)</p>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>平均情况</th>
+<th>最坏情况</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>复制</td>
+<td>O(n)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>append</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>插入</td>
+<td>O(1)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>取元素</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>更改元素</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>输出元素</td>
+<td>O(n)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>遍历</td>
+<td>O(n)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>取切片</td>
+<td>O(k)</td>
+<td>O(k)</td>
+</tr>
+<tr>
+<td>删除切片</td>
+<td>O(n)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>更改切片</td>
+<td>O(k+n)</td>
+<td>O(k+n)</td>
+</tr>
+<tr>
+<td>extend</td>
+<td>O(k)</td>
+<td>O(k)</td>
+</tr>
+<tr>
+<td>排序</td>
+<td>O(n log n)</td>
+<td>O(n log n)</td>
+</tr>
+<tr>
+<td>列表乘法</td>
+<td>O(nk)</td>
+<td>O(nk)</td>
+</tr>
+<tr>
+<td>x in s</td>
+<td>O(n)</td>
+<td></td>
+</tr>
+<tr>
+<td>min(s),max(s)</td>
+<td>O(n)</td>
+<td></td>
+</tr>
+<tr>
+<td>长度计算</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="双向队列-collections-deque"><a href="#双向队列-collections-deque" class="headerlink" title="双向队列(collections.deque)"></a>双向队列(collections.deque)</h4><p>deque(double-ended queue，双向队列)是以双向链表的形式实现的(Well,a list of arrays rather than objects,for greater efficiency)。双向队列的两端都是可达的，但从查找队列中间的元素较为缓慢，增删元素就更慢了。</p>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>平均情况</th>
+<th>最坏情况</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>复制</td>
+<td>O(n)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>append</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>appendleft</td>
+<td>O(1)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>pop</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>popleft</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>extend</td>
+<td>O(k)</td>
+<td>O(k)</td>
+</tr>
+<tr>
+<td>extendleft</td>
+<td>O(k)</td>
+<td>O(k)</td>
+</tr>
+<tr>
+<td>rotate</td>
+<td>O(k)</td>
+<td>O(k)</td>
+</tr>
+<tr>
+<td>remove</td>
+<td>O(n)</td>
+<td>O(n)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="集合-set"><a href="#集合-set" class="headerlink" title="集合(set)"></a>集合(set)</h4><p>未列出的操作可参考dict——二者的实现非常相似。</p>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>平均情况</th>
+<th>最坏情况</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>x in s</td>
+<td>O(1)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>并集s&#124;t</td>
+<td>O(len(s)+len(t))</td>
+<td></td>
+</tr>
+<tr>
+<td>交集s&amp;t</td>
+<td>O(min(len(s), len(t)))</td>
+<td>O(len(s)*len(t))</td>
+</tr>
+<tr>
+<td>差集s-t</td>
+<td>O(len(s))</td>
+<td></td>
+</tr>
+<tr>
+<td>s.difference_update(t)</td>
+<td>O(len(t))</td>
+<td></td>
+</tr>
+<tr>
+<td>对称差集s^t</td>
+<td>O(len(s))</td>
+<td>O(len(s)*len(t))</td>
+</tr>
+<tr>
+<td>s.symmetric_difference_update(t)</td>
+<td>O(len(t))</td>
+<td>O(len(t)*len(s))</td>
+</tr>
+</tbody>
+</table>
+<p>由源码得知，求差集(s-t，或s.difference(t))运算与更新为差集(s.difference_update(t))运算的时间复杂度并不相同！前者是将在s中，但不在t中的元素添加到新的集合中，因此时间复杂度为O(len(s))；后者是将在t中的元素从s中移除，因此时间复杂度为O(len(t)。因此，使用时请留心，根据两个集合的大小以及是否需要新集合来选择合适的方法。<br>集合的s-t运算中，并不要求t也一定是集合。只要t是可遍历的对象即可。</p>
+<h4 id="字典-dict"><a href="#字典-dict" class="headerlink" title="字典(dict)"></a>字典(dict)</h4><p>下列字典的平均情况基于以下假设：<br>1.对象的散列函数足够撸棒(robust)，不会发生冲突。<br>2.字典的键是从所有可能的键的集合中随机选择的。<br>只使用字符串最为字典的键。这么做虽然不会影响算法的时间复杂度，但会对常数项产生显著的影响，这决定了你的一段程序能对快跑完。</p>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>平均情况</th>
+<th>最坏情况</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>复制</td>
+<td>O(n)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>取元素</td>
+<td>O(1)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>更改元素</td>
+<td>O(1)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>删除元素</td>
+<td>O(1)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>遍历</td>
+<td>O(n)</td>
+<td>O(n)</td>
+</tr>
+</tbody>
+</table>
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2018-02-07T17:55:52+08:00"
-              content="2018-02-07" >
-          02-07
-        </time>
+        
       </div>
-
-    </header>
-  </article>
-
-
+      
+      
       
     </div>
-
+    
+    
+    
   </div>
-  
-  
-  
-
-  
 
 
           </div>
@@ -345,6 +566,10 @@
 
 
           
+  <div class="comments" id="comments">
+    
+  </div>
+
 
         </div>
         
@@ -365,8 +590,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.gif"
@@ -426,6 +660,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#列表-list"><span class="nav-number">1.</span> <span class="nav-text">列表(list)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#双向队列-collections-deque"><span class="nav-number">2.</span> <span class="nav-text">双向队列(collections.deque)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#集合-set"><span class="nav-number">3.</span> <span class="nav-text">集合(set)</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#字典-dict"><span class="nav-number">4.</span> <span class="nav-text">字典(dict)</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
