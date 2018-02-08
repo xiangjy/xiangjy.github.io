@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-02-07T12:35:15.747Z</updated>
+  <updated>2018-02-08T02:15:21.960Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -21,16 +21,15 @@
     <link href="http://yoursite.com/2018/02/07/nginx-pan-domain-name/"/>
     <id>http://yoursite.com/2018/02/07/nginx-pan-domain-name/</id>
     <published>2018-02-07T09:55:52.000Z</published>
-    <updated>2018-02-07T12:35:15.747Z</updated>
+    <updated>2018-02-08T02:15:21.960Z</updated>
     
-    <content type="html"><![CDATA[<h3 id="主要目的："><a href="#主要目的：" class="headerlink" title="主要目的："></a>主要目的：</h3><p>在微信中做H5游戏页面，为了防止微信封域名导致网站全部H5都被禁。</p><h3 id="主要实现："><a href="#主要实现：" class="headerlink" title="主要实现："></a>主要实现：</h3><pre><code>xxx.domain2.domain1.com -&gt; domain2.domain1.com/xxxxxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx</code></pre><p>nginx rewrite实现二级或三级域名泛解析<br>在nginx的相对应的配置文件的server中添加<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> ($host ~* ^([^\.]+)\.([^\.]+)\.([^\.]+)\.([^\.]+)$) &#123;  <span class="comment">#三级域名</span></div><div class="line">    set $subdomain $<span class="number">1</span>;</div><div class="line">    set $domain $<span class="number">2</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line">location / &#123; <span class="comment">#添加rewrite</span></div><div class="line">    rewrite ^/(.*)$ /index.html/$<span class="number">1</span>$subdomain last;</div><div class="line">    <span class="keyword">break</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>]]></content>
+    <content type="html"><![CDATA[<h3 id="主要实现："><a href="#主要实现：" class="headerlink" title="主要实现："></a>主要实现：</h3><pre><code>xxx.domain2.domain1.com -&gt; domain2.domain1.com/xxxxxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx</code></pre><p>nginx rewrite实现二级或三级域名泛解析<br>在nginx的相对应的配置文件的server中添加<br><figure class="highlight python"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">if</span> ($host ~* ^([^\.]+)\.([^\.]+)\.([^\.]+)\.([^\.]+)$) &#123;  <span class="comment">#三级域名</span></div><div class="line">    set $subdomain $<span class="number">1</span>;</div><div class="line">    set $domain $<span class="number">2</span>;</div><div class="line">&#125;</div><div class="line"></div><div class="line">location / &#123; <span class="comment">#添加rewrite</span></div><div class="line">    rewrite ^/(.*)$ /index.html/$<span class="number">1</span>$subdomain last;</div><div class="line">    <span class="keyword">break</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;h3 id=&quot;主要目的：&quot;&gt;&lt;a href=&quot;#主要目的：&quot; class=&quot;headerlink&quot; title=&quot;主要目的：&quot;&gt;&lt;/a&gt;主要目的：&lt;/h3&gt;&lt;p&gt;在微信中做H5游戏页面，为了防止微信封域名导致网站全部H5都被禁。&lt;/p&gt;
-&lt;h3 id=&quot;主要实现：&quot;&gt;&lt;a hr
+        &lt;h3 id=&quot;主要实现：&quot;&gt;&lt;a href=&quot;#主要实现：&quot; class=&quot;headerlink&quot; title=&quot;主要实现：&quot;&gt;&lt;/a&gt;主要实现：&lt;/h3&gt;&lt;pre&gt;&lt;code&gt;xxx.domain2.domain1.com -&amp;gt; domain2.domain1.com/
       
     
     </summary>
@@ -77,8 +76,8 @@
   
   <entry>
     <title>pypi私有服务器</title>
-    <link href="http://yoursite.com/2017/09/08/pypi_server/"/>
-    <id>http://yoursite.com/2017/09/08/pypi_server/</id>
+    <link href="http://yoursite.com/2017/09/08/pypi-server/"/>
+    <id>http://yoursite.com/2017/09/08/pypi-server/</id>
     <published>2017-09-08T10:57:18.000Z</published>
     <updated>2017-09-10T15:02:03.000Z</updated>
     

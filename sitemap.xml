@@ -2,93 +2,9 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://yoursite.com/p_back/docker.html</loc>
-    
-    <lastmod>2018-02-07T13:04:04.016Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/p_back/gitlib-runner.html</loc>
-    
-    <lastmod>2018-02-07T13:04:04.015Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/p_back/algorithm.html</loc>
-    
-    <lastmod>2018-02-07T13:04:04.015Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/p_back/pypi_server.html</loc>
-    
-    <lastmod>2018-02-07T13:04:04.014Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/p_back/python-time-complexity.html</loc>
-    
-    <lastmod>2018-02-07T13:04:04.013Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/p_back/svm.html</loc>
-    
-    <lastmod>2018-02-07T13:04:04.013Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/p_back/knn.html</loc>
-    
-    <lastmod>2018-02-07T13:04:04.012Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/p_back/scrapy.html</loc>
-    
-    <lastmod>2018-02-07T13:04:04.009Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/p_back/fibonacci.html</loc>
-    
-    <lastmod>2018-02-07T13:04:04.009Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/p_back/gitlab-ci-and-runner.html</loc>
-    
-    <lastmod>2018-02-07T13:04:04.008Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/p_back/ID3.html</loc>
-    
-    <lastmod>2018-02-07T13:04:04.007Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://yoursite.com/p_back/nginx-pan-domain-name.html</loc>
-    
-    <lastmod>2018-02-07T13:04:04.007Z</lastmod>
-    
-  </url>
-  
-  <url>
     <loc>http://yoursite.com/2018/02/07/nginx-pan-domain-name/</loc>
     
-    <lastmod>2018-02-07T12:35:15.747Z</lastmod>
+    <lastmod>2018-02-08T02:15:21.960Z</lastmod>
     
   </url>
   
@@ -114,7 +30,7 @@
   </url>
   
   <url>
-    <loc>http://yoursite.com/2017/09/08/pypi_server/</loc>
+    <loc>http://yoursite.com/2017/09/08/pypi-server/</loc>
     
     <lastmod>2017-09-10T15:02:03.000Z</lastmod>
     
