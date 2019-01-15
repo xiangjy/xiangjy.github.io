@@ -40,18 +40,17 @@
             <!-- Define author's picture -->
 
 
-    
-
-<header id="header" data-behavior="2">
+<header id="header" data-behavior="1">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
     <h1 class="header-title">
         <a class="header-title-link" href="/ ">Xiangjy&#39;s Blog</a>
     </h1>
     
         
-            <a  class="header-right-picture "
-                href="#about">
+            <a class="header-right-icon st-search-show-outputs" href="#search">
         
+        
+            <i class="fa fa-lg fa-search"></i>
         
         </a>
     
@@ -60,41 +59,32 @@
             <!-- Define author's picture -->
 
 
-<nav id="sidebar" data-behavior="2">
+<nav id="sidebar" data-behavior="1">
     
     
         <ul class="sidebar-buttons">
         
             <li class="sidebar-button">
                 
-                    <a  class="sidebar-button-link "
-                         href="/ "
-                        
-                    >
+                    <a class="sidebar-button-link " href="/ ">
                 
                     <i class="sidebar-button-icon fa fa-lg fa-home"></i>
-                    <span class="sidebar-button-desc">Accueil</span>
+                    <span class="sidebar-button-desc">Início</span>
                 </a>
         </li>
         
             <li class="sidebar-button">
                 
-                    <a  class="sidebar-button-link "
-                         href="/all-categories"
-                        
-                    >
+                    <a class="sidebar-button-link " href="/all-categories">
                 
                     <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
-                    <span class="sidebar-button-desc">Categories</span>
+                    <span class="sidebar-button-desc">Categorias</span>
                 </a>
         </li>
         
             <li class="sidebar-button">
                 
-                    <a  class="sidebar-button-link "
-                         href="/all-tags"
-                        
-                    >
+                    <a class="sidebar-button-link " href="/all-tags">
                 
                     <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
                     <span class="sidebar-button-desc">Tags</span>
@@ -103,37 +93,28 @@
         
             <li class="sidebar-button">
                 
-                    <a  class="sidebar-button-link "
-                         href="/all-archives"
-                        
-                    >
+                    <a class="sidebar-button-link " href="/all-archives">
                 
                     <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
-                    <span class="sidebar-button-desc">Archive</span>
+                    <span class="sidebar-button-desc">Arquivo</span>
                 </a>
         </li>
         
             <li class="sidebar-button">
                 
-                    <a  class="sidebar-button-link st-search-show-outputs"
-                         href="#search"
-                        
-                    >
+                    <a class="sidebar-button-link st-search-show-outputs" href="#search">
                 
                     <i class="sidebar-button-icon fa fa-lg fa-search"></i>
-                    <span class="sidebar-button-desc">Rechercher</span>
+                    <span class="sidebar-button-desc">Pesquisar</span>
                 </a>
         </li>
         
             <li class="sidebar-button">
                 
-                    <a  class="sidebar-button-link "
-                         href="#about"
-                        
-                    >
+                    <a class="sidebar-button-link " href="#about">
                 
                     <i class="sidebar-button-icon fa fa-lg fa-question"></i>
-                    <span class="sidebar-button-desc">À propos</span>
+                    <span class="sidebar-button-desc">Sobre</span>
                 </a>
         </li>
         
@@ -147,10 +128,7 @@
         
             <li class="sidebar-button">
                 
-                    <a  class="sidebar-button-link "
-                         href="/atom.xml"
-                        
-                    >
+                    <a class="sidebar-button-link " href="/atom.xml">
                 
                     <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
                     <span class="sidebar-button-desc">RSS</span>
@@ -162,7 +140,7 @@
 </nav>
 
             
-            <div id="main" data-behavior="2"
+            <div id="main" data-behavior="1"
                  class="
                         hasCoverMetaIn
                         ">
@@ -172,7 +150,7 @@
 <section class="postShorten-group main-content-wrap">
     
     
-    <article class="postShorten postShorten--thumbnailimg-bottom" itemscope itemType="http://schema.org/BlogPosting">
+    <article class="postShorten postShorten--thumbnailimg-bottom" itemscope="" itemtype="http://schema.org/BlogPosting">
         <div class="postShorten-wrap">
             <div class="postShorten-header">
                 <h1 class="postShorten-title" itemprop="headline">
@@ -185,7 +163,7 @@
                 <div class="postShorten-meta">
     <time itemprop="datePublished" content="Fri Sep 08 2017 17:26:17 GMT+0800">
 	
-		    08 Sep 2017
+		    08/09/2017
     	
     </time>
     
@@ -194,12 +172,12 @@
             
             
                 <div class="postShorten-content" itemprop="articleBody">
-                    <h3 id="1-使用docker运行gitlab-runner"><a href="#1-使用docker运行gitlab-runner" class="headerlink" title="1.使用docker运行gitlab-runner"></a>1.使用docker运行gitlab-runner</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">gitlab-runner:</div><div class="line">    container_name: gitlab-runner</div><div class="line">    image: gitlab/gitlab-runner:latest</div><div class="line">    restart: always</div><div class="line">    volumes:</div><div class="line">        - /etc/localtime:/etc/localtime</div><div class="line">        - /home/data/docker/gitlab-runner/home/.pypirc:/root/.pypirc</div><div class="line">        - /var/run/docker.sock:/var/run/docker.sock</div><div class="line">        - /home/data/docker/gitlab-runner/config:/etc/gitlab-runner</div><div class="line">    command: [run, --working-directory=/home/gitlab-runner]</div><div class="line">    dns:</div><div class="line">        - 192.168.0.100</div></pre></td></tr></table></figure>
-<h3 id="2-进入docker"><a href="#2-进入docker" class="headerlink" title="2.进入docker"></a>2.进入docker</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">sudo docker exec -it gitlab-runner bash</div></pre></td></tr></table></figure>
-<h3 id="3-执行gitlab-runner或gitlab-ci-multi-runner-reigster"><a href="#3-执行gitlab-runner或gitlab-ci-multi-runner-reigster" class="headerlink" title="3.执行gitlab-runner或gitlab-ci-multi-runner reigster"></a>3.执行gitlab-runner或gitlab-ci-multi-runner reigster</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">$ sudo gitlab-runner register</div><div class="line"></div><div class="line">Please enter the gitlab-ci coordinator URL (e.g. https://gitlab.com )</div><div class="line">## 输入gitlab地址</div><div class="line">Please enter the gitlab-ci token for this runner</div><div class="line">## gitlab的token(在gitlab的Admin Area中) 或者仓库的token(仓库-&gt;设置-&gt;Runner)</div><div class="line">Please enter the gitlab-ci description for this runner</div><div class="line">## Runner描述信息</div><div class="line">Please enter the gitlab-ci tags for this runner (comma separated):</div><div class="line">## Runner的标签 可以指定仓库，之后在.gitlab-ci.yml中配置相对应tags </div><div class="line">Please enter the executor: parallels, shell, ssh, virtualbox, docker+machine, docker-ssh+machine, docker, docker-ssh, kubernetes:</div><div class="line">docker  ## 执行类型 </div><div class="line">Please enter the Docker image (eg. ruby:2.1):</div><div class="line">build-image  ## 编译环境的镜像</div><div class="line">Runner registered successfully. Feel free to start it, but if it&apos;s running already the config should be automatically reloaded!</div></pre></td></tr></table></figure>
-<p>注册runner执行类型有多种方式，具体参考：<a href="https://docs.gitlab.com/ce/ci/docker/using_docker_build.html" target="_blank" rel="external">Using Docker Build</a></p>
-<h3 id="4-查看已经注册的runner"><a href="#4-查看已经注册的runner" class="headerlink" title="4.查看已经注册的runner"></a>4.查看已经注册的runner</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">gitlab-runner list</div><div class="line">Listing configured runners                          ConfigFile=/mypath/.gitlab-runner/config.toml</div></pre></td></tr></table></figure>
-<h3 id="5-配置-gitlab-ci-yml"><a href="#5-配置-gitlab-ci-yml" class="headerlink" title="5.配置.gitlab-ci.yml"></a>5.配置.gitlab-ci.yml</h3><p>详情参考：<a href="https://docs.gitlab.com/ce/ci/yaml/README.html" target="_blank" rel="external">gitlab-ci说明文档</a></p>
+                    <h3 id="1-使用docker运行gitlab-runner"><a href="#1-使用docker运行gitlab-runner" class="headerlink" title="1.使用docker运行gitlab-runner"></a>1.使用docker运行gitlab-runner</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">gitlab-runner:</span><br><span class="line">    container_name: gitlab-runner</span><br><span class="line">    image: gitlab/gitlab-runner:latest</span><br><span class="line">    restart: always</span><br><span class="line">    volumes:</span><br><span class="line">        - /etc/localtime:/etc/localtime</span><br><span class="line">        - /home/data/docker/gitlab-runner/home/.pypirc:/root/.pypirc</span><br><span class="line">        - /var/run/docker.sock:/var/run/docker.sock</span><br><span class="line">        - /home/data/docker/gitlab-runner/config:/etc/gitlab-runner</span><br><span class="line">    command: [run, --working-directory=/home/gitlab-runner]</span><br><span class="line">    dns:</span><br><span class="line">        - 192.168.0.100</span><br></pre></td></tr></table></figure>
+<h3 id="2-进入docker"><a href="#2-进入docker" class="headerlink" title="2.进入docker"></a>2.进入docker</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker exec -it gitlab-runner bash</span><br></pre></td></tr></table></figure>
+<h3 id="3-执行gitlab-runner或gitlab-ci-multi-runner-reigster"><a href="#3-执行gitlab-runner或gitlab-ci-multi-runner-reigster" class="headerlink" title="3.执行gitlab-runner或gitlab-ci-multi-runner reigster"></a>3.执行gitlab-runner或gitlab-ci-multi-runner reigster</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$ sudo gitlab-runner register</span><br><span class="line"></span><br><span class="line">Please enter the gitlab-ci coordinator URL (e.g. https://gitlab.com )</span><br><span class="line">## 输入gitlab地址</span><br><span class="line">Please enter the gitlab-ci token for this runner</span><br><span class="line">## gitlab的token(在gitlab的Admin Area中) 或者仓库的token(仓库-&gt;设置-&gt;Runner)</span><br><span class="line">Please enter the gitlab-ci description for this runner</span><br><span class="line">## Runner描述信息</span><br><span class="line">Please enter the gitlab-ci tags for this runner (comma separated):</span><br><span class="line">## Runner的标签 可以指定仓库，之后在.gitlab-ci.yml中配置相对应tags </span><br><span class="line">Please enter the executor: parallels, shell, ssh, virtualbox, docker+machine, docker-ssh+machine, docker, docker-ssh, kubernetes:</span><br><span class="line">docker  ## 执行类型 </span><br><span class="line">Please enter the Docker image (eg. ruby:2.1):</span><br><span class="line">build-image  ## 编译环境的镜像</span><br><span class="line">Runner registered successfully. Feel free to start it, but if it&apos;s running already the config should be automatically reloaded!</span><br></pre></td></tr></table></figure>
+<p>注册runner执行类型有多种方式，具体参考：<a href="https://docs.gitlab.com/ce/ci/docker/using_docker_build.html" target="_blank" rel="noopener">Using Docker Build</a></p>
+<h3 id="4-查看已经注册的runner"><a href="#4-查看已经注册的runner" class="headerlink" title="4.查看已经注册的runner"></a>4.查看已经注册的runner</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gitlab-runner list</span><br><span class="line">Listing configured runners                          ConfigFile=/mypath/.gitlab-runner/config.toml</span><br></pre></td></tr></table></figure>
+<h3 id="5-配置-gitlab-ci-yml"><a href="#5-配置-gitlab-ci-yml" class="headerlink" title="5.配置.gitlab-ci.yml"></a>5.配置.gitlab-ci.yml</h3><p>详情参考：<a href="https://docs.gitlab.com/ce/ci/yaml/README.html" target="_blank" rel="noopener">gitlab-ci说明文档</a></p>
 
                     
                         
@@ -208,7 +186,7 @@
                     
                         <p>
                             <a href="/2017/09/08/gitlib-runner/#post-footer" class="postShorten-excerpt_link link">
-                                Commenter et partager
+                                Comentar e compartilhar
                             </a>
                         </p>
                     
@@ -222,7 +200,7 @@
     <ul class="pagination">
         
         
-        <li class="pagination-number">page sur</li>
+        <li class="pagination-number">página 1 de 1</li>
     </ul>
 </div>
 
@@ -255,7 +233,7 @@
         
             <h5 id="about-card-job">
                 <i class="fa fa-briefcase"></i>
-                <br/>
+                <br>
                 <p>author.job</p>
 
             </h5>
