@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://yoursite.com/2018/09/04/data-structures&algorithms/</loc>
+    
+    <lastmod>2018-09-04T05:45:28.656Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://yoursite.com/2018/02/07/nginx-pan-domain-name/</loc>
     
     <lastmod>2018-02-08T02:15:21.960Z</lastmod>

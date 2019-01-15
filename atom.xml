@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://yoursite.com/"/>
-  <updated>2018-02-08T02:15:21.960Z</updated>
+  <updated>2018-09-04T05:45:28.656Z</updated>
   <id>http://yoursite.com/</id>
   
   <author>
@@ -15,6 +15,24 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title>data structures &amp; algorithms</title>
+    <link href="http://yoursite.com/2018/09/04/data-structures&amp;algorithms/"/>
+    <id>http://yoursite.com/2018/09/04/data-structures&amp;algorithms/</id>
+    <published>2018-09-04T05:44:00.000Z</published>
+    <updated>2018-09-04T05:45:28.656Z</updated>
+    
+    <summary type="html">
+    
+    </summary>
+    
+    
+      <category term="算法" scheme="http://yoursite.com/tags/%E7%AE%97%E6%B3%95/"/>
+    
+      <category term="数据结构" scheme="http://yoursite.com/tags/%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/"/>
+    
+  </entry>
   
   <entry>
     <title>Nginx进行泛域名解析</title>
