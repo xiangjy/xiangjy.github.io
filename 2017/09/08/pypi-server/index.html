@@ -3,7 +3,7 @@
 <html lang="zh-Hans">
     
 <head>
-    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Xiangjy&#39;s Blog">
     <title>pypi私有服务器 - Xiangjy&#39;s Blog</title>
@@ -13,7 +13,6 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"pypi-server搭建pypi官方说明1.基础安装和启动12345$ pip install pypiserver$ mkdir ~/pypi/packages# copy some source packages or eggs to this directory$ pypi-server -p 3141 ~/pypi/packages$ pip install -i http://localhost:8001/simple/ ...\n2.添加上传密码123$ pip install passlib$ apt-get install apache2-utils     # Mac OS不用安装$ htpasswd -sc ~/pypi/.htaccess user   # 回车后会提示输入密码，输入123\n3.启动pypi server时加载密钥文件1pypi-server -p 3141 -P ~/pypi/.htaccess ./packages\n4.在用户根目录下创建.pypirc文件12345678[distutils]index-servers =  privatepypi[privatepypi]repository:http://127.0.0.1:3141username:userpassword:123\n5.上传package1python setup.py sdist upload -r privatepypi\n6.下载package1$ pip install -i http://localhost:3134/simple/ package-name\n7.setup.py文件示例1234567891011121314151617181920212223242526272829303132333435363738394041424344import sysimport importlibfrom setuptools import setup, find_packagesPROJECT = &apos;libs&apos;requires = []# 读取requirements.txt文件，获得需要安装基础包with open(&apos;requirements.txt&apos;) as f:    for line in f.readlines():        requires.append(line.strip())# 打包时替换version.py文件if sys.argv[1] == &apos;sdist&apos;:    version_py = importlib.import_module(&apos;&#123;project&#125;.version&apos;.format(project=PROJECT))    version_py.update_version_file(&apos;&#123;project&#125;/version.py&apos;.format(project=PROJECT))# reload version模块，确保在替换version.py文件后获得最新的version号version = reload(importlib.import_module(&apos;&#123;pro&#125;.version&apos;.format(pro=PROJECT))).get_version()with open(&apos;README.md&apos;, &apos;r&apos;) as f:    readme = f.read()setup(    name=&apos;libs&apos;,    version=version,    description=&apos;libs is the common lib for Django project&apos;,    long_description=readme,    author=&apos;xxx&apos;,    author_email=&apos;xxx@gmail.com&apos;,    url=&apos;&apos;,    packages=find_packages(),    include_package_data=True,    install_requires=requires,    test_suite=&apos;nose.collector&apos;,    license=&apos;All rights reserved by xxx.&apos;,    zip_safe=False,    classifiers=(        &apos;Development Status :: 5 - Production/Stable&apos;,        &apos;Intended Audience :: Developers&apos;,        &apos;Natural Language :: English&apos;,        &apos;Programming Language :: Python&apos;,        &apos;Programming Language :: Python :: 2.7&apos;,    ),)\nsetup.py官方文档使用supervisor管理pypi-server1.生成run-pypi.sh文件，supervisor执行命令文件1234#!/bin/sh# 启动virtualenv. ~/pypi/pypienv/bin/activateexec pypi-server -p 3141 ~/pypi/packages\n2.生成supervisor配置文件，/etc/supervisor/conf.d/pypi-server.conf123456[program:pypi-server]  directory=~/pypi/  command=sh run-pypi.sh  autostart=true  autorestart=true  redirect_stderr=true\n3.启动和停止supervisor12$ sudo /etc/init.d/supervisor start$ sudo /etc/init.d/supervisor stop\n公有云pypi1.将包的相关信息, 根据PyPI账户的注册信息, 在PyPI主页上注册。1$ python setup.py register -r pypi\n2.将包的源代码内容打包上传。1$ python setup.py sdist upload -r pypi\n","dateCreated":"2017-09-08T18:57:18+08:00","dateModified":"2017-09-10T23:02:03+08:00","datePublished":"2017-09-08T18:57:18+08:00","description":"","headline":"pypi私有服务器","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2017/09/08/pypi-server/"},"publisher":{"@type":"Organization","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"http://yoursite.com/2017/09/08/pypi-server/"}</script>
     <meta name="description" content="pypi-server搭建pypi官方说明1.基础安装和启动12345$ pip install pypiserver$ mkdir ~/pypi/packages# copy some source packages or eggs to this directory$ pypi-server -p 3141 ~/pypi/packages$ pip install -i http://loca">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="pypi私有服务器">
@@ -34,13 +33,9 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/all.css">
-    <link rel="stylesheet" href="/assets/css/jquery.fancybox.css">
-    <link rel="stylesheet" href="/assets/css/thumbs.css">
-    <link rel="stylesheet" href="/assets/css/tranquilpeak.css">
+    <link rel="stylesheet" href="/assets/css/style-ejlztp1tasruqfvoz6xmgqng0anzae8ox7cqjj5yibieqgcmhe9fwxfae6zj.min.css">
     <!--STYLES END--><!-- hexo-inject:begin --><!-- hexo-inject:end -->
     
-
     
 </head>
 
@@ -53,9 +48,9 @@
 
 <header id="header" data-behavior="4">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
-    <div class="header-title">
+    <h1 class="header-title">
         <a class="header-title-link" href="/ ">Xiangjy&#39;s Blog</a>
-    </div>
+    </h1>
     
         
             <a  class="header-right-picture "
@@ -70,179 +65,104 @@
 
 
 <nav id="sidebar" data-behavior="4">
-    <div class="sidebar-container">
+    
+    
+        <ul class="sidebar-buttons">
         
+            <li class="sidebar-button">
+                
+                    <a  class="sidebar-button-link "
+                         href="/ "
+                        
+                    >
+                
+                    <i class="sidebar-button-icon fa fa-lg fa-home"></i>
+                    <span class="sidebar-button-desc">Accueil</span>
+                </a>
+        </li>
         
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/ "
-                            
-                            title="Home"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Home</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/all-categories"
-                            
-                            title="Kategorien"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Kategorien</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/all-tags"
-                            
-                            title="Tags"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Tags</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/all-archives"
-                            
-                            title="Archiv"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Archiv</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link open-algolia-search"
-                             href="#search"
-                            
-                            title="Suche"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Suche</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="#about"
-                            
-                            title="Über"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Über</span>
-                    </a>
-            </li>
-            
-        </ul>
+            <li class="sidebar-button">
+                
+                    <a  class="sidebar-button-link "
+                         href="/all-categories"
+                        
+                    >
+                
+                    <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
+                    <span class="sidebar-button-desc">Categories</span>
+                </a>
+        </li>
         
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://github.com/" target="_blank" rel="noopener" title="GitHub">
-                    
-                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">GitHub</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="http://stackoverflow.com/users" target="_blank" rel="noopener" title="Stack Overflow">
-                    
-                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Stack Overflow</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://twitter.com/" target="_blank" rel="noopener" title="Twitter">
-                    
-                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Twitter</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://facebook.com/" target="_blank" rel="noopener" title="Facebook">
-                    
-                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Facebook</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://plus.google.com/" target="_blank" rel="noopener" title="Google Plus">
-                    
-                        <i class="sidebar-button-icon fab fa-google-plus" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">Google Plus</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link " href="https://www.linkedin.com/profile/" target="_blank" rel="noopener" title="LinkedIn">
-                    
-                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">LinkedIn</span>
-                    </a>
-            </li>
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/mailto"
-                            title="E-Mail"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">E-Mail</span>
-                    </a>
-            </li>
-            
-        </ul>
+            <li class="sidebar-button">
+                
+                    <a  class="sidebar-button-link "
+                         href="/all-tags"
+                        
+                    >
+                
+                    <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
+                    <span class="sidebar-button-desc">Tags</span>
+                </a>
+        </li>
         
-            <ul class="sidebar-buttons">
-            
-                <li class="sidebar-button">
-                    
-                        <a  class="sidebar-button-link "
-                             href="/atom.xml"
-                            
-                            title="RSS"
-                        >
-                    
-                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
-                        <span class="sidebar-button-desc">RSS</span>
-                    </a>
-            </li>
-            
-        </ul>
+            <li class="sidebar-button">
+                
+                    <a  class="sidebar-button-link "
+                         href="/all-archives"
+                        
+                    >
+                
+                    <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
+                    <span class="sidebar-button-desc">Archive</span>
+                </a>
+        </li>
         
-    </div>
+            <li class="sidebar-button">
+                
+                    <a  class="sidebar-button-link st-search-show-outputs"
+                         href="#search"
+                        
+                    >
+                
+                    <i class="sidebar-button-icon fa fa-lg fa-search"></i>
+                    <span class="sidebar-button-desc">Rechercher</span>
+                </a>
+        </li>
+        
+            <li class="sidebar-button">
+                
+                    <a  class="sidebar-button-link "
+                         href="#about"
+                        
+                    >
+                
+                    <i class="sidebar-button-icon fa fa-lg fa-question"></i>
+                    <span class="sidebar-button-desc">À propos</span>
+                </a>
+        </li>
+        
+    </ul>
+    
+        <ul class="sidebar-buttons">
+        
+    </ul>
+    
+        <ul class="sidebar-buttons">
+        
+            <li class="sidebar-button">
+                
+                    <a  class="sidebar-button-link "
+                         href="/atom.xml"
+                        
+                    >
+                
+                    <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
+                    <span class="sidebar-button-desc">RSS</span>
+                </a>
+        </li>
+        
+    </ul>
+    
 </nav>
 
             
@@ -251,30 +171,26 @@
                         hasCoverMetaIn
                         ">
                 
-<article class="post">
+<article class="post" itemscope itemType="http://schema.org/BlogPosting">
     
     
         <div class="post-header main-content-wrap text-left">
     
-        <h1 class="post-title">
+        <h1 class="post-title" itemprop="headline">
             pypi私有服务器
         </h1>
     
-    
-        <div class="post-meta">
-    <time datetime="2017-09-08T18:57:18+08:00">
+    <div class="post-meta">
+    <time itemprop="datePublished" content="Fri Sep 08 2017 18:57:18 GMT+0800">
 	
 		    08 Sep 2017
     	
     </time>
     
 </div>
-
-    
 </div>
-
     
-    <div class="post-content markdown">
+    <div class="post-content markdown" itemprop="articleBody">
         <div class="main-content-wrap">
             <h2 id="pypi-server搭建"><a href="#pypi-server搭建" class="headerlink" title="pypi-server搭建"></a>pypi-server搭建</h2><h3 id="pypi官方说明"><a href="#pypi官方说明" class="headerlink" title="pypi官方说明"></a><a href="http://wiki.python.org/moin/PyPiImplementations" target="_blank" rel="external">pypi官方说明</a></h3><h3 id="1-基础安装和启动"><a href="#1-基础安装和启动" class="headerlink" title="1.基础安装和启动"></a>1.基础安装和启动</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">$ pip install pypiserver</div><div class="line">$ mkdir ~/pypi/packages</div><div class="line"># copy some source packages or eggs to this directory</div><div class="line">$ pypi-server -p 3141 ~/pypi/packages</div><div class="line">$ pip install -i http://localhost:8001/simple/ ...</div></pre></td></tr></table></figure>
 <h3 id="2-添加上传密码"><a href="#2-添加上传密码" class="headerlink" title="2.添加上传密码"></a>2.添加上传密码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">$ pip install passlib</div><div class="line">$ apt-get install apache2-utils     # Mac OS不用安装</div><div class="line">$ htpasswd -sc ~/pypi/.htaccess user   # 回车后会提示输入密码，输入123</div></pre></td></tr></table></figure>
@@ -290,81 +206,67 @@
 <h3 id="2-将包的源代码内容打包上传。"><a href="#2-将包的源代码内容打包上传。" class="headerlink" title="2.将包的源代码内容打包上传。"></a>2.将包的源代码内容打包上传。</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ python setup.py sdist upload -r pypi</div></pre></td></tr></table></figure>
 
             
+                
 
+            
         </div>
     </div>
     <div id="post-footer" class="post-footer main-content-wrap">
         
-        
-            <div class="post-actions-wrap">
+        <div class="post-actions-wrap">
     <nav>
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/09/12/scrapy/" data-tooltip="scrapy" aria-label="FRÜHER: scrapy">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/09/12/scrapy/"  data-tooltip="scrapy">
                 
-                    <i class="fa fa-angle-left" aria-hidden="true"></i>
-                    <span class="hide-xs hide-sm text-small icon-ml">FRÜHER</span>
+                    <i class="fa fa-angle-left"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PRÉCÉDENT</span>
                 </a>
             </li>
             <li class="post-action">
                 
-                    
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/09/08/gitlib-runner/" data-tooltip="gitlib-runner" aria-label="NÄCHSTER: gitlib-runner">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/09/08/gitlib-runner/" data-tooltip="gitlib-runner">
                 
-                    <span class="hide-xs hide-sm text-small icon-mr">NÄCHSTER</span>
-                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-mr">SUIVANT</span>
+                    <i class="fa fa-angle-right"></i>
                 </a>
             </li>
         </ul>
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Diesen Beitrag teilen">
-                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            <a class="post-action-btn btn btn--default btn-open-shareoptions"  href="#btn-open-shareoptions">
+                <i class="fa fa-share-alt"></i>
+            </a>
+        </li>
+        <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://yoursite.com/2017/09/08/pypi-server/">
+                <i class="fa fa-google-plus"></i>
+            </a>
+        </li>
+        <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2017/09/08/pypi-server/">
+                <i class="fa fa-facebook-official"></i>
+            </a>
+        </li>
+        <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2017/09/08/pypi-server/">
+                <i class="fa fa-twitter"></i>
             </a>
         </li>
         
-            
-            
-            <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2017/09/08/pypi-server/" title="Teilen auf Facebook">
-                    <i class="fab fa-facebook" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2017/09/08/pypi-server/" title="Teilen auf Twitter">
-                    <i class="fab fa-twitter" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://yoursite.com/2017/09/08/pypi-server/" title="Teilen auf Google Plus">
-                    <i class="fab fa-google-plus" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-        
-            
-        
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+                <a class="post-action-btn btn btn--default" href="#">
             
-                <i class="fa fa-list" aria-hidden="true"></i>
+                <i class="fa fa-list"></i>
             </a>
         </li>
     </ul>
 </div>
 
 
-        
         
             
         
@@ -387,63 +289,49 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/09/12/scrapy/" data-tooltip="scrapy" aria-label="FRÜHER: scrapy">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/09/12/scrapy/"  data-tooltip="scrapy">
                 
-                    <i class="fa fa-angle-left" aria-hidden="true"></i>
-                    <span class="hide-xs hide-sm text-small icon-ml">FRÜHER</span>
+                    <i class="fa fa-angle-left"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">PRÉCÉDENT</span>
                 </a>
             </li>
             <li class="post-action">
                 
-                    
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/09/08/gitlib-runner/" data-tooltip="gitlib-runner" aria-label="NÄCHSTER: gitlib-runner">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/09/08/gitlib-runner/" data-tooltip="gitlib-runner">
                 
-                    <span class="hide-xs hide-sm text-small icon-mr">NÄCHSTER</span>
-                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-mr">SUIVANT</span>
+                    <i class="fa fa-angle-right"></i>
                 </a>
             </li>
         </ul>
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Diesen Beitrag teilen">
-                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            <a class="post-action-btn btn btn--default btn-open-shareoptions"  href="#btn-open-shareoptions">
+                <i class="fa fa-share-alt"></i>
+            </a>
+        </li>
+        <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://yoursite.com/2017/09/08/pypi-server/">
+                <i class="fa fa-google-plus"></i>
+            </a>
+        </li>
+        <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2017/09/08/pypi-server/">
+                <i class="fa fa-facebook-official"></i>
+            </a>
+        </li>
+        <li class="post-action hide-xs">
+            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2017/09/08/pypi-server/">
+                <i class="fa fa-twitter"></i>
             </a>
         </li>
         
-            
-            
-            <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2017/09/08/pypi-server/" title="Teilen auf Facebook">
-                    <i class="fab fa-facebook" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2017/09/08/pypi-server/" title="Teilen auf Twitter">
-                    <i class="fab fa-twitter" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://yoursite.com/2017/09/08/pypi-server/" title="Teilen auf Google Plus">
-                    <i class="fab fa-google-plus" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-        
-            
-        
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+                <a class="post-action-btn btn btn--default" href="#">
             
-                <i class="fa fa-list" aria-hidden="true"></i>
+                <i class="fa fa-list"></i>
             </a>
         </li>
     </ul>
@@ -451,39 +339,26 @@
 
 
                 </div>
-                
-    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
-        <i id="btn-close-shareoptions" class="fa fa-times"></i>
-        <ul class="share-options">
-            
-                
-                
-                <li class="share-option">
-                    <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2017/09/08/pypi-server/">
-                        <i class="fab fa-facebook" aria-hidden="true"></i><span>Teilen auf Facebook</span>
-                    </a>
-                </li>
-            
-                
-                
-                <li class="share-option">
-                    <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2017/09/08/pypi-server/">
-                        <i class="fab fa-twitter" aria-hidden="true"></i><span>Teilen auf Twitter</span>
-                    </a>
-                </li>
-            
-                
-                
-                <li class="share-option">
-                    <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http://yoursite.com/2017/09/08/pypi-server/">
-                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>Teilen auf Google Plus</span>
-                    </a>
-                </li>
-            
-        </ul>
-    </div>
-
-
+                <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+    <ul class="share-options">
+        <li class="share-option">
+            <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http://yoursite.com/2017/09/08/pypi-server/">
+                <i class="fa fa-google-plus"></i><span class="">Partager sur Google Plus</span>
+            </a>
+        </li>
+        <li class="share-option">
+            <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2017/09/08/pypi-server/">
+                <i class="fa fa-facebook-official"></i><span>Partager sur Facebook</span>
+            </a>
+        </li>
+        <li class="share-option">
+            <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2017/09/08/pypi-server/">
+                <i class="fa fa-twitter"></i><span>Partager sur Twitter</span>
+            </a>
+        </li>
+    </ul>
+</div>
+<div id="share-options-mask" class="share-options-mask"></div>
             
         </div>
         
@@ -492,35 +367,28 @@
 <div id="about">
     <div id="about-card">
         <div id="about-btn-close">
-            <i class="fa fa-times"></i>
+            <i class="fa fa-remove"></i>
         </div>
         
             <h4 id="about-card-name">Xiangjy</h4>
         
-            <div id="about-card-bio"><p>author.bio</p>
-</div>
+            <h5 id="about-card-bio"><p>author.bio</p>
+</h5>
         
         
-            <div id="about-card-job">
+            <h5 id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br/>
                 <p>author.job</p>
 
-            </div>
+            </h5>
         
         
     </div>
 </div>
 
         
-        
-<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
-        <!--SCRIPTS-->
-<script src="/assets/js/jquery.js"></script>
-<script src="/assets/js/jquery.fancybox.js"></script>
-<script src="/assets/js/thumbs.js"></script>
-<script src="/assets/js/tranquilpeak.js"></script>
-<!--SCRIPTS END--><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
 <script type="text/x-mathjax-config">
   MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
 </script>
@@ -538,10 +406,13 @@
 </script>
 <!-- End: Injected MathJax -->
 <!-- hexo-inject:end -->
+    </body>
+    <!--SCRIPTS-->
+<script src="/assets/js/scrip-gfmrkxcl0qohe3cfdgxhzvc0yrceqta8i4iix0txvn8q4o2adlqd5n0jmkvt.min.js"></script>
+<!--SCRIPTS END-->
 
     
 
 
 
-    </body>
 </html>
