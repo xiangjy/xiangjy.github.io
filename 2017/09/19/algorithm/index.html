@@ -1,25 +1,28 @@
 
 <!DOCTYPE html>
-<html lang="zh-Hans">
+<html lang="zh-cn">
     
 <head>
-    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Xiangjy&#39;s Blog">
     <title>algorithm - Xiangjy&#39;s Blog</title>
     <meta name="author" content="Xiangjy">
     
     
+        <link rel="icon" href="http://yoursite.com/assets/images/uu.png">
+    
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"插入排序将后面的元素插入前面已经排序好的序列中循环每一个元素从第二个元素开始循环，逆序与前面每一个元素比较(默认前面元素已经是排序好的)，如果小于则交换[8, 7, 6, 5, 4, 3, 2, 1]先选出7，逆序循环与前面排序好的[8]比较，小于交换[7, 8, 6, 5, 4, 3, 2, 1]选出6，逆序循环与前面排序好的[7,8]比较，小于交换[7, 6, 8, 5, 4, 3, 2, 1][6, 7, 8, 5, 4, 3, 2, 1]一次类推\n希尔排序根据序列长度分组后，对每个组进行插入排序循环对数组分组，分完的组进行插入排序[8, 7, 6, 5, 4, 3, 2, 1]根据长度分组len(L)/2 = 4, gap = 4[L[0], L[0 + 4]], [L[1], L[1 + 4]…[8, 4], [7, 3], [6, 2], [5, 1] -&gt; [4, 8], [3, 7], [2, 6], [1, 5][4,3,2,1,8,7,6,5]gap /= 2[L[0], L[0 + 2], L[0 + 4], L[0 + 6]]…[4, 2, 8, 6] [3, 1, 7, 5] -&gt; [2, 4, 6, 8] [1, 3, 5, 7]gap /= 2[2, 1, 4, 3, 6, 5, 8, 7]gap /= 2[2, 1, 4, 3, 6, 5, 8, 7] -&gt; [1, 2, 3, 4, 5, 6, 7, 8]\n选择排序选择待排序子序列中最小值，最小值换到第一位置[8, 7, 6, 5, 4, 3, 2, 1][1, 7, 6, 5, 4, 3, 2, 8][1, 2, 6, 5, 4, 3, 7, 8][1, 2, 3, 5, 4, 6, 7, 8]…\n堆排序冒泡排序从第一个元素比较，将大的元素往后面移[8, 7, 6, 5, 4, 3, 2, 1][7, 8, 6, 5, 4, 3, 2, 1]…[7, 6, 5, 4, 3, 2, 1, 8]…\n","dateCreated":"2017-09-19T15:42:24+08:00","dateModified":"2017-09-19T15:42:56+08:00","datePublished":"2017-09-19T15:42:24+08:00","description":"","headline":"algorithm","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2017/09/19/algorithm/"},"publisher":{"@type":"Organization","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"http://yoursite.com/2017/09/19/algorithm/"}</script>
     <meta name="description" content="插入排序将后面的元素插入前面已经排序好的序列中循环每一个元素从第二个元素开始循环，逆序与前面每一个元素比较(默认前面元素已经是排序好的)，如果小于则交换[8, 7, 6, 5, 4, 3, 2, 1]先选出7，逆序循环与前面排序好的[8]比较，小于交换[7, 8, 6, 5, 4, 3, 2, 1]选出6，逆序循环与前面排序好的[7,8]比较，小于交换[7, 6, 8, 5, 4, 3, 2, 1">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="algorithm">
 <meta property="og:url" content="http://yoursite.com/2017/09/19/algorithm/index.html">
 <meta property="og:site_name" content="Xiangjy&#39;s Blog">
 <meta property="og:description" content="插入排序将后面的元素插入前面已经排序好的序列中循环每一个元素从第二个元素开始循环，逆序与前面每一个元素比较(默认前面元素已经是排序好的)，如果小于则交换[8, 7, 6, 5, 4, 3, 2, 1]先选出7，逆序循环与前面排序好的[8]比较，小于交换[7, 8, 6, 5, 4, 3, 2, 1]选出6，逆序循环与前面排序好的[7,8]比较，小于交换[7, 6, 8, 5, 4, 3, 2, 1">
-<meta property="og:locale" content="zh-Hans">
+<meta property="og:locale" content="zh-cn">
 <meta property="og:updated_time" content="2017-09-19T07:42:56.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="algorithm">
@@ -33,9 +36,10 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-ejlztp1tasruqfvoz6xmgqng0anzae8ox7cqjj5yibieqgcmhe9fwxfae6zj.min.css">
+    <link rel="stylesheet" href="/assets/css/style-c4ozcsklz4kht2pebhp44xorvyverh23toayhn7i6ubrpyedak24hv1v0hyd.min.css">
     <!--STYLES END--><!-- hexo-inject:begin --><!-- hexo-inject:end -->
     
+
     
 </head>
 
@@ -44,17 +48,17 @@
             <!-- Define author's picture -->
 
 
-<header id="header" data-behavior="3">
+    
+
+<header id="header" data-behavior="4">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
-    <h1 class="header-title">
+    <div class="header-title">
         <a class="header-title-link" href="/ ">Xiangjy&#39;s Blog</a>
-    </h1>
+    </div>
     
         
-            <a class="header-right-icon st-search-show-outputs" href="#search">
+            <a class="header-right-picture " href="#about">
         
-        
-            <i class="fa fa-lg fa-search"></i>
         
         </a>
     
@@ -63,112 +67,181 @@
             <!-- Define author's picture -->
 
 
-<nav id="sidebar" data-behavior="3">
-    
-    
-        <ul class="sidebar-buttons">
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
         
-            <li class="sidebar-button">
-                
-                    <a class="sidebar-button-link " href="/ ">
-                
-                    <i class="sidebar-button-icon fa fa-lg fa-home"></i>
-                    <span class="sidebar-button-desc">Accueil</span>
-                </a>
-        </li>
         
-            <li class="sidebar-button">
-                
-                    <a class="sidebar-button-link " href="/all-categories">
-                
-                    <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
-                    <span class="sidebar-button-desc">Categories</span>
-                </a>
-        </li>
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="/ " title="首页">
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">首页</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="/all-categories" title="分类">
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">分类</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="/all-tags" title="标签">
+                    
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">标签</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="/all-archives" title="归档">
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">归档</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link open-algolia-search" href="#search" title="搜索">
+                    
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">搜索</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="#about" title="关于">
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">关于</span>
+                    </a>
+            </li>
+            
+        </ul>
         
-            <li class="sidebar-button">
-                
-                    <a class="sidebar-button-link " href="/all-tags">
-                
-                    <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
-                    <span class="sidebar-button-desc">Tags</span>
-                </a>
-        </li>
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="https://github.com/" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="http://stackoverflow.com/users" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="https://twitter.com/" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="https://facebook.com/" target="_blank" rel="noopener" title="Facebook">
+                    
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="https://plus.google.com/" target="_blank" rel="noopener" title="Google Plus">
+                    
+                        <i class="sidebar-button-icon fab fa-google-plus" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Google Plus</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="https://www.linkedin.com/profile/" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="/mailto" title="邮箱">
+                    
+                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">邮箱</span>
+                    </a>
+            </li>
+            
+        </ul>
         
-            <li class="sidebar-button">
-                
-                    <a class="sidebar-button-link " href="/all-archives">
-                
-                    <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
-                    <span class="sidebar-button-desc">Archive</span>
-                </a>
-        </li>
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="/atom.xml" title="RSS">
+                    
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
         
-            <li class="sidebar-button">
-                
-                    <a class="sidebar-button-link st-search-show-outputs" href="#search">
-                
-                    <i class="sidebar-button-icon fa fa-lg fa-search"></i>
-                    <span class="sidebar-button-desc">Rechercher</span>
-                </a>
-        </li>
-        
-            <li class="sidebar-button">
-                
-                    <a class="sidebar-button-link " href="#about">
-                
-                    <i class="sidebar-button-icon fa fa-lg fa-question"></i>
-                    <span class="sidebar-button-desc">À propos</span>
-                </a>
-        </li>
-        
-    </ul>
-    
-        <ul class="sidebar-buttons">
-        
-    </ul>
-    
-        <ul class="sidebar-buttons">
-        
-            <li class="sidebar-button">
-                
-                    <a class="sidebar-button-link " href="/atom.xml">
-                
-                    <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
-                    <span class="sidebar-button-desc">RSS</span>
-                </a>
-        </li>
-        
-    </ul>
-    
+    </div>
 </nav>
 
             
-            <div id="main" data-behavior="3"
+            <div id="main" data-behavior="4"
                  class="
                         hasCoverMetaIn
                         ">
                 
-<article class="post" itemscope="" itemtype="http://schema.org/BlogPosting">
+<article class="post">
     
     
         <div class="post-header main-content-wrap text-left">
     
-        <h1 class="post-title" itemprop="headline">
+        <h1 class="post-title">
             algorithm
         </h1>
     
-    <div class="post-meta">
-    <time itemprop="datePublished" content="Tue Sep 19 2017 15:42:24 GMT+0800">
+    
+        <div class="post-meta">
+    <time datetime="2017-09-19T15:42:24+08:00">
 	
-		    19 Sep 2017
+		    9月 19, 2017
     	
     </time>
     
 </div>
-</div>
+
     
-    <div class="post-content markdown" itemprop="articleBody">
+</div>
+
+    
+    <div class="post-content markdown">
         <div class="main-content-wrap">
             <h4 id="插入排序"><a href="#插入排序" class="headerlink" title="插入排序"></a>插入排序</h4><p>将后面的元素插入前面已经排序好的序列中<br>循环每一个元素<br>从第二个元素开始循环，逆序与前面每一个元素比较(默认前面元素已经是排序好的)，如果小于则交换<br>[8, 7, 6, 5, 4, 3, 2, 1]<br>先选出7，逆序循环与前面排序好的[8]比较，小于交换<br>[7, 8, 6, 5, 4, 3, 2, 1]<br>选出6，逆序循环与前面排序好的[7,8]比较，小于交换<br>[7, 6, 8, 5, 4, 3, 2, 1]<br>[6, 7, 8, 5, 4, 3, 2, 1]<br>一次类推</p>
 <h4 id="希尔排序"><a href="#希尔排序" class="headerlink" title="希尔排序"></a>希尔排序</h4><p>根据序列长度分组后，对每个组进行插入排序<br>循环对数组分组，分完的组进行插入排序<br>[8, 7, 6, 5, 4, 3, 2, 1]<br>根据长度分组len(L)/2 = 4, gap = 4<br>[L[0], L[0 + 4]], [L[1], L[1 + 4]…<br>[8, 4], [7, 3], [6, 2], [5, 1] -&gt; [4, 8], [3, 7], [2, 6], [1, 5]<br>[4,3,2,1,8,7,6,5]<br>gap /= 2<br>[L[0], L[0 + 2], L[0 + 4], L[0 + 6]]…<br>[4, 2, 8, 6] [3, 1, 7, 5] -&gt; [2, 4, 6, 8] [1, 3, 5, 7]<br>gap /= 2<br>[2, 1, 4, 3, 6, 5, 8, 7]<br>gap /= 2<br>[2, 1, 4, 3, 6, 5, 8, 7] -&gt; [1, 2, 3, 4, 5, 6, 7, 8]</p>
@@ -176,67 +249,81 @@
 <h4 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h4><h4 id="冒泡排序"><a href="#冒泡排序" class="headerlink" title="冒泡排序"></a>冒泡排序</h4><p>从第一个元素比较，将大的元素往后面移<br>[8, 7, 6, 5, 4, 3, 2, 1]<br>[7, 8, 6, 5, 4, 3, 2, 1]…<br>[7, 6, 5, 4, 3, 2, 1, 8]…</p>
 
             
-                
 
-            
         </div>
     </div>
     <div id="post-footer" class="post-footer main-content-wrap">
         
-        <div class="post-actions-wrap">
+        
+            <div class="post-actions-wrap">
     <nav>
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/02/07/nginx-pan-domain-name/" data-tooltip="Nginx进行泛域名解析">
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/02/07/nginx-pan-domain-name/" data-tooltip="Nginx进行泛域名解析" aria-label="上一篇: Nginx进行泛域名解析">
                 
-                    <i class="fa fa-angle-left"></i>
-                    <span class="hide-xs hide-sm text-small icon-ml">PRÉCÉDENT</span>
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
                 </a>
             </li>
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/09/12/scrapy/" data-tooltip="scrapy">
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/09/12/scrapy/" data-tooltip="scrapy" aria-label="下一篇: scrapy">
                 
-                    <span class="hide-xs hide-sm text-small icon-mr">SUIVANT</span>
-                    <i class="fa fa-angle-right"></i>
+                    <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
                 </a>
             </li>
         </ul>
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
-                <i class="fa fa-share-alt"></i>
-            </a>
-        </li>
-        <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://yoursite.com/2017/09/19/algorithm/">
-                <i class="fa fa-google-plus"></i>
-            </a>
-        </li>
-        <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2017/09/19/algorithm/">
-                <i class="fa fa-facebook-official"></i>
-            </a>
-        </li>
-        <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2017/09/19/algorithm/">
-                <i class="fa fa-twitter"></i>
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Diesen Beitrag teilen">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
         </li>
         
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2017/09/19/algorithm/" title="分享到 Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2017/09/19/algorithm/" title="分享到 Twitter">
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://yoursite.com/2017/09/19/algorithm/" title="分享到 Google+">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
-                <i class="fa fa-list"></i>
+                <i class="fa fa-list" aria-hidden="true"></i>
             </a>
         </li>
     </ul>
 </div>
 
 
+        
         
             
         
@@ -253,55 +340,69 @@
 
             </div>
             
-                <div id="bottom-bar" class="post-bottom-bar" data-behavior="3">
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
                     <div class="post-actions-wrap">
     <nav>
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/02/07/nginx-pan-domain-name/" data-tooltip="Nginx进行泛域名解析">
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/02/07/nginx-pan-domain-name/" data-tooltip="Nginx进行泛域名解析" aria-label="上一篇: Nginx进行泛域名解析">
                 
-                    <i class="fa fa-angle-left"></i>
-                    <span class="hide-xs hide-sm text-small icon-ml">PRÉCÉDENT</span>
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
                 </a>
             </li>
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/09/12/scrapy/" data-tooltip="scrapy">
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/09/12/scrapy/" data-tooltip="scrapy" aria-label="下一篇: scrapy">
                 
-                    <span class="hide-xs hide-sm text-small icon-mr">SUIVANT</span>
-                    <i class="fa fa-angle-right"></i>
+                    <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
                 </a>
             </li>
         </ul>
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
-                <i class="fa fa-share-alt"></i>
-            </a>
-        </li>
-        <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://yoursite.com/2017/09/19/algorithm/">
-                <i class="fa fa-google-plus"></i>
-            </a>
-        </li>
-        <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2017/09/19/algorithm/">
-                <i class="fa fa-facebook-official"></i>
-            </a>
-        </li>
-        <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2017/09/19/algorithm/">
-                <i class="fa fa-twitter"></i>
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Diesen Beitrag teilen">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
         </li>
         
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2017/09/19/algorithm/" title="分享到 Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2017/09/19/algorithm/" title="分享到 Twitter">
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://yoursite.com/2017/09/19/algorithm/" title="分享到 Google+">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
-                <i class="fa fa-list"></i>
+                <i class="fa fa-list" aria-hidden="true"></i>
             </a>
         </li>
     </ul>
@@ -309,26 +410,39 @@
 
 
                 </div>
-                <div id="share-options-bar" class="share-options-bar" data-behavior="3">
-    <ul class="share-options">
-        <li class="share-option">
-            <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http://yoursite.com/2017/09/19/algorithm/">
-                <i class="fa fa-google-plus"></i><span class="">Partager sur Google Plus</span>
-            </a>
-        </li>
-        <li class="share-option">
-            <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2017/09/19/algorithm/">
-                <i class="fa fa-facebook-official"></i><span>Partager sur Facebook</span>
-            </a>
-        </li>
-        <li class="share-option">
-            <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2017/09/19/algorithm/">
-                <i class="fa fa-twitter"></i><span>Partager sur Twitter</span>
-            </a>
-        </li>
-    </ul>
-</div>
-<div id="share-options-mask" class="share-options-mask"></div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2017/09/19/algorithm/">
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2017/09/19/algorithm/">
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http://yoursite.com/2017/09/19/algorithm/">
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>分享到 Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
             
         </div>
         
@@ -337,35 +451,36 @@
 <div id="about">
     <div id="about-card">
         <div id="about-btn-close">
-            <i class="fa fa-remove"></i>
+            <i class="fa fa-times"></i>
         </div>
         
             <h4 id="about-card-name">Xiangjy</h4>
         
-            <h5 id="about-card-bio"><p>author.bio</p>
-</h5>
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
         
         
-            <h5 id="about-card-job">
+            <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br>
                 <p>author.job</p>
 
-            </h5>
+            </div>
         
         
     </div>
 </div>
 
         
-<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-    </body>
-    <!--SCRIPTS-->
-<script src="/assets/js/scrip-gfmrkxcl0qohe3cfdgxhzvc0yrceqta8i4iix0txvn8q4o2adlqd5n0jmkvt.min.js"></script>
-<!--SCRIPTS END-->
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-dbd16rvloemmuxdzniplmnxxvwoz24eya9wol0b7vvmlokgqsjivmb8dnscy.min.js"></script>
+<!--SCRIPTS END--><!-- hexo-inject:begin --><!-- hexo-inject:end -->
 
     
 
 
 
+    </body>
 </html>

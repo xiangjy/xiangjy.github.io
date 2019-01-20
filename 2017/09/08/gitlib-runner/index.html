@@ -1,18 +1,21 @@
 
 <!DOCTYPE html>
-<html lang="zh-Hans">
+<html lang="zh-cn">
     
 <head>
-    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta http-equiv="Content-Type" content="text/html" charset="UTF-8" >
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Xiangjy&#39;s Blog">
     <title>gitlib-runner - Xiangjy&#39;s Blog</title>
     <meta name="author" content="Xiangjy">
     
     
+        <link rel="icon" href="http://yoursite.com/assets/images/uu.png">
+    
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"1.使用docker运行gitlab-runner123456789101112gitlab-runner:    container_name: gitlab-runner    image: gitlab/gitlab-runner:latest    restart: always    volumes:        - /etc/localtime:/etc/localtime        - /home/data/docker/gitlab-runner/home/.pypirc:/root/.pypirc        - /var/run/docker.sock:/var/run/docker.sock        - /home/data/docker/gitlab-runner/config:/etc/gitlab-runner    command: [run, --working-directory=/home/gitlab-runner]    dns:        - 192.168.0.100\n2.进入docker1sudo docker exec -it gitlab-runner bash\n3.执行gitlab-runner或gitlab-ci-multi-runner reigster123456789101112131415$ sudo gitlab-runner registerPlease enter the gitlab-ci coordinator URL (e.g. https://gitlab.com )## 输入gitlab地址Please enter the gitlab-ci token for this runner## gitlab的token(在gitlab的Admin Area中) 或者仓库的token(仓库-&gt;设置-&gt;Runner)Please enter the gitlab-ci description for this runner## Runner描述信息Please enter the gitlab-ci tags for this runner (comma separated):## Runner的标签 可以指定仓库，之后在.gitlab-ci.yml中配置相对应tags Please enter the executor: parallels, shell, ssh, virtualbox, docker+machine, docker-ssh+machine, docker, docker-ssh, kubernetes:docker  ## 执行类型 Please enter the Docker image (eg. ruby:2.1):build-image  ## 编译环境的镜像Runner registered successfully. Feel free to start it, but if it&apos;s running already the config should be automatically reloaded!\n注册runner执行类型有多种方式，具体参考：Using Docker Build\n4.查看已经注册的runner12gitlab-runner listListing configured runners                          ConfigFile=/mypath/.gitlab-runner/config.toml\n5.配置.gitlab-ci.yml详情参考：gitlab-ci说明文档\n","dateCreated":"2017-09-08T17:26:17+08:00","dateModified":"2017-09-08T18:55:29+08:00","datePublished":"2017-09-08T17:26:17+08:00","description":"","headline":"gitlib-runner","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2017/09/08/gitlib-runner/"},"publisher":{"@type":"Organization","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"http://yoursite.com/2017/09/08/gitlib-runner/","keywords":"持续集成"}</script>
     <meta name="description" content="1.使用docker运行gitlab-runner123456789101112gitlab-runner:    container_name: gitlab-runner    image: gitlab/gitlab-runner:latest    restart: always    volumes:        - /etc/localtime:/etc/localtime">
 <meta name="keywords" content="持续集成">
 <meta property="og:type" content="blog">
@@ -20,7 +23,7 @@
 <meta property="og:url" content="http://yoursite.com/2017/09/08/gitlib-runner/index.html">
 <meta property="og:site_name" content="Xiangjy&#39;s Blog">
 <meta property="og:description" content="1.使用docker运行gitlab-runner123456789101112gitlab-runner:    container_name: gitlab-runner    image: gitlab/gitlab-runner:latest    restart: always    volumes:        - /etc/localtime:/etc/localtime">
-<meta property="og:locale" content="zh-Hans">
+<meta property="og:locale" content="zh-cn">
 <meta property="og:updated_time" content="2017-09-08T10:55:29.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="gitlib-runner">
@@ -34,9 +37,10 @@
     
     
     <!--STYLES-->
-    <link rel="stylesheet" href="/assets/css/style-ejlztp1tasruqfvoz6xmgqng0anzae8ox7cqjj5yibieqgcmhe9fwxfae6zj.min.css">
+    <link rel="stylesheet" href="/assets/css/style-c4ozcsklz4kht2pebhp44xorvyverh23toayhn7i6ubrpyedak24hv1v0hyd.min.css">
     <!--STYLES END--><!-- hexo-inject:begin --><!-- hexo-inject:end -->
     
+
     
 </head>
 
@@ -45,17 +49,17 @@
             <!-- Define author's picture -->
 
 
-<header id="header" data-behavior="3">
+    
+
+<header id="header" data-behavior="4">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
-    <h1 class="header-title">
+    <div class="header-title">
         <a class="header-title-link" href="/ ">Xiangjy&#39;s Blog</a>
-    </h1>
+    </div>
     
         
-            <a class="header-right-icon st-search-show-outputs" href="#search">
+            <a class="header-right-picture " href="#about">
         
-        
-            <i class="fa fa-lg fa-search"></i>
         
         </a>
     
@@ -64,112 +68,181 @@
             <!-- Define author's picture -->
 
 
-<nav id="sidebar" data-behavior="3">
-    
-    
-        <ul class="sidebar-buttons">
+<nav id="sidebar" data-behavior="4">
+    <div class="sidebar-container">
         
-            <li class="sidebar-button">
-                
-                    <a class="sidebar-button-link " href="/ ">
-                
-                    <i class="sidebar-button-icon fa fa-lg fa-home"></i>
-                    <span class="sidebar-button-desc">Accueil</span>
-                </a>
-        </li>
         
-            <li class="sidebar-button">
-                
-                    <a class="sidebar-button-link " href="/all-categories">
-                
-                    <i class="sidebar-button-icon fa fa-lg fa-bookmark"></i>
-                    <span class="sidebar-button-desc">Categories</span>
-                </a>
-        </li>
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="/ " title="首页">
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">首页</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="/all-categories" title="分类">
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">分类</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="/all-tags" title="标签">
+                    
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">标签</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="/all-archives" title="归档">
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">归档</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link open-algolia-search" href="#search" title="搜索">
+                    
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">搜索</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="#about" title="关于">
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">关于</span>
+                    </a>
+            </li>
+            
+        </ul>
         
-            <li class="sidebar-button">
-                
-                    <a class="sidebar-button-link " href="/all-tags">
-                
-                    <i class="sidebar-button-icon fa fa-lg fa-tags"></i>
-                    <span class="sidebar-button-desc">Tags</span>
-                </a>
-        </li>
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="https://github.com/" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="http://stackoverflow.com/users" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="https://twitter.com/" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="https://facebook.com/" target="_blank" rel="noopener" title="Facebook">
+                    
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="https://plus.google.com/" target="_blank" rel="noopener" title="Google Plus">
+                    
+                        <i class="sidebar-button-icon fab fa-google-plus" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Google Plus</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="https://www.linkedin.com/profile/" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="/mailto" title="邮箱">
+                    
+                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">邮箱</span>
+                    </a>
+            </li>
+            
+        </ul>
         
-            <li class="sidebar-button">
-                
-                    <a class="sidebar-button-link " href="/all-archives">
-                
-                    <i class="sidebar-button-icon fa fa-lg fa-archive"></i>
-                    <span class="sidebar-button-desc">Archive</span>
-                </a>
-        </li>
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="/atom.xml" title="RSS">
+                    
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
         
-            <li class="sidebar-button">
-                
-                    <a class="sidebar-button-link st-search-show-outputs" href="#search">
-                
-                    <i class="sidebar-button-icon fa fa-lg fa-search"></i>
-                    <span class="sidebar-button-desc">Rechercher</span>
-                </a>
-        </li>
-        
-            <li class="sidebar-button">
-                
-                    <a class="sidebar-button-link " href="#about">
-                
-                    <i class="sidebar-button-icon fa fa-lg fa-question"></i>
-                    <span class="sidebar-button-desc">À propos</span>
-                </a>
-        </li>
-        
-    </ul>
-    
-        <ul class="sidebar-buttons">
-        
-    </ul>
-    
-        <ul class="sidebar-buttons">
-        
-            <li class="sidebar-button">
-                
-                    <a class="sidebar-button-link " href="/atom.xml">
-                
-                    <i class="sidebar-button-icon fa fa-lg fa-rss"></i>
-                    <span class="sidebar-button-desc">RSS</span>
-                </a>
-        </li>
-        
-    </ul>
-    
+    </div>
 </nav>
 
             
-            <div id="main" data-behavior="3"
+            <div id="main" data-behavior="4"
                  class="
                         hasCoverMetaIn
                         ">
                 
-<article class="post" itemscope="" itemtype="http://schema.org/BlogPosting">
+<article class="post">
     
     
         <div class="post-header main-content-wrap text-left">
     
-        <h1 class="post-title" itemprop="headline">
+        <h1 class="post-title">
             gitlib-runner
         </h1>
     
-    <div class="post-meta">
-    <time itemprop="datePublished" content="Fri Sep 08 2017 17:26:17 GMT+0800">
+    
+        <div class="post-meta">
+    <time datetime="2017-09-08T17:26:17+08:00">
 	
-		    08 Sep 2017
+		    9月 08, 2017
     	
     </time>
     
 </div>
-</div>
+
     
-    <div class="post-content markdown" itemprop="articleBody">
+</div>
+
+    
+    <div class="post-content markdown">
         <div class="main-content-wrap">
             <h3 id="1-使用docker运行gitlab-runner"><a href="#1-使用docker运行gitlab-runner" class="headerlink" title="1.使用docker运行gitlab-runner"></a>1.使用docker运行gitlab-runner</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">gitlab-runner:</span><br><span class="line">    container_name: gitlab-runner</span><br><span class="line">    image: gitlab/gitlab-runner:latest</span><br><span class="line">    restart: always</span><br><span class="line">    volumes:</span><br><span class="line">        - /etc/localtime:/etc/localtime</span><br><span class="line">        - /home/data/docker/gitlab-runner/home/.pypirc:/root/.pypirc</span><br><span class="line">        - /var/run/docker.sock:/var/run/docker.sock</span><br><span class="line">        - /home/data/docker/gitlab-runner/config:/etc/gitlab-runner</span><br><span class="line">    command: [run, --working-directory=/home/gitlab-runner]</span><br><span class="line">    dns:</span><br><span class="line">        - 192.168.0.100</span><br></pre></td></tr></table></figure>
 <h3 id="2-进入docker"><a href="#2-进入docker" class="headerlink" title="2.进入docker"></a>2.进入docker</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker exec -it gitlab-runner bash</span><br></pre></td></tr></table></figure>
@@ -179,74 +252,88 @@
 <h3 id="5-配置-gitlab-ci-yml"><a href="#5-配置-gitlab-ci-yml" class="headerlink" title="5.配置.gitlab-ci.yml"></a>5.配置.gitlab-ci.yml</h3><p>详情参考：<a href="https://docs.gitlab.com/ce/ci/yaml/README.html" target="_blank" rel="noopener">gitlab-ci说明文档</a></p>
 
             
-                
 
-            
         </div>
     </div>
     <div id="post-footer" class="post-footer main-content-wrap">
         
             <div class="post-footer-tags">
-                <span class="text-color-light text-small">TAGGÉ DANS</span><br>
+                <span class="text-color-light text-small">标签</span><br>
                 
     <a class="tag tag--primary tag--small t-link" href="/tags/持续集成/">持续集成</a>
 
             </div>
         
-        <div class="post-actions-wrap">
+        
+            <div class="post-actions-wrap">
     <nav>
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/09/08/pypi-server/" data-tooltip="pypi私有服务器">
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/09/08/pypi-server/" data-tooltip="pypi私有服务器" aria-label="上一篇: pypi私有服务器">
                 
-                    <i class="fa fa-angle-left"></i>
-                    <span class="hide-xs hide-sm text-small icon-ml">PRÉCÉDENT</span>
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
                 </a>
             </li>
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/08/21/fibonacci/" data-tooltip="Python实现斐波那契">
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/08/21/fibonacci/" data-tooltip="Python实现斐波那契" aria-label="下一篇: Python实现斐波那契">
                 
-                    <span class="hide-xs hide-sm text-small icon-mr">SUIVANT</span>
-                    <i class="fa fa-angle-right"></i>
+                    <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
                 </a>
             </li>
         </ul>
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
-                <i class="fa fa-share-alt"></i>
-            </a>
-        </li>
-        <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://yoursite.com/2017/09/08/gitlib-runner/">
-                <i class="fa fa-google-plus"></i>
-            </a>
-        </li>
-        <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2017/09/08/gitlib-runner/">
-                <i class="fa fa-facebook-official"></i>
-            </a>
-        </li>
-        <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2017/09/08/gitlib-runner/">
-                <i class="fa fa-twitter"></i>
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Diesen Beitrag teilen">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
         </li>
         
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2017/09/08/gitlib-runner/" title="分享到 Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2017/09/08/gitlib-runner/" title="分享到 Twitter">
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://yoursite.com/2017/09/08/gitlib-runner/" title="分享到 Google+">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
-                <i class="fa fa-list"></i>
+                <i class="fa fa-list" aria-hidden="true"></i>
             </a>
         </li>
     </ul>
 </div>
 
 
+        
         
             
         
@@ -263,55 +350,69 @@
 
             </div>
             
-                <div id="bottom-bar" class="post-bottom-bar" data-behavior="3">
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="4">
                     <div class="post-actions-wrap">
     <nav>
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/09/08/pypi-server/" data-tooltip="pypi私有服务器">
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/09/08/pypi-server/" data-tooltip="pypi私有服务器" aria-label="上一篇: pypi私有服务器">
                 
-                    <i class="fa fa-angle-left"></i>
-                    <span class="hide-xs hide-sm text-small icon-ml">PRÉCÉDENT</span>
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
                 </a>
             </li>
             <li class="post-action">
                 
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/08/21/fibonacci/" data-tooltip="Python实现斐波那契">
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/08/21/fibonacci/" data-tooltip="Python实现斐波那契" aria-label="下一篇: Python实现斐波那契">
                 
-                    <span class="hide-xs hide-sm text-small icon-mr">SUIVANT</span>
-                    <i class="fa fa-angle-right"></i>
+                    <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
                 </a>
             </li>
         </ul>
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions">
-                <i class="fa fa-share-alt"></i>
-            </a>
-        </li>
-        <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://yoursite.com/2017/09/08/gitlib-runner/">
-                <i class="fa fa-google-plus"></i>
-            </a>
-        </li>
-        <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2017/09/08/gitlib-runner/">
-                <i class="fa fa-facebook-official"></i>
-            </a>
-        </li>
-        <li class="post-action hide-xs">
-            <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2017/09/08/gitlib-runner/">
-                <i class="fa fa-twitter"></i>
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Diesen Beitrag teilen">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
         </li>
         
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2017/09/08/gitlib-runner/" title="分享到 Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2017/09/08/gitlib-runner/" title="分享到 Twitter">
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://yoursite.com/2017/09/08/gitlib-runner/" title="分享到 Google+">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
-                <i class="fa fa-list"></i>
+                <i class="fa fa-list" aria-hidden="true"></i>
             </a>
         </li>
     </ul>
@@ -319,26 +420,39 @@
 
 
                 </div>
-                <div id="share-options-bar" class="share-options-bar" data-behavior="3">
-    <ul class="share-options">
-        <li class="share-option">
-            <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http://yoursite.com/2017/09/08/gitlib-runner/">
-                <i class="fa fa-google-plus"></i><span class="">Partager sur Google Plus</span>
-            </a>
-        </li>
-        <li class="share-option">
-            <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2017/09/08/gitlib-runner/">
-                <i class="fa fa-facebook-official"></i><span>Partager sur Facebook</span>
-            </a>
-        </li>
-        <li class="share-option">
-            <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2017/09/08/gitlib-runner/">
-                <i class="fa fa-twitter"></i><span>Partager sur Twitter</span>
-            </a>
-        </li>
-    </ul>
-</div>
-<div id="share-options-mask" class="share-options-mask"></div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="4">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2017/09/08/gitlib-runner/">
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2017/09/08/gitlib-runner/">
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http://yoursite.com/2017/09/08/gitlib-runner/">
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>分享到 Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
             
         </div>
         
@@ -347,35 +461,53 @@
 <div id="about">
     <div id="about-card">
         <div id="about-btn-close">
-            <i class="fa fa-remove"></i>
+            <i class="fa fa-times"></i>
         </div>
         
             <h4 id="about-card-name">Xiangjy</h4>
         
-            <h5 id="about-card-bio"><p>author.bio</p>
-</h5>
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
         
         
-            <h5 id="about-card-job">
+            <div id="about-card-job">
                 <i class="fa fa-briefcase"></i>
                 <br>
                 <p>author.job</p>
 
-            </h5>
+            </div>
         
         
     </div>
 </div>
 
         
-<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-    </body>
-    <!--SCRIPTS-->
-<script src="/assets/js/scrip-gfmrkxcl0qohe3cfdgxhzvc0yrceqta8i4iix0txvn8q4o2adlqd5n0jmkvt.min.js"></script>
-<!--SCRIPTS END-->
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-dbd16rvloemmuxdzniplmnxxvwoz24eya9wol0b7vvmlokgqsjivmb8dnscy.min.js"></script>
+<!--SCRIPTS END--><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
 
     
 
 
 
+    </body>
 </html>
