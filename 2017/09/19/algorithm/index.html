@@ -10,16 +10,16 @@
     <meta name="author" content="Xiangjy">
     
     
-        <link rel="icon" href="http://yoursite.com/assets/images/uu.png">
+        <link rel="icon" href="http://localhost:4000/assets/images/dx.png">
     
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"插入排序将后面的元素插入前面已经排序好的序列中循环每一个元素从第二个元素开始循环，逆序与前面每一个元素比较(默认前面元素已经是排序好的)，如果小于则交换[8, 7, 6, 5, 4, 3, 2, 1]先选出7，逆序循环与前面排序好的[8]比较，小于交换[7, 8, 6, 5, 4, 3, 2, 1]选出6，逆序循环与前面排序好的[7,8]比较，小于交换[7, 6, 8, 5, 4, 3, 2, 1][6, 7, 8, 5, 4, 3, 2, 1]一次类推\n希尔排序根据序列长度分组后，对每个组进行插入排序循环对数组分组，分完的组进行插入排序[8, 7, 6, 5, 4, 3, 2, 1]根据长度分组len(L)/2 = 4, gap = 4[L[0], L[0 + 4]], [L[1], L[1 + 4]…[8, 4], [7, 3], [6, 2], [5, 1] -&gt; [4, 8], [3, 7], [2, 6], [1, 5][4,3,2,1,8,7,6,5]gap /= 2[L[0], L[0 + 2], L[0 + 4], L[0 + 6]]…[4, 2, 8, 6] [3, 1, 7, 5] -&gt; [2, 4, 6, 8] [1, 3, 5, 7]gap /= 2[2, 1, 4, 3, 6, 5, 8, 7]gap /= 2[2, 1, 4, 3, 6, 5, 8, 7] -&gt; [1, 2, 3, 4, 5, 6, 7, 8]\n选择排序选择待排序子序列中最小值，最小值换到第一位置[8, 7, 6, 5, 4, 3, 2, 1][1, 7, 6, 5, 4, 3, 2, 8][1, 2, 6, 5, 4, 3, 7, 8][1, 2, 3, 5, 4, 6, 7, 8]…\n堆排序冒泡排序从第一个元素比较，将大的元素往后面移[8, 7, 6, 5, 4, 3, 2, 1][7, 8, 6, 5, 4, 3, 2, 1]…[7, 6, 5, 4, 3, 2, 1, 8]…\n","dateCreated":"2017-09-19T15:42:24+08:00","dateModified":"2017-09-19T15:42:56+08:00","datePublished":"2017-09-19T15:42:24+08:00","description":"","headline":"algorithm","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2017/09/19/algorithm/"},"publisher":{"@type":"Organization","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"http://yoursite.com/2017/09/19/algorithm/"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"],"image":"uu.png"},"articleBody":"插入排序将后面的元素插入前面已经排序好的序列中循环每一个元素从第二个元素开始循环，逆序与前面每一个元素比较(默认前面元素已经是排序好的)，如果小于则交换[8, 7, 6, 5, 4, 3, 2, 1]先选出7，逆序循环与前面排序好的[8]比较，小于交换[7, 8, 6, 5, 4, 3, 2, 1]选出6，逆序循环与前面排序好的[7,8]比较，小于交换[7, 6, 8, 5, 4, 3, 2, 1][6, 7, 8, 5, 4, 3, 2, 1]一次类推\n希尔排序根据序列长度分组后，对每个组进行插入排序循环对数组分组，分完的组进行插入排序[8, 7, 6, 5, 4, 3, 2, 1]根据长度分组len(L)/2 = 4, gap = 4[L[0], L[0 + 4]], [L[1], L[1 + 4]…[8, 4], [7, 3], [6, 2], [5, 1] -&gt; [4, 8], [3, 7], [2, 6], [1, 5][4,3,2,1,8,7,6,5]gap /= 2[L[0], L[0 + 2], L[0 + 4], L[0 + 6]]…[4, 2, 8, 6] [3, 1, 7, 5] -&gt; [2, 4, 6, 8] [1, 3, 5, 7]gap /= 2[2, 1, 4, 3, 6, 5, 8, 7]gap /= 2[2, 1, 4, 3, 6, 5, 8, 7] -&gt; [1, 2, 3, 4, 5, 6, 7, 8]\n选择排序选择待排序子序列中最小值，最小值换到第一位置[8, 7, 6, 5, 4, 3, 2, 1][1, 7, 6, 5, 4, 3, 2, 8][1, 2, 6, 5, 4, 3, 7, 8][1, 2, 3, 5, 4, 6, 7, 8]…\n堆排序冒泡排序从第一个元素比较，将大的元素往后面移[8, 7, 6, 5, 4, 3, 2, 1][7, 8, 6, 5, 4, 3, 2, 1]…[7, 6, 5, 4, 3, 2, 1, 8]…\n","dateCreated":"2017-09-19T15:42:24+08:00","dateModified":"2017-09-19T15:42:56+08:00","datePublished":"2017-09-19T15:42:24+08:00","description":"","headline":"algorithm","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2017/09/19/algorithm/"},"publisher":{"@type":"Organization","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"],"image":"uu.png","logo":{"@type":"ImageObject","url":"uu.png"}},"url":"http://localhost:4000/2017/09/19/algorithm/"}</script>
     <meta name="description" content="插入排序将后面的元素插入前面已经排序好的序列中循环每一个元素从第二个元素开始循环，逆序与前面每一个元素比较(默认前面元素已经是排序好的)，如果小于则交换[8, 7, 6, 5, 4, 3, 2, 1]先选出7，逆序循环与前面排序好的[8]比较，小于交换[7, 8, 6, 5, 4, 3, 2, 1]选出6，逆序循环与前面排序好的[7,8]比较，小于交换[7, 6, 8, 5, 4, 3, 2, 1">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="algorithm">
-<meta property="og:url" content="http://yoursite.com/2017/09/19/algorithm/index.html">
+<meta property="og:url" content="http://localhost:4000/2017/09/19/algorithm/index.html">
 <meta property="og:site_name" content="Xiangjy&#39;s Blog">
 <meta property="og:description" content="插入排序将后面的元素插入前面已经排序好的序列中循环每一个元素从第二个元素开始循环，逆序与前面每一个元素比较(默认前面元素已经是排序好的)，如果小于则交换[8, 7, 6, 5, 4, 3, 2, 1]先选出7，逆序循环与前面排序好的[8]比较，小于交换[7, 8, 6, 5, 4, 3, 2, 1]选出6，逆序循环与前面排序好的[7,8]比较，小于交换[7, 6, 8, 5, 4, 3, 2, 1">
 <meta property="og:locale" content="zh-cn">
@@ -31,6 +31,8 @@
     
         
     
+    
+        <meta property="og:image" content="http://localhost:4000/assets/images/uu.png"/>
     
     
     
@@ -49,6 +51,10 @@
 
 
     
+        
+            
+        
+    
 
 <header id="header" data-behavior="4">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
@@ -60,6 +66,8 @@
             <a class="header-right-picture " href="#about">
         
         
+            <img class="header-picture" src="/assets/images/uu.png" alt="作者的图片">
+        
         </a>
     
 </header>
@@ -67,8 +75,23 @@
             <!-- Define author's picture -->
 
 
+
+        
+    
+
 <nav id="sidebar" data-behavior="4">
     <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="/assets/images/uu.png" alt="作者的图片">
+                </a>
+                <h4 class="sidebar-profile-name">Xiangjy</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
+</h5>
+                
+            </div>
         
         
             <ul class="sidebar-buttons">
@@ -280,7 +303,7 @@
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Diesen Beitrag teilen">
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
         </li>
@@ -288,7 +311,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2017/09/19/algorithm/" title="分享到 Facebook">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/2017/09/19/algorithm/" title="分享到 Facebook">
                     <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
@@ -296,7 +319,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2017/09/19/algorithm/" title="分享到 Twitter">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://localhost:4000/2017/09/19/algorithm/" title="分享到 Twitter">
                     <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
@@ -304,7 +327,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://yoursite.com/2017/09/19/algorithm/" title="分享到 Google+">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://localhost:4000/2017/09/19/algorithm/" title="分享到 Google+">
                     <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
@@ -314,7 +337,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -366,7 +389,7 @@
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Diesen Beitrag teilen">
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
         </li>
@@ -374,7 +397,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2017/09/19/algorithm/" title="分享到 Facebook">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/2017/09/19/algorithm/" title="分享到 Facebook">
                     <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
@@ -382,7 +405,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2017/09/19/algorithm/" title="分享到 Twitter">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://localhost:4000/2017/09/19/algorithm/" title="分享到 Twitter">
                     <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
@@ -390,7 +413,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://yoursite.com/2017/09/19/algorithm/" title="分享到 Google+">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://localhost:4000/2017/09/19/algorithm/" title="分享到 Google+">
                     <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
@@ -400,7 +423,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -418,7 +441,7 @@
                 
                 
                 <li class="share-option">
-                    <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2017/09/19/algorithm/">
+                    <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/2017/09/19/algorithm/">
                         <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
                     </a>
                 </li>
@@ -426,7 +449,7 @@
                 
                 
                 <li class="share-option">
-                    <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2017/09/19/algorithm/">
+                    <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http://localhost:4000/2017/09/19/algorithm/">
                         <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
                     </a>
                 </li>
@@ -434,7 +457,7 @@
                 
                 
                 <li class="share-option">
-                    <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http://yoursite.com/2017/09/19/algorithm/">
+                    <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http://localhost:4000/2017/09/19/algorithm/">
                         <i class="fab fa-google-plus" aria-hidden="true"></i><span>分享到 Google+</span>
                     </a>
                 </li>
@@ -448,11 +471,17 @@
         
 
 
+    
+        
+    
+
 <div id="about">
     <div id="about-card">
         <div id="about-btn-close">
             <i class="fa fa-times"></i>
         </div>
+        
+            <img id="about-card-picture" src="/assets/images/uu.png" alt="作者的图片">
         
             <h4 id="about-card-name">Xiangjy</h4>
         

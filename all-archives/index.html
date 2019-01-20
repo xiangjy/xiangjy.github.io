@@ -10,15 +10,15 @@
     <meta name="author" content="Xiangjy">
     
     
-        <link rel="icon" href="http://yoursite.com/assets/images/uu.png">
+        <link rel="icon" href="http://localhost:4000/assets/images/dx.png">
     
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"Website","@id":"http://yoursite.com","author":{"@type":"Person","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"name":"Xiangjy's Blog","description":null,"url":"http://yoursite.com"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"Website","@id":"http://localhost:4000","author":{"@type":"Person","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"],"image":"uu.png"},"name":"Xiangjy's Blog","description":null,"url":"http://localhost:4000"}</script>
     <meta property="og:type" content="blog">
 <meta property="og:title" content="all-archives">
-<meta property="og:url" content="http://yoursite.com/all-archives/index.html">
+<meta property="og:url" content="http://localhost:4000/all-archives/index.html">
 <meta property="og:site_name" content="Xiangjy&#39;s Blog">
 <meta property="og:locale" content="zh-cn">
 <meta property="og:updated_time" content="2019-01-15T09:00:27.812Z">
@@ -28,6 +28,8 @@
     
         
     
+    
+        <meta property="og:image" content="http://localhost:4000/assets/images/uu.png"/>
     
     
     
@@ -46,6 +48,10 @@
 
 
     
+        
+            
+        
+    
 
 <header id="header" data-behavior="1">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
@@ -57,6 +63,8 @@
             <a class="header-right-picture " href="#about">
         
         
+            <img class="header-picture" src="/assets/images/uu.png" alt="作者的图片">
+        
         </a>
     
 </header>
@@ -64,8 +72,23 @@
             <!-- Define author's picture -->
 
 
+
+        
+    
+
 <nav id="sidebar" data-behavior="1">
     <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="/assets/images/uu.png" alt="作者的图片">
+                </a>
+                <h4 class="sidebar-profile-name">Xiangjy</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
+</h5>
+                
+            </div>
         
         
             <ul class="sidebar-buttons">
@@ -403,11 +426,17 @@
         
 
 
+    
+        
+    
+
 <div id="about">
     <div id="about-card">
         <div id="about-btn-close">
             <i class="fa fa-times"></i>
         </div>
+        
+            <img id="about-card-picture" src="/assets/images/uu.png" alt="作者的图片">
         
             <h4 id="about-card-name">Xiangjy</h4>
         

@@ -10,17 +10,17 @@
     <meta name="author" content="Xiangjy">
     
     
-        <link rel="icon" href="http://yoursite.com/assets/images/uu.png">
+        <link rel="icon" href="http://localhost:4000/assets/images/dx.png">
     
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"决策树ID3算法和python实现决策树是一棵树，其叶子节点决定了该类的归属，其内部节点则根据特征的值对数据进行子树寻找，以决定在哪棵子树上继续该决策过程。选择信息熵增益最大的feature作为node，实现对数据的归纳分类。\n熵：表示随机变量的不确定性。条件熵：在一个条件下，随机变量的不确定性。信息增益：熵 - 条件熵举个栗子：X(明天下雨)是一个随机变量，X的熵可以算出来， Y(明天阴天)也是随机变量，在阴天情况下下雨的信息熵我们如果也知道的话（此处需要知道其联合概率分布或是通过数据估计）即是条件熵。两者相减就是信息增益！原来明天下雨例如信息熵是2，条件熵是0.01（因为如果是阴天就下雨的概率很大，信息就少了），这样相减后为1.99，在获得阴天这个信息后，下雨信息不确定性减少了1.99！是很多的！所以信息增益大！也就是说，阴天这个信息对下雨来说是很重要的！所以在特征选择的时候常常用信息增益，如果IG（信息增益大）的话那么这个特征对于分类来说很关键，决策树就是这样来找特征的！\n信息的定义：待分类的事务可能处于多个分类中，则符号$x_i$的信息定义如下：$$ l(x_i) = -log_2p(x_i) $$\n信息熵公式(计算熵，需要计算所有类别所有可能值包含的信息期望值)：\n$$ H(x) = -sum(p(x)log_2p(x)) $$\n$$ H(X) = -\\sum_{i=0}^n p(x_i)log_2p(x_i) $$\n","dateCreated":"2017-08-14T16:12:20+08:00","dateModified":"2017-08-18T11:26:56+08:00","datePublished":"2017-08-14T16:12:20+08:00","description":"","headline":"决策树ID3算法","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2017/08/14/ID3/"},"publisher":{"@type":"Organization","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"http://yoursite.com/2017/08/14/ID3/","keywords":"算法, 机器学习, python"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"],"image":"uu.png"},"articleBody":"决策树ID3算法和python实现决策树是一棵树，其叶子节点决定了该类的归属，其内部节点则根据特征的值对数据进行子树寻找，以决定在哪棵子树上继续该决策过程。选择信息熵增益最大的feature作为node，实现对数据的归纳分类。\n熵：表示随机变量的不确定性。条件熵：在一个条件下，随机变量的不确定性。信息增益：熵 - 条件熵举个栗子：X(明天下雨)是一个随机变量，X的熵可以算出来， Y(明天阴天)也是随机变量，在阴天情况下下雨的信息熵我们如果也知道的话（此处需要知道其联合概率分布或是通过数据估计）即是条件熵。两者相减就是信息增益！原来明天下雨例如信息熵是2，条件熵是0.01（因为如果是阴天就下雨的概率很大，信息就少了），这样相减后为1.99，在获得阴天这个信息后，下雨信息不确定性减少了1.99！是很多的！所以信息增益大！也就是说，阴天这个信息对下雨来说是很重要的！所以在特征选择的时候常常用信息增益，如果IG（信息增益大）的话那么这个特征对于分类来说很关键，决策树就是这样来找特征的！\n信息的定义：待分类的事务可能处于多个分类中，则符号$x_i$的信息定义如下：$$ l(x_i) = -log_2p(x_i) $$\n信息熵公式(计算熵，需要计算所有类别所有可能值包含的信息期望值)：\n$$ H(x) = -sum(p(x)log_2p(x)) $$\n$$ H(X) = -\\sum_{i=0}^n p(x_i)log_2p(x_i) $$\n","dateCreated":"2017-08-14T16:12:20+08:00","dateModified":"2017-08-18T11:26:56+08:00","datePublished":"2017-08-14T16:12:20+08:00","description":"","headline":"决策树ID3算法","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2017/08/14/ID3/"},"publisher":{"@type":"Organization","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"],"image":"uu.png","logo":{"@type":"ImageObject","url":"uu.png"}},"url":"http://localhost:4000/2017/08/14/ID3/","keywords":"算法, 机器学习, python"}</script>
     <meta name="description" content="决策树ID3算法和python实现决策树是一棵树，其叶子节点决定了该类的归属，其内部节点则根据特征的值对数据进行子树寻找，以决定在哪棵子树上继续该决策过程。选择信息熵增益最大的feature作为node，实现对数据的归纳分类。 熵：表示随机变量的不确定性。条件熵：在一个条件下，随机变量的不确定性。信息增益：熵 - 条件熵举个栗子：X(明天下雨)是一个随机变量，X的熵可以算出来， Y(明天阴天)也是">
 <meta name="keywords" content="算法,机器学习,python">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="决策树ID3算法">
-<meta property="og:url" content="http://yoursite.com/2017/08/14/ID3/index.html">
+<meta property="og:url" content="http://localhost:4000/2017/08/14/ID3/index.html">
 <meta property="og:site_name" content="Xiangjy&#39;s Blog">
 <meta property="og:description" content="决策树ID3算法和python实现决策树是一棵树，其叶子节点决定了该类的归属，其内部节点则根据特征的值对数据进行子树寻找，以决定在哪棵子树上继续该决策过程。选择信息熵增益最大的feature作为node，实现对数据的归纳分类。 熵：表示随机变量的不确定性。条件熵：在一个条件下，随机变量的不确定性。信息增益：熵 - 条件熵举个栗子：X(明天下雨)是一个随机变量，X的熵可以算出来， Y(明天阴天)也是">
 <meta property="og:locale" content="zh-cn">
@@ -32,6 +32,8 @@
     
         
     
+    
+        <meta property="og:image" content="http://localhost:4000/assets/images/uu.png"/>
     
     
     
@@ -50,6 +52,10 @@
 
 
     
+        
+            
+        
+    
 
 <header id="header" data-behavior="4">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
@@ -61,6 +67,8 @@
             <a class="header-right-picture " href="#about">
         
         
+            <img class="header-picture" src="/assets/images/uu.png" alt="作者的图片">
+        
         </a>
     
 </header>
@@ -68,8 +76,23 @@
             <!-- Define author's picture -->
 
 
+
+        
+    
+
 <nav id="sidebar" data-behavior="4">
     <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="/assets/images/uu.png" alt="作者的图片">
+                </a>
+                <h4 class="sidebar-profile-name">Xiangjy</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
+</h5>
+                
+            </div>
         
         
             <ul class="sidebar-buttons">
@@ -290,7 +313,7 @@
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Diesen Beitrag teilen">
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
         </li>
@@ -298,7 +321,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2017/08/14/ID3/" title="分享到 Facebook">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/2017/08/14/ID3/" title="分享到 Facebook">
                     <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
@@ -306,7 +329,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2017/08/14/ID3/" title="分享到 Twitter">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://localhost:4000/2017/08/14/ID3/" title="分享到 Twitter">
                     <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
@@ -314,7 +337,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://yoursite.com/2017/08/14/ID3/" title="分享到 Google+">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://localhost:4000/2017/08/14/ID3/" title="分享到 Google+">
                     <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
@@ -324,7 +347,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -376,7 +399,7 @@
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Diesen Beitrag teilen">
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
         </li>
@@ -384,7 +407,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2017/08/14/ID3/" title="分享到 Facebook">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/2017/08/14/ID3/" title="分享到 Facebook">
                     <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
@@ -392,7 +415,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2017/08/14/ID3/" title="分享到 Twitter">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://localhost:4000/2017/08/14/ID3/" title="分享到 Twitter">
                     <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
@@ -400,7 +423,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://yoursite.com/2017/08/14/ID3/" title="分享到 Google+">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://localhost:4000/2017/08/14/ID3/" title="分享到 Google+">
                     <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
@@ -410,7 +433,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -428,7 +451,7 @@
                 
                 
                 <li class="share-option">
-                    <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2017/08/14/ID3/">
+                    <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/2017/08/14/ID3/">
                         <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
                     </a>
                 </li>
@@ -436,7 +459,7 @@
                 
                 
                 <li class="share-option">
-                    <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2017/08/14/ID3/">
+                    <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http://localhost:4000/2017/08/14/ID3/">
                         <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
                     </a>
                 </li>
@@ -444,7 +467,7 @@
                 
                 
                 <li class="share-option">
-                    <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http://yoursite.com/2017/08/14/ID3/">
+                    <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http://localhost:4000/2017/08/14/ID3/">
                         <i class="fab fa-google-plus" aria-hidden="true"></i><span>分享到 Google+</span>
                     </a>
                 </li>
@@ -458,11 +481,17 @@
         
 
 
+    
+        
+    
+
 <div id="about">
     <div id="about-card">
         <div id="about-btn-close">
             <i class="fa fa-times"></i>
         </div>
+        
+            <img id="about-card-picture" src="/assets/images/uu.png" alt="作者的图片">
         
             <h4 id="about-card-name">Xiangjy</h4>
         

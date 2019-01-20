@@ -10,17 +10,17 @@
     <meta name="author" content="Xiangjy">
     
     
-        <link rel="icon" href="http://yoursite.com/assets/images/uu.png">
+        <link rel="icon" href="http://localhost:4000/assets/images/dx.png">
     
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"主要实现：xxx.domain2.domain1.com -&gt; domain2.domain1.com/xxx\nxxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx\nnginx rewrite实现二级或三级域名泛解析在nginx的相对应的配置文件的server中添加123456789if ($host ~* ^([^\\.]+)\\.([^\\.]+)\\.([^\\.]+)\\.([^\\.]+)$) &#123;  #三级域名    set $subdomain $1;    set $domain $2;&#125;location / &#123; #添加rewrite    rewrite ^/(.*)$ /index.html/$1$subdomain last;    break;&#125;\n","dateCreated":"2018-02-07T17:55:52+08:00","dateModified":"2018-02-08T10:15:21+08:00","datePublished":"2018-02-07T17:55:52+08:00","description":"","headline":"Nginx进行泛域名解析","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2018/02/07/nginx-pan-domain-name/"},"publisher":{"@type":"Organization","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"http://yoursite.com/2018/02/07/nginx-pan-domain-name/","keywords":"nginx"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"],"image":"uu.png"},"articleBody":"主要实现：xxx.domain2.domain1.com -&gt; domain2.domain1.com/xxx\nxxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx\nnginx rewrite实现二级或三级域名泛解析在nginx的相对应的配置文件的server中添加123456789if ($host ~* ^([^\\.]+)\\.([^\\.]+)\\.([^\\.]+)\\.([^\\.]+)$) &#123;  #三级域名    set $subdomain $1;    set $domain $2;&#125;location / &#123; #添加rewrite    rewrite ^/(.*)$ /index.html/$1$subdomain last;    break;&#125;\n","dateCreated":"2018-02-07T17:55:52+08:00","dateModified":"2018-02-08T10:15:21+08:00","datePublished":"2018-02-07T17:55:52+08:00","description":"","headline":"Nginx进行泛域名解析","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2018/02/07/nginx-pan-domain-name/"},"publisher":{"@type":"Organization","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"],"image":"uu.png","logo":{"@type":"ImageObject","url":"uu.png"}},"url":"http://localhost:4000/2018/02/07/nginx-pan-domain-name/","keywords":"nginx"}</script>
     <meta name="description" content="主要实现：xxx.domain2.domain1.com -&amp;gt; domain2.domain1.com/xxx xxx.domain2.domain1.com -&amp;gt; domain2.domain1.com/?id=xxx nginx rewrite实现二级或三级域名泛解析在nginx的相对应的配置文件的server中添加123456789if ($host ~* ^([^\.]+)\.">
 <meta name="keywords" content="nginx">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Nginx进行泛域名解析">
-<meta property="og:url" content="http://yoursite.com/2018/02/07/nginx-pan-domain-name/index.html">
+<meta property="og:url" content="http://localhost:4000/2018/02/07/nginx-pan-domain-name/index.html">
 <meta property="og:site_name" content="Xiangjy&#39;s Blog">
 <meta property="og:description" content="主要实现：xxx.domain2.domain1.com -&amp;gt; domain2.domain1.com/xxx xxx.domain2.domain1.com -&amp;gt; domain2.domain1.com/?id=xxx nginx rewrite实现二级或三级域名泛解析在nginx的相对应的配置文件的server中添加123456789if ($host ~* ^([^\.]+)\.">
 <meta property="og:locale" content="zh-cn">
@@ -32,6 +32,8 @@
     
         
     
+    
+        <meta property="og:image" content="http://localhost:4000/assets/images/uu.png"/>
     
     
     
@@ -50,6 +52,10 @@
 
 
     
+        
+            
+        
+    
 
 <header id="header" data-behavior="4">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
@@ -61,6 +67,8 @@
             <a class="header-right-picture " href="#about">
         
         
+            <img class="header-picture" src="/assets/images/uu.png" alt="作者的图片">
+        
         </a>
     
 </header>
@@ -68,8 +76,23 @@
             <!-- Define author's picture -->
 
 
+
+        
+    
+
 <nav id="sidebar" data-behavior="4">
     <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="/assets/images/uu.png" alt="作者的图片">
+                </a>
+                <h4 class="sidebar-profile-name">Xiangjy</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
+</h5>
+                
+            </div>
         
         
             <ul class="sidebar-buttons">
@@ -287,7 +310,7 @@ xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Diesen Beitrag teilen">
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
         </li>
@@ -295,7 +318,7 @@ xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2018/02/07/nginx-pan-domain-name/" title="分享到 Facebook">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/2018/02/07/nginx-pan-domain-name/" title="分享到 Facebook">
                     <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
@@ -303,7 +326,7 @@ xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2018/02/07/nginx-pan-domain-name/" title="分享到 Twitter">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://localhost:4000/2018/02/07/nginx-pan-domain-name/" title="分享到 Twitter">
                     <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
@@ -311,7 +334,7 @@ xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://yoursite.com/2018/02/07/nginx-pan-domain-name/" title="分享到 Google+">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://localhost:4000/2018/02/07/nginx-pan-domain-name/" title="分享到 Google+">
                     <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
@@ -321,7 +344,7 @@ xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -373,7 +396,7 @@ xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Diesen Beitrag teilen">
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
         </li>
@@ -381,7 +404,7 @@ xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2018/02/07/nginx-pan-domain-name/" title="分享到 Facebook">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/2018/02/07/nginx-pan-domain-name/" title="分享到 Facebook">
                     <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
@@ -389,7 +412,7 @@ xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2018/02/07/nginx-pan-domain-name/" title="分享到 Twitter">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://localhost:4000/2018/02/07/nginx-pan-domain-name/" title="分享到 Twitter">
                     <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
@@ -397,7 +420,7 @@ xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://yoursite.com/2018/02/07/nginx-pan-domain-name/" title="分享到 Google+">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://localhost:4000/2018/02/07/nginx-pan-domain-name/" title="分享到 Google+">
                     <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
@@ -407,7 +430,7 @@ xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -425,7 +448,7 @@ xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
                 
                 
                 <li class="share-option">
-                    <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2018/02/07/nginx-pan-domain-name/">
+                    <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/2018/02/07/nginx-pan-domain-name/">
                         <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
                     </a>
                 </li>
@@ -433,7 +456,7 @@ xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
                 
                 
                 <li class="share-option">
-                    <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2018/02/07/nginx-pan-domain-name/">
+                    <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http://localhost:4000/2018/02/07/nginx-pan-domain-name/">
                         <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
                     </a>
                 </li>
@@ -441,7 +464,7 @@ xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
                 
                 
                 <li class="share-option">
-                    <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http://yoursite.com/2018/02/07/nginx-pan-domain-name/">
+                    <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http://localhost:4000/2018/02/07/nginx-pan-domain-name/">
                         <i class="fab fa-google-plus" aria-hidden="true"></i><span>分享到 Google+</span>
                     </a>
                 </li>
@@ -455,11 +478,17 @@ xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
         
 
 
+    
+        
+    
+
 <div id="about">
     <div id="about-card">
         <div id="about-btn-close">
             <i class="fa fa-times"></i>
         </div>
+        
+            <img id="about-card-picture" src="/assets/images/uu.png" alt="作者的图片">
         
             <h4 id="about-card-name">Xiangjy</h4>
         

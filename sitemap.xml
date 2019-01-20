@@ -2,133 +2,133 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
-    <loc>http://yoursite.com/all-archives/index.html</loc>
+    <loc>http://localhost:4000/all-archives/index.html</loc>
     
     <lastmod>2019-01-15T09:00:27.812Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://yoursite.com/all-tags/index.html</loc>
+    <loc>http://localhost:4000/all-tags/index.html</loc>
     
     <lastmod>2019-01-15T08:59:40.972Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://yoursite.com/all-categories/index.html</loc>
+    <loc>http://localhost:4000/all-categories/index.html</loc>
     
     <lastmod>2019-01-15T08:59:04.766Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://yoursite.com/2018/09/04/data-structures&algorithms/</loc>
+    <loc>http://localhost:4000/2018/09/04/data-structures&algorithms/</loc>
     
     <lastmod>2018-09-04T05:45:28.656Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://yoursite.com/2018/02/07/nginx-pan-domain-name/</loc>
+    <loc>http://localhost:4000/2018/02/07/nginx-pan-domain-name/</loc>
     
     <lastmod>2018-02-08T02:15:21.960Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://yoursite.com/2017/09/19/algorithm/</loc>
+    <loc>http://localhost:4000/2017/09/19/algorithm/</loc>
     
     <lastmod>2017-09-19T07:42:56.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://yoursite.com/2017/09/12/scrapy/</loc>
+    <loc>http://localhost:4000/2017/09/12/scrapy/</loc>
     
     <lastmod>2017-09-12T02:10:38.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://yoursite.com/2017/08/21/fibonacci/</loc>
+    <loc>http://localhost:4000/2017/08/21/fibonacci/</loc>
     
     <lastmod>2017-09-10T15:07:44.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://yoursite.com/2017/09/08/pypi-server/</loc>
+    <loc>http://localhost:4000/2017/09/08/pypi-server/</loc>
     
     <lastmod>2017-09-10T15:02:03.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://yoursite.com/2017/09/08/gitlib-runner/</loc>
+    <loc>http://localhost:4000/2017/09/08/gitlib-runner/</loc>
     
     <lastmod>2017-09-08T10:55:29.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://yoursite.com/2017/08/21/gitlab-ci-and-runner/</loc>
+    <loc>http://localhost:4000/2017/08/21/gitlab-ci-and-runner/</loc>
     
     <lastmod>2017-08-21T00:58:06.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://yoursite.com/2017/08/18/docker/</loc>
+    <loc>http://localhost:4000/2017/08/18/docker/</loc>
     
     <lastmod>2017-08-18T10:33:11.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://yoursite.com/2017/08/14/ID3/</loc>
+    <loc>http://localhost:4000/2017/08/14/ID3/</loc>
     
     <lastmod>2017-08-18T03:26:56.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://yoursite.com/2017/08/16/python-time-complexity/</loc>
+    <loc>http://localhost:4000/2017/08/16/python-time-complexity/</loc>
     
     <lastmod>2017-08-18T02:43:59.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://yoursite.com/2017/08/15/svm/</loc>
+    <loc>http://localhost:4000/2017/08/15/svm/</loc>
     
     <lastmod>2017-08-15T04:08:34.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://yoursite.com/404/index.html</loc>
+    <loc>http://localhost:4000/404/index.html</loc>
     
     <lastmod>2017-08-15T03:19:33.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://yoursite.com/categories/index.html</loc>
+    <loc>http://localhost:4000/categories/index.html</loc>
     
     <lastmod>2017-08-15T01:29:17.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://yoursite.com/tags/index.html</loc>
+    <loc>http://localhost:4000/tags/index.html</loc>
     
     <lastmod>2017-08-15T01:22:40.000Z</lastmod>
     
   </url>
   
   <url>
-    <loc>http://yoursite.com/2017/08/14/knn/</loc>
+    <loc>http://localhost:4000/2017/08/14/knn/</loc>
     
     <lastmod>2017-08-14T11:08:56.000Z</lastmod>
     

@@ -10,16 +10,16 @@
     <meta name="author" content="Xiangjy">
     
     
-        <link rel="icon" href="http://yoursite.com/assets/images/uu.png">
+        <link rel="icon" href="http://localhost:4000/assets/images/dx.png">
     
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"pypi-server搭建pypi官方说明1.基础安装和启动12345$ pip install pypiserver$ mkdir ~/pypi/packages# copy some source packages or eggs to this directory$ pypi-server -p 3141 ~/pypi/packages$ pip install -i http://localhost:8001/simple/ ...\n2.添加上传密码123$ pip install passlib$ apt-get install apache2-utils     # Mac OS不用安装$ htpasswd -sc ~/pypi/.htaccess user   # 回车后会提示输入密码，输入123\n3.启动pypi server时加载密钥文件1pypi-server -p 3141 -P ~/pypi/.htaccess ./packages\n4.在用户根目录下创建.pypirc文件12345678[distutils]index-servers =  privatepypi[privatepypi]repository:http://127.0.0.1:3141username:userpassword:123\n5.上传package1python setup.py sdist upload -r privatepypi\n6.下载package1$ pip install -i http://localhost:3134/simple/ package-name\n7.setup.py文件示例1234567891011121314151617181920212223242526272829303132333435363738394041424344import sysimport importlibfrom setuptools import setup, find_packagesPROJECT = &apos;libs&apos;requires = []# 读取requirements.txt文件，获得需要安装基础包with open(&apos;requirements.txt&apos;) as f:    for line in f.readlines():        requires.append(line.strip())# 打包时替换version.py文件if sys.argv[1] == &apos;sdist&apos;:    version_py = importlib.import_module(&apos;&#123;project&#125;.version&apos;.format(project=PROJECT))    version_py.update_version_file(&apos;&#123;project&#125;/version.py&apos;.format(project=PROJECT))# reload version模块，确保在替换version.py文件后获得最新的version号version = reload(importlib.import_module(&apos;&#123;pro&#125;.version&apos;.format(pro=PROJECT))).get_version()with open(&apos;README.md&apos;, &apos;r&apos;) as f:    readme = f.read()setup(    name=&apos;libs&apos;,    version=version,    description=&apos;libs is the common lib for Django project&apos;,    long_description=readme,    author=&apos;xxx&apos;,    author_email=&apos;xxx@gmail.com&apos;,    url=&apos;&apos;,    packages=find_packages(),    include_package_data=True,    install_requires=requires,    test_suite=&apos;nose.collector&apos;,    license=&apos;All rights reserved by xxx.&apos;,    zip_safe=False,    classifiers=(        &apos;Development Status :: 5 - Production/Stable&apos;,        &apos;Intended Audience :: Developers&apos;,        &apos;Natural Language :: English&apos;,        &apos;Programming Language :: Python&apos;,        &apos;Programming Language :: Python :: 2.7&apos;,    ),)\nsetup.py官方文档使用supervisor管理pypi-server1.生成run-pypi.sh文件，supervisor执行命令文件1234#!/bin/sh# 启动virtualenv. ~/pypi/pypienv/bin/activateexec pypi-server -p 3141 ~/pypi/packages\n2.生成supervisor配置文件，/etc/supervisor/conf.d/pypi-server.conf123456[program:pypi-server]  directory=~/pypi/  command=sh run-pypi.sh  autostart=true  autorestart=true  redirect_stderr=true\n3.启动和停止supervisor12$ sudo /etc/init.d/supervisor start$ sudo /etc/init.d/supervisor stop\n公有云pypi1.将包的相关信息, 根据PyPI账户的注册信息, 在PyPI主页上注册。1$ python setup.py register -r pypi\n2.将包的源代码内容打包上传。1$ python setup.py sdist upload -r pypi\n","dateCreated":"2017-09-08T18:57:18+08:00","dateModified":"2017-09-10T23:02:03+08:00","datePublished":"2017-09-08T18:57:18+08:00","description":"","headline":"pypi私有服务器","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2017/09/08/pypi-server/"},"publisher":{"@type":"Organization","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"http://yoursite.com/2017/09/08/pypi-server/"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"],"image":"uu.png"},"articleBody":"pypi-server搭建pypi官方说明1.基础安装和启动12345$ pip install pypiserver$ mkdir ~/pypi/packages# copy some source packages or eggs to this directory$ pypi-server -p 3141 ~/pypi/packages$ pip install -i http://localhost:8001/simple/ ...\n2.添加上传密码123$ pip install passlib$ apt-get install apache2-utils     # Mac OS不用安装$ htpasswd -sc ~/pypi/.htaccess user   # 回车后会提示输入密码，输入123\n3.启动pypi server时加载密钥文件1pypi-server -p 3141 -P ~/pypi/.htaccess ./packages\n4.在用户根目录下创建.pypirc文件12345678[distutils]index-servers =  privatepypi[privatepypi]repository:http://127.0.0.1:3141username:userpassword:123\n5.上传package1python setup.py sdist upload -r privatepypi\n6.下载package1$ pip install -i http://localhost:3134/simple/ package-name\n7.setup.py文件示例1234567891011121314151617181920212223242526272829303132333435363738394041424344import sysimport importlibfrom setuptools import setup, find_packagesPROJECT = &apos;libs&apos;requires = []# 读取requirements.txt文件，获得需要安装基础包with open(&apos;requirements.txt&apos;) as f:    for line in f.readlines():        requires.append(line.strip())# 打包时替换version.py文件if sys.argv[1] == &apos;sdist&apos;:    version_py = importlib.import_module(&apos;&#123;project&#125;.version&apos;.format(project=PROJECT))    version_py.update_version_file(&apos;&#123;project&#125;/version.py&apos;.format(project=PROJECT))# reload version模块，确保在替换version.py文件后获得最新的version号version = reload(importlib.import_module(&apos;&#123;pro&#125;.version&apos;.format(pro=PROJECT))).get_version()with open(&apos;README.md&apos;, &apos;r&apos;) as f:    readme = f.read()setup(    name=&apos;libs&apos;,    version=version,    description=&apos;libs is the common lib for Django project&apos;,    long_description=readme,    author=&apos;xxx&apos;,    author_email=&apos;xxx@gmail.com&apos;,    url=&apos;&apos;,    packages=find_packages(),    include_package_data=True,    install_requires=requires,    test_suite=&apos;nose.collector&apos;,    license=&apos;All rights reserved by xxx.&apos;,    zip_safe=False,    classifiers=(        &apos;Development Status :: 5 - Production/Stable&apos;,        &apos;Intended Audience :: Developers&apos;,        &apos;Natural Language :: English&apos;,        &apos;Programming Language :: Python&apos;,        &apos;Programming Language :: Python :: 2.7&apos;,    ),)\nsetup.py官方文档使用supervisor管理pypi-server1.生成run-pypi.sh文件，supervisor执行命令文件1234#!/bin/sh# 启动virtualenv. ~/pypi/pypienv/bin/activateexec pypi-server -p 3141 ~/pypi/packages\n2.生成supervisor配置文件，/etc/supervisor/conf.d/pypi-server.conf123456[program:pypi-server]  directory=~/pypi/  command=sh run-pypi.sh  autostart=true  autorestart=true  redirect_stderr=true\n3.启动和停止supervisor12$ sudo /etc/init.d/supervisor start$ sudo /etc/init.d/supervisor stop\n公有云pypi1.将包的相关信息, 根据PyPI账户的注册信息, 在PyPI主页上注册。1$ python setup.py register -r pypi\n2.将包的源代码内容打包上传。1$ python setup.py sdist upload -r pypi\n","dateCreated":"2017-09-08T18:57:18+08:00","dateModified":"2017-09-10T23:02:03+08:00","datePublished":"2017-09-08T18:57:18+08:00","description":"","headline":"pypi私有服务器","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2017/09/08/pypi-server/"},"publisher":{"@type":"Organization","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"],"image":"uu.png","logo":{"@type":"ImageObject","url":"uu.png"}},"url":"http://localhost:4000/2017/09/08/pypi-server/"}</script>
     <meta name="description" content="pypi-server搭建pypi官方说明1.基础安装和启动12345$ pip install pypiserver$ mkdir ~/pypi/packages# copy some source packages or eggs to this directory$ pypi-server -p 3141 ~/pypi/packages$ pip install -i http://loca">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="pypi私有服务器">
-<meta property="og:url" content="http://yoursite.com/2017/09/08/pypi-server/index.html">
+<meta property="og:url" content="http://localhost:4000/2017/09/08/pypi-server/index.html">
 <meta property="og:site_name" content="Xiangjy&#39;s Blog">
 <meta property="og:description" content="pypi-server搭建pypi官方说明1.基础安装和启动12345$ pip install pypiserver$ mkdir ~/pypi/packages# copy some source packages or eggs to this directory$ pypi-server -p 3141 ~/pypi/packages$ pip install -i http://loca">
 <meta property="og:locale" content="zh-cn">
@@ -31,6 +31,8 @@
     
         
     
+    
+        <meta property="og:image" content="http://localhost:4000/assets/images/uu.png"/>
     
     
     
@@ -49,6 +51,10 @@
 
 
     
+        
+            
+        
+    
 
 <header id="header" data-behavior="4">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
@@ -60,6 +66,8 @@
             <a class="header-right-picture " href="#about">
         
         
+            <img class="header-picture" src="/assets/images/uu.png" alt="作者的图片">
+        
         </a>
     
 </header>
@@ -67,8 +75,23 @@
             <!-- Define author's picture -->
 
 
+
+        
+    
+
 <nav id="sidebar" data-behavior="4">
     <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="/assets/images/uu.png" alt="作者的图片">
+                </a>
+                <h4 class="sidebar-profile-name">Xiangjy</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
+</h5>
+                
+            </div>
         
         
             <ul class="sidebar-buttons">
@@ -288,7 +311,7 @@
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Diesen Beitrag teilen">
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
         </li>
@@ -296,7 +319,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2017/09/08/pypi-server/" title="分享到 Facebook">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/2017/09/08/pypi-server/" title="分享到 Facebook">
                     <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
@@ -304,7 +327,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2017/09/08/pypi-server/" title="分享到 Twitter">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://localhost:4000/2017/09/08/pypi-server/" title="分享到 Twitter">
                     <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
@@ -312,7 +335,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://yoursite.com/2017/09/08/pypi-server/" title="分享到 Google+">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://localhost:4000/2017/09/08/pypi-server/" title="分享到 Google+">
                     <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
@@ -322,7 +345,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -374,7 +397,7 @@
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Diesen Beitrag teilen">
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
         </li>
@@ -382,7 +405,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2017/09/08/pypi-server/" title="分享到 Facebook">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/2017/09/08/pypi-server/" title="分享到 Facebook">
                     <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
@@ -390,7 +413,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2017/09/08/pypi-server/" title="分享到 Twitter">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://localhost:4000/2017/09/08/pypi-server/" title="分享到 Twitter">
                     <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
@@ -398,7 +421,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://yoursite.com/2017/09/08/pypi-server/" title="分享到 Google+">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://localhost:4000/2017/09/08/pypi-server/" title="分享到 Google+">
                     <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
@@ -408,7 +431,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -426,7 +449,7 @@
                 
                 
                 <li class="share-option">
-                    <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2017/09/08/pypi-server/">
+                    <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/2017/09/08/pypi-server/">
                         <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
                     </a>
                 </li>
@@ -434,7 +457,7 @@
                 
                 
                 <li class="share-option">
-                    <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2017/09/08/pypi-server/">
+                    <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http://localhost:4000/2017/09/08/pypi-server/">
                         <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
                     </a>
                 </li>
@@ -442,7 +465,7 @@
                 
                 
                 <li class="share-option">
-                    <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http://yoursite.com/2017/09/08/pypi-server/">
+                    <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http://localhost:4000/2017/09/08/pypi-server/">
                         <i class="fab fa-google-plus" aria-hidden="true"></i><span>分享到 Google+</span>
                     </a>
                 </li>
@@ -456,11 +479,17 @@
         
 
 
+    
+        
+    
+
 <div id="about">
     <div id="about-card">
         <div id="about-btn-close">
             <i class="fa fa-times"></i>
         </div>
+        
+            <img id="about-card-picture" src="/assets/images/uu.png" alt="作者的图片">
         
             <h4 id="about-card-name">Xiangjy</h4>
         

@@ -10,17 +10,17 @@
     <meta name="author" content="Xiangjy">
     
     
-        <link rel="icon" href="http://yoursite.com/assets/images/uu.png">
+        <link rel="icon" href="http://localhost:4000/assets/images/dx.png">
     
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"articleBody":"1.使用docker运行gitlab-runner123456789101112gitlab-runner:    container_name: gitlab-runner    image: gitlab/gitlab-runner:latest    restart: always    volumes:        - /etc/localtime:/etc/localtime        - /home/data/docker/gitlab-runner/home/.pypirc:/root/.pypirc        - /var/run/docker.sock:/var/run/docker.sock        - /home/data/docker/gitlab-runner/config:/etc/gitlab-runner    command: [run, --working-directory=/home/gitlab-runner]    dns:        - 192.168.0.100\n2.进入docker1sudo docker exec -it gitlab-runner bash\n3.执行gitlab-runner或gitlab-ci-multi-runner reigster123456789101112131415$ sudo gitlab-runner registerPlease enter the gitlab-ci coordinator URL (e.g. https://gitlab.com )## 输入gitlab地址Please enter the gitlab-ci token for this runner## gitlab的token(在gitlab的Admin Area中) 或者仓库的token(仓库-&gt;设置-&gt;Runner)Please enter the gitlab-ci description for this runner## Runner描述信息Please enter the gitlab-ci tags for this runner (comma separated):## Runner的标签 可以指定仓库，之后在.gitlab-ci.yml中配置相对应tags Please enter the executor: parallels, shell, ssh, virtualbox, docker+machine, docker-ssh+machine, docker, docker-ssh, kubernetes:docker  ## 执行类型 Please enter the Docker image (eg. ruby:2.1):build-image  ## 编译环境的镜像Runner registered successfully. Feel free to start it, but if it&apos;s running already the config should be automatically reloaded!\n注册runner执行类型有多种方式，具体参考：Using Docker Build\n4.查看已经注册的runner12gitlab-runner listListing configured runners                          ConfigFile=/mypath/.gitlab-runner/config.toml\n5.配置.gitlab-ci.yml详情参考：gitlab-ci说明文档\n","dateCreated":"2017-09-08T17:26:17+08:00","dateModified":"2017-09-08T18:55:29+08:00","datePublished":"2017-09-08T17:26:17+08:00","description":"","headline":"gitlib-runner","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://yoursite.com/2017/09/08/gitlib-runner/"},"publisher":{"@type":"Organization","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"]},"url":"http://yoursite.com/2017/09/08/gitlib-runner/","keywords":"持续集成"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"],"image":"uu.png"},"articleBody":"1.使用docker运行gitlab-runner123456789101112gitlab-runner:    container_name: gitlab-runner    image: gitlab/gitlab-runner:latest    restart: always    volumes:        - /etc/localtime:/etc/localtime        - /home/data/docker/gitlab-runner/home/.pypirc:/root/.pypirc        - /var/run/docker.sock:/var/run/docker.sock        - /home/data/docker/gitlab-runner/config:/etc/gitlab-runner    command: [run, --working-directory=/home/gitlab-runner]    dns:        - 192.168.0.100\n2.进入docker1sudo docker exec -it gitlab-runner bash\n3.执行gitlab-runner或gitlab-ci-multi-runner reigster123456789101112131415$ sudo gitlab-runner registerPlease enter the gitlab-ci coordinator URL (e.g. https://gitlab.com )## 输入gitlab地址Please enter the gitlab-ci token for this runner## gitlab的token(在gitlab的Admin Area中) 或者仓库的token(仓库-&gt;设置-&gt;Runner)Please enter the gitlab-ci description for this runner## Runner描述信息Please enter the gitlab-ci tags for this runner (comma separated):## Runner的标签 可以指定仓库，之后在.gitlab-ci.yml中配置相对应tags Please enter the executor: parallels, shell, ssh, virtualbox, docker+machine, docker-ssh+machine, docker, docker-ssh, kubernetes:docker  ## 执行类型 Please enter the Docker image (eg. ruby:2.1):build-image  ## 编译环境的镜像Runner registered successfully. Feel free to start it, but if it&apos;s running already the config should be automatically reloaded!\n注册runner执行类型有多种方式，具体参考：Using Docker Build\n4.查看已经注册的runner12gitlab-runner listListing configured runners                          ConfigFile=/mypath/.gitlab-runner/config.toml\n5.配置.gitlab-ci.yml详情参考：gitlab-ci说明文档\n","dateCreated":"2017-09-08T17:26:17+08:00","dateModified":"2017-09-08T18:55:29+08:00","datePublished":"2017-09-08T17:26:17+08:00","description":"","headline":"gitlib-runner","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2017/09/08/gitlib-runner/"},"publisher":{"@type":"Organization","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"],"image":"uu.png","logo":{"@type":"ImageObject","url":"uu.png"}},"url":"http://localhost:4000/2017/09/08/gitlib-runner/","keywords":"持续集成"}</script>
     <meta name="description" content="1.使用docker运行gitlab-runner123456789101112gitlab-runner:    container_name: gitlab-runner    image: gitlab/gitlab-runner:latest    restart: always    volumes:        - /etc/localtime:/etc/localtime">
 <meta name="keywords" content="持续集成">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="gitlib-runner">
-<meta property="og:url" content="http://yoursite.com/2017/09/08/gitlib-runner/index.html">
+<meta property="og:url" content="http://localhost:4000/2017/09/08/gitlib-runner/index.html">
 <meta property="og:site_name" content="Xiangjy&#39;s Blog">
 <meta property="og:description" content="1.使用docker运行gitlab-runner123456789101112gitlab-runner:    container_name: gitlab-runner    image: gitlab/gitlab-runner:latest    restart: always    volumes:        - /etc/localtime:/etc/localtime">
 <meta property="og:locale" content="zh-cn">
@@ -32,6 +32,8 @@
     
         
     
+    
+        <meta property="og:image" content="http://localhost:4000/assets/images/uu.png"/>
     
     
     
@@ -50,6 +52,10 @@
 
 
     
+        
+            
+        
+    
 
 <header id="header" data-behavior="4">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
@@ -61,6 +67,8 @@
             <a class="header-right-picture " href="#about">
         
         
+            <img class="header-picture" src="/assets/images/uu.png" alt="作者的图片">
+        
         </a>
     
 </header>
@@ -68,8 +76,23 @@
             <!-- Define author's picture -->
 
 
+
+        
+    
+
 <nav id="sidebar" data-behavior="4">
     <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="/assets/images/uu.png" alt="作者的图片">
+                </a>
+                <h4 class="sidebar-profile-name">Xiangjy</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
+</h5>
+                
+            </div>
         
         
             <ul class="sidebar-buttons">
@@ -290,7 +313,7 @@
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Diesen Beitrag teilen">
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
         </li>
@@ -298,7 +321,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2017/09/08/gitlib-runner/" title="分享到 Facebook">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/2017/09/08/gitlib-runner/" title="分享到 Facebook">
                     <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
@@ -306,7 +329,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2017/09/08/gitlib-runner/" title="分享到 Twitter">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://localhost:4000/2017/09/08/gitlib-runner/" title="分享到 Twitter">
                     <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
@@ -314,7 +337,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://yoursite.com/2017/09/08/gitlib-runner/" title="分享到 Google+">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://localhost:4000/2017/09/08/gitlib-runner/" title="分享到 Google+">
                     <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
@@ -324,7 +347,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -376,7 +399,7 @@
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Diesen Beitrag teilen">
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
         </li>
@@ -384,7 +407,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2017/09/08/gitlib-runner/" title="分享到 Facebook">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/2017/09/08/gitlib-runner/" title="分享到 Facebook">
                     <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
@@ -392,7 +415,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2017/09/08/gitlib-runner/" title="分享到 Twitter">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://localhost:4000/2017/09/08/gitlib-runner/" title="分享到 Twitter">
                     <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
@@ -400,7 +423,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://yoursite.com/2017/09/08/gitlib-runner/" title="分享到 Google+">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://localhost:4000/2017/09/08/gitlib-runner/" title="分享到 Google+">
                     <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
@@ -410,7 +433,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -428,7 +451,7 @@
                 
                 
                 <li class="share-option">
-                    <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2017/09/08/gitlib-runner/">
+                    <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/2017/09/08/gitlib-runner/">
                         <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
                     </a>
                 </li>
@@ -436,7 +459,7 @@
                 
                 
                 <li class="share-option">
-                    <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http://yoursite.com/2017/09/08/gitlib-runner/">
+                    <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http://localhost:4000/2017/09/08/gitlib-runner/">
                         <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
                     </a>
                 </li>
@@ -444,7 +467,7 @@
                 
                 
                 <li class="share-option">
-                    <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http://yoursite.com/2017/09/08/gitlib-runner/">
+                    <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http://localhost:4000/2017/09/08/gitlib-runner/">
                         <i class="fab fa-google-plus" aria-hidden="true"></i><span>分享到 Google+</span>
                     </a>
                 </li>
@@ -458,11 +481,17 @@
         
 
 
+    
+        
+    
+
 <div id="about">
     <div id="about-card">
         <div id="about-btn-close">
             <i class="fa fa-times"></i>
         </div>
+        
+            <img id="about-card-picture" src="/assets/images/uu.png" alt="作者的图片">
         
             <h4 id="about-card-name">Xiangjy</h4>
         
