@@ -334,7 +334,7 @@
                     <h2 id="了解软件架构：Serverless架构、微服务架构、分布式架构、单体架构"><a href="#了解软件架构：Serverless架构、微服务架构、分布式架构、单体架构" class="headerlink" title="了解软件架构：Serverless架构、微服务架构、分布式架构、单体架构"></a>了解软件架构：Serverless架构、微服务架构、分布式架构、单体架构</h2><p>SimpleEasy talkwithtrend  <em>今天</em></p>
 <p>如果一个软件开发人员，不了解软件架构的演进，会制约技术的选型和开发人员的生存、晋升空间。这里列举了目前主要的四种软件架构以及他们的优缺点，希望能够帮助软件开发人员拓展知识面。</p>
 <h2 id="一、单体架构"><a href="#一、单体架构" class="headerlink" title="一、单体架构"></a><strong>一、单体架构</strong></h2><p>单体架构比较初级，典型的三级架构，前端(Web/手机端)+中间业务逻辑层+数据库层。这是一种典型的Java Spring mvc或者Python Drango框架的应用。其架构图如下所示：</p>
-<p><img src="https://mmbiz.qpic.cn/mmbiz/icdBCpcEToIicjNOmLOYEHib6j7uzhhpEkbQ3PrxicsxR9C9U4eWGuncuTyTKFJE94bk2ibzficO0v73IjzEY91PdDBg/640?wx_fmt=other&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="img"></p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz/icdBCpcEToIicjNOmLOYEHib6j7uzhhpEkbQ3PrxicsxR9C9U4eWGuncuTyTKFJE94bk2ibzficO0v73IjzEY91PdDBg/640" alt="img"></p>
 <p>单体架构的应用比较容易部署、测试， 在项目的初期，单体应用可以很好地运行。然而，随着需求的不断增加， 越来越多的人加入开发团队，代码库也在飞速地膨胀。慢慢地，单体应用变得越来越臃肿，可维护性、灵活性逐渐降低，维护成本越来越高。下面是单体架构应用的一些<strong>缺点：</strong></p>
 <p>复杂性高：以一个百万行级别的单体应用为例，整个项目包含的模块非常多、模块的边界模糊、 依赖关系不清晰、 代码质量参差不齐、 混乱地堆砌在一起。可想而知整个项目非常复杂。每次修改代码都心惊胆战， 甚至添加一个简单的功能， 或者修改一个Bug都会带来隐含的缺陷。</p>
 <p>技术债务：随着时间推移、需求变更和人员更迭，会逐渐形成应用程序的技术债务， 并且越积 越多。“ 不坏不修”， 这在软件开发中非常常见， 在单体应用中这种思想更甚。已使用的系统设计或代码难以被修改，因为应用程序中的其他模块可能会以意料之外的方式使用它。</p>
@@ -343,7 +343,7 @@
 <p>扩展能力受限：单体应用只能作为一个整体进行扩展，无法根据业务模块的需要进行伸缩。例如，应用中有的模块是计算密集型的，它需要强劲的CPU；有的模块则是IO密集型的，需要更大的内存。由于这些模块部署在一起，不得不在硬件的选择上做出妥协。</p>
 <p>阻碍技术创新：单体应用往往使用统一的技术平台或方案解决所有的问题， 团队中的每个成员 都必须使用相同的开发语言和框架，要想引入新框架或新技术平台会非常困难。</p>
 <h2 id="二、分布式应用"><a href="#二、分布式应用" class="headerlink" title="二、分布式应用"></a><strong>二、分布式应用</strong></h2><p>中级架构，分布式应用，中间层分布式+数据库分布式，是单体架构的并发扩展，将一个大的系统划分为多个业务模块，业务模块分别部署在不同的服务器上，各个业务模块之间通过接口进行数据交互。数据库也大量采用分布式数据库，如redis、ES、solor等。通过LVS/Nginx代理应用，将用户请求均衡的负载到不同的服务器上。其架构图如下所示：</p>
-<p><img src="https://mmbiz.qpic.cn/mmbiz/icdBCpcEToIicjNOmLOYEHib6j7uzhhpEkb5Oa2lLbfAibIZ3fd9nc51AgHPNEmzzY6LfYcANnhFmUq1LhDkdSgKFA/640?wx_fmt=other&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="img"></p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz/icdBCpcEToIicjNOmLOYEHib6j7uzhhpEkb5Oa2lLbfAibIZ3fd9nc51AgHPNEmzzY6LfYcANnhFmUq1LhDkdSgKFA/640" alt="img"></p>
 <p>该架构相对于单体架构来说，这种架构提供了负载均衡的能力，大大提高了系统负载能力，解决了网站高并发的需求。另外还有以下特点：</p>
 <p>降低了耦合度：把模块拆分,使用接口通信,降低模块之间的耦合度。</p>
 <p>责任清晰：把项目拆分成若干个子项目,不同的团队负责不同的子项目。</p>
@@ -352,7 +352,7 @@
 <p>提高代码的复用性：比如service层,如果不采用分布式rest服务方式架构就会在手机wap商城,微信商城,pc,android，ios每个端都要写一个service层逻辑,开发量大,难以维护一起升级,这时候就可以采用分布式rest服务方式,公用一个service层。</p>
 <p><strong>缺点 :</strong> 系统之间的交互要使用远程通信,接口开发增大工作量,但是利大于弊。</p>
 <h2 id="三、微服务架构"><a href="#三、微服务架构" class="headerlink" title="三、微服务架构"></a><strong>三、微服务架构</strong></h2><p>微服务架构，主要是中间层分解，将系统拆分成很多小应用（微服务），微服务可以部署在不同的服务器上，也可以部署在相同的服务器不同的容器上。当应用的故障不会影响到其他应用，单应用的负载也不会影响到其他应用，其代表框架有Spring cloud、Dubbo等。其架构图如下所示：</p>
-<p><img src="https://mmbiz.qpic.cn/mmbiz/icdBCpcEToIicjNOmLOYEHib6j7uzhhpEkbjIvaRC3qR4P9lZ90vlTso9J4kdibO8ZOh93Sf6lyAadmhRTKW9o3k2A/640?wx_fmt=other&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="img"></p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz/icdBCpcEToIicjNOmLOYEHib6j7uzhhpEkbjIvaRC3qR4P9lZ90vlTso9J4kdibO8ZOh93Sf6lyAadmhRTKW9o3k2A/640" alt="img"></p>
 <p>易于开发和维护：一个微服务只会关注一个特定的业务功能，所以它业务清晰、代码量较少。开发和维护单个微服务相对简单。而整个应用是由若干个微服务构建而成的，所以整个应用也会被维持在一个可控状态。</p>
 <p>单个微服务启动较快：单个微服务代码量较少， 所以启动会比较快。</p>
 <p>局部修改容易部署：单体应用只要有修改，就得重新部署整个应用，微服务解决了这样的问题。一般来说，对某个微服务进行修改，只需要重新部署这个服务即可。</p>
@@ -362,7 +362,7 @@
 <p>分布式固有的复杂性：使用微服务构建的是分布式系统。对于一个分布式系统，系统容错、网络延迟、分布式事务等都会带来巨大的挑战。</p>
 <p>接口调整成本高：微服务之间通过接口进行通信。如果修改某一个微服务的API，可能所有使用了该接口的微服务都需要做调整。</p>
 <p>重复劳动：很多服务可能都会使用到相同的功能，而这个功能并没有达到分解为一个微服务的程度，这个时候，可能各个服务都会开发这一功能，从而导致代码重复。尽管可以使用共享库来解决这个问题（例如可以将这个功能封装成公共组件，需要该功能的微服务引用该组件），但共享库在多语言环境下就不一定行得通了。</p>
-<h2 id="四、Serverless架构"><a href="#四、Serverless架构" class="headerlink" title="四、Serverless架构"></a><strong>四、Serverless架构</strong></h2><p><img src="https://mmbiz.qpic.cn/mmbiz/icdBCpcEToIicjNOmLOYEHib6j7uzhhpEkbBxNib7XybvLOTNC7AjibVeOktOQ0MxMDhVUiaRL5sx92oPmFB8glzG8og/640?wx_fmt=other&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="img"></p>
+<h2 id="四、Serverless架构"><a href="#四、Serverless架构" class="headerlink" title="四、Serverless架构"></a><strong>四、Serverless架构</strong></h2><p><img src="https://mmbiz.qpic.cn/mmbiz/icdBCpcEToIicjNOmLOYEHib6j7uzhhpEkbBxNib7XybvLOTNC7AjibVeOktOQ0MxMDhVUiaRL5sx92oPmFB8glzG8og/640" alt="img"></p>
 <p>2014年11月14日，亚马逊AWS发布了Lambda。当时Lambda被描述为：一种计算服务，根据时间运行用户的代码，无需关心底层的计算资源。从某种意义上来说，Lambda姗姗来迟，它像云计算的PaaS理念：客户只管业务，无需担心存储和计算资源。2014年10月22日，谷歌收购了实时后端数据库创业公司Firebase。Firebase声称开发者只需引用一个API库文件就可以使用标准REST API的各种接口对数据进行读写操作，只需编写HTML＋CSS＋JavaScrip前端代码，不需要服务器端代码（如需整合，也极其简单）。</p>
 <p>相对于上两者，Facebook 在2014年二月收购的 Parse，则侧重于提供一个通用的后台服务。这些服务被称为Serverless或no sever。想到PaaS（平台即服务）了是吗？很像，用户不需要关心基础设施，只需要关心业务，这是迟到的PaaS，也是更实用的PaaS。这很有可能将会变革整个开发过程和传统的应用生命周期，一旦开发者们习惯了这种全自动的云上资源的创建和分配，或许就再也回不到那些需要微应用配置资源的时代里去了。</p>
 <p>Serverless架构能够让开发者在构建应用的过程中无需关注计算资源的获取和运维，由平台来按需分配计算资源并保证应用执行的SLA（服务等级协议），按照调用次数进行计费，有效的节省应用成本。ServerLess的架构如上图所示。其优点如下所示：</p>
@@ -615,9 +615,11 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h1 id="MySQL"><a href="#MySQL" class="headerlink" title="MySQL"></a>MySQL</h1><p>CentOS默认不支持mysql</p>
+                    <h1 id="MySQL"><a href="#MySQL" class="headerlink" title="MySQL"></a>MySQL</h1><p>###安装mysql</p>
+<p>CentOS默认不支持mysql</p>
 <p>yum remove mariadb-server<br>cd /var/lib &amp;&amp; rm -rfv mysql<br>yum install mariadb-server</p>
-
+<p>###添加远程访问用户</p>
+<figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">USER</span> <span class="string">'new_root'</span>@<span class="string">'%'</span> <span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'***'</span>;</span><br><span class="line">  <span class="keyword">GRANT</span> ALL <span class="keyword">PRIVILEGES</span> <span class="keyword">ON</span> *.* <span class="keyword">TO</span> <span class="string">'new_root'</span>@<span class="string">'%'</span> <span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'***'</span> <span class="keyword">WITH</span> <span class="keyword">GRANT</span> <span class="keyword">OPTION</span> MAX_QUERIES_PER_HOUR <span class="number">0</span> MAX_CONNECTIONS_PER_HOUR <span class="number">0</span> MAX_UPDATES_PER_HOUR <span class="number">0</span> MAX_USER_CONNECTIONS <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
                     
                         
 
