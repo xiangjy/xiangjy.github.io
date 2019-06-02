@@ -240,6 +240,282 @@
     <section class="postShorten-group main-content-wrap">
     
     
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2017/08/16/python-time-complexity/">
+                            Python内置方法的时间复杂度
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2017-08-16T09:38:35+08:00">
+	
+		    8月 16, 2017
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h4 id="列表-list"><a href="#列表-list" class="headerlink" title="列表(list)"></a>列表(list)</h4><p>以完全随机的列表考虑平均情况。<br>列表是以数组(Array)实现的。最大的开销发生在超过当前分配大小的增长，这种情况下所有元素都需要移动；或者是在起始位置附近插入或者删除元素，这种情况下所有在该位置后面的元素都需要移动。如果你需要在一个队列的两端进行增删的操作，应当使用collections.deque(双向队列)</p>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>平均情况</th>
+<th>最坏情况</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>复制</td>
+<td>O(n)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>append</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>插入</td>
+<td>O(1)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>取元素</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>更改元素</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>输出元素</td>
+<td>O(n)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>遍历</td>
+<td>O(n)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>取切片</td>
+<td>O(k)</td>
+<td>O(k)</td>
+</tr>
+<tr>
+<td>删除切片</td>
+<td>O(n)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>更改切片</td>
+<td>O(k+n)</td>
+<td>O(k+n)</td>
+</tr>
+<tr>
+<td>extend</td>
+<td>O(k)</td>
+<td>O(k)</td>
+</tr>
+<tr>
+<td>排序</td>
+<td>O(n log n)</td>
+<td>O(n log n)</td>
+</tr>
+<tr>
+<td>列表乘法</td>
+<td>O(nk)</td>
+<td>O(nk)</td>
+</tr>
+<tr>
+<td>x in s</td>
+<td>O(n)</td>
+<td></td>
+</tr>
+<tr>
+<td>min(s),max(s)</td>
+<td>O(n)</td>
+<td></td>
+</tr>
+<tr>
+<td>长度计算</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="双向队列-collections-deque"><a href="#双向队列-collections-deque" class="headerlink" title="双向队列(collections.deque)"></a>双向队列(collections.deque)</h4><p>deque(double-ended queue，双向队列)是以双向链表的形式实现的(Well,a list of arrays rather than objects,for greater efficiency)。双向队列的两端都是可达的，但从查找队列中间的元素较为缓慢，增删元素就更慢了。</p>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>平均情况</th>
+<th>最坏情况</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>复制</td>
+<td>O(n)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>append</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>appendleft</td>
+<td>O(1)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>pop</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>popleft</td>
+<td>O(1)</td>
+<td>O(1)</td>
+</tr>
+<tr>
+<td>extend</td>
+<td>O(k)</td>
+<td>O(k)</td>
+</tr>
+<tr>
+<td>extendleft</td>
+<td>O(k)</td>
+<td>O(k)</td>
+</tr>
+<tr>
+<td>rotate</td>
+<td>O(k)</td>
+<td>O(k)</td>
+</tr>
+<tr>
+<td>remove</td>
+<td>O(n)</td>
+<td>O(n)</td>
+</tr>
+</tbody>
+</table>
+<h4 id="集合-set"><a href="#集合-set" class="headerlink" title="集合(set)"></a>集合(set)</h4><p>未列出的操作可参考dict——二者的实现非常相似。</p>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>平均情况</th>
+<th>最坏情况</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>x in s</td>
+<td>O(1)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>并集s&#124;t</td>
+<td>O(len(s)+len(t))</td>
+<td></td>
+</tr>
+<tr>
+<td>交集s&amp;t</td>
+<td>O(min(len(s), len(t)))</td>
+<td>O(len(s)*len(t))</td>
+</tr>
+<tr>
+<td>差集s-t</td>
+<td>O(len(s))</td>
+<td></td>
+</tr>
+<tr>
+<td>s.difference_update(t)</td>
+<td>O(len(t))</td>
+<td></td>
+</tr>
+<tr>
+<td>对称差集s^t</td>
+<td>O(len(s))</td>
+<td>O(len(s)*len(t))</td>
+</tr>
+<tr>
+<td>s.symmetric_difference_update(t)</td>
+<td>O(len(t))</td>
+<td>O(len(t)*len(s))</td>
+</tr>
+</tbody>
+</table>
+<p>由源码得知，求差集(s-t，或s.difference(t))运算与更新为差集(s.difference_update(t))运算的时间复杂度并不相同！前者是将在s中，但不在t中的元素添加到新的集合中，因此时间复杂度为O(len(s))；后者是将在t中的元素从s中移除，因此时间复杂度为O(len(t)。因此，使用时请留心，根据两个集合的大小以及是否需要新集合来选择合适的方法。<br>集合的s-t运算中，并不要求t也一定是集合。只要t是可遍历的对象即可。</p>
+<h4 id="字典-dict"><a href="#字典-dict" class="headerlink" title="字典(dict)"></a>字典(dict)</h4><p>下列字典的平均情况基于以下假设：<br>1.对象的散列函数足够撸棒(robust)，不会发生冲突。<br>2.字典的键是从所有可能的键的集合中随机选择的。<br>只使用字符串最为字典的键。这么做虽然不会影响算法的时间复杂度，但会对常数项产生显著的影响，这决定了你的一段程序能对快跑完。</p>
+<table>
+<thead>
+<tr>
+<th>操作</th>
+<th>平均情况</th>
+<th>最坏情况</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>复制</td>
+<td>O(n)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>取元素</td>
+<td>O(1)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>更改元素</td>
+<td>O(1)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>删除元素</td>
+<td>O(1)</td>
+<td>O(n)</td>
+</tr>
+<tr>
+<td>遍历</td>
+<td>O(n)</td>
+<td>O(n)</td>
+</tr>
+</tbody>
+</table>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2017/08/16/python-time-complexity/#post-footer" class="postShorten-excerpt_link link">
+                                评论和共享
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
     <article class="postShorten postShorten--thumbnailimg-right">
         <div class="postShorten-wrap">
             

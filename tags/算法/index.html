@@ -288,6 +288,52 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2017/09/19/algorithm/">
+                            algorithm
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2017-09-19T15:42:24+08:00">
+	
+		    9月 19, 2017
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h4 id="插入排序"><a href="#插入排序" class="headerlink" title="插入排序"></a>插入排序</h4><p>将后面的元素插入前面已经排序好的序列中<br>循环每一个元素<br>从第二个元素开始循环，逆序与前面每一个元素比较(默认前面元素已经是排序好的)，如果小于则交换<br>[8, 7, 6, 5, 4, 3, 2, 1]<br>先选出7，逆序循环与前面排序好的[8]比较，小于交换<br>[7, 8, 6, 5, 4, 3, 2, 1]<br>选出6，逆序循环与前面排序好的[7,8]比较，小于交换<br>[7, 6, 8, 5, 4, 3, 2, 1]<br>[6, 7, 8, 5, 4, 3, 2, 1]<br>一次类推</p>
+<h4 id="希尔排序"><a href="#希尔排序" class="headerlink" title="希尔排序"></a>希尔排序</h4><p>根据序列长度分组后，对每个组进行插入排序<br>循环对数组分组，分完的组进行插入排序<br>[8, 7, 6, 5, 4, 3, 2, 1]<br>根据长度分组len(L)/2 = 4, gap = 4<br>[L[0], L[0 + 4]], [L[1], L[1 + 4]…<br>[8, 4], [7, 3], [6, 2], [5, 1] -&gt; [4, 8], [3, 7], [2, 6], [1, 5]<br>[4,3,2,1,8,7,6,5]<br>gap /= 2<br>[L[0], L[0 + 2], L[0 + 4], L[0 + 6]]…<br>[4, 2, 8, 6] [3, 1, 7, 5] -&gt; [2, 4, 6, 8] [1, 3, 5, 7]<br>gap /= 2<br>[2, 1, 4, 3, 6, 5, 8, 7]<br>gap /= 2<br>[2, 1, 4, 3, 6, 5, 8, 7] -&gt; [1, 2, 3, 4, 5, 6, 7, 8]</p>
+<h4 id="选择排序"><a href="#选择排序" class="headerlink" title="选择排序"></a>选择排序</h4><p>选择待排序子序列中最小值，最小值换到第一位置<br>[8, 7, 6, 5, 4, 3, 2, 1]<br>[1, 7, 6, 5, 4, 3, 2, 8]<br>[1, 2, 6, 5, 4, 3, 7, 8]<br>[1, 2, 3, 5, 4, 6, 7, 8]…</p>
+<h4 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h4><h4 id="冒泡排序"><a href="#冒泡排序" class="headerlink" title="冒泡排序"></a>冒泡排序</h4><p>从第一个元素比较，将大的元素往后面移<br>[8, 7, 6, 5, 4, 3, 2, 1]<br>[7, 8, 6, 5, 4, 3, 2, 1]…<br>[7, 6, 5, 4, 3, 2, 1, 8]…</p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2017/09/19/algorithm/#post-footer" class="postShorten-excerpt_link link">
+                                评论和共享
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2017/08/21/fibonacci/">
                             Python实现斐波那契
                         </a>

@@ -6,7 +6,7 @@
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Xiangjy&#39;s Blog">
-    <title>gitlab - Xiangjy&#39;s Blog</title>
+    <title>algorithm - Xiangjy&#39;s Blog</title>
     <meta name="author" content="Xiangjy">
     
     
@@ -15,15 +15,19 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"],"image":"dx.png"},"articleBody":"","dateCreated":"2017-08-21T08:58:06+08:00","dateModified":"2017-08-21T08:58:06+08:00","datePublished":"2017-08-21T08:58:06+08:00","description":"","headline":"gitlab","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2017/08/21/gitlab-ci-and-runner/"},"publisher":{"@type":"Organization","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"],"image":"dx.png","logo":{"@type":"ImageObject","url":"dx.png"}},"url":"http://localhost:4000/2017/08/21/gitlab-ci-and-runner/"}</script>
-    <meta property="og:type" content="blog">
-<meta property="og:title" content="gitlab">
-<meta property="og:url" content="http://localhost:4000/2017/08/21/gitlab-ci-and-runner/index.html">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"],"image":"dx.png"},"articleBody":"插入排序将后面的元素插入前面已经排序好的序列中循环每一个元素从第二个元素开始循环，逆序与前面每一个元素比较(默认前面元素已经是排序好的)，如果小于则交换[8, 7, 6, 5, 4, 3, 2, 1]先选出7，逆序循环与前面排序好的[8]比较，小于交换[7, 8, 6, 5, 4, 3, 2, 1]选出6，逆序循环与前面排序好的[7,8]比较，小于交换[7, 6, 8, 5, 4, 3, 2, 1][6, 7, 8, 5, 4, 3, 2, 1]一次类推\n希尔排序根据序列长度分组后，对每个组进行插入排序循环对数组分组，分完的组进行插入排序[8, 7, 6, 5, 4, 3, 2, 1]根据长度分组len(L)/2 = 4, gap = 4[L[0], L[0 + 4]], [L[1], L[1 + 4]…[8, 4], [7, 3], [6, 2], [5, 1] -&gt; [4, 8], [3, 7], [2, 6], [1, 5][4,3,2,1,8,7,6,5]gap /= 2[L[0], L[0 + 2], L[0 + 4], L[0 + 6]]…[4, 2, 8, 6] [3, 1, 7, 5] -&gt; [2, 4, 6, 8] [1, 3, 5, 7]gap /= 2[2, 1, 4, 3, 6, 5, 8, 7]gap /= 2[2, 1, 4, 3, 6, 5, 8, 7] -&gt; [1, 2, 3, 4, 5, 6, 7, 8]\n选择排序选择待排序子序列中最小值，最小值换到第一位置[8, 7, 6, 5, 4, 3, 2, 1][1, 7, 6, 5, 4, 3, 2, 8][1, 2, 6, 5, 4, 3, 7, 8][1, 2, 3, 5, 4, 6, 7, 8]…\n堆排序冒泡排序从第一个元素比较，将大的元素往后面移[8, 7, 6, 5, 4, 3, 2, 1][7, 8, 6, 5, 4, 3, 2, 1]…[7, 6, 5, 4, 3, 2, 1, 8]…\n","dateCreated":"2017-09-19T15:42:24+08:00","dateModified":"2019-06-03T00:22:49+08:00","datePublished":"2017-09-19T15:42:24+08:00","description":"","headline":"algorithm","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2017/09/19/algorithm/"},"publisher":{"@type":"Organization","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"],"image":"dx.png","logo":{"@type":"ImageObject","url":"dx.png"}},"url":"http://localhost:4000/2017/09/19/algorithm/","keywords":"算法"}</script>
+    <meta name="description" content="插入排序将后面的元素插入前面已经排序好的序列中循环每一个元素从第二个元素开始循环，逆序与前面每一个元素比较(默认前面元素已经是排序好的)，如果小于则交换[8, 7, 6, 5, 4, 3, 2, 1]先选出7，逆序循环与前面排序好的[8]比较，小于交换[7, 8, 6, 5, 4, 3, 2, 1]选出6，逆序循环与前面排序好的[7,8]比较，小于交换[7, 6, 8, 5, 4, 3, 2, 1">
+<meta name="keywords" content="算法">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="algorithm">
+<meta property="og:url" content="http://localhost:4000/2017/09/19/algorithm/index.html">
 <meta property="og:site_name" content="Xiangjy&#39;s Blog">
+<meta property="og:description" content="插入排序将后面的元素插入前面已经排序好的序列中循环每一个元素从第二个元素开始循环，逆序与前面每一个元素比较(默认前面元素已经是排序好的)，如果小于则交换[8, 7, 6, 5, 4, 3, 2, 1]先选出7，逆序循环与前面排序好的[8]比较，小于交换[7, 8, 6, 5, 4, 3, 2, 1]选出6，逆序循环与前面排序好的[7,8]比较，小于交换[7, 6, 8, 5, 4, 3, 2, 1">
 <meta property="og:locale" content="zh-cn">
-<meta property="og:updated_time" content="2017-08-21T00:58:06.000Z">
+<meta property="og:updated_time" content="2019-06-02T16:22:49.842Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="gitlab">
+<meta name="twitter:title" content="algorithm">
+<meta name="twitter:description" content="插入排序将后面的元素插入前面已经排序好的序列中循环每一个元素从第二个元素开始循环，逆序与前面每一个元素比较(默认前面元素已经是排序好的)，如果小于则交换[8, 7, 6, 5, 4, 3, 2, 1]先选出7，逆序循环与前面排序好的[8]比较，小于交换[7, 8, 6, 5, 4, 3, 2, 1]选出6，逆序循环与前面排序好的[7,8]比较，小于交换[7, 6, 8, 5, 4, 3, 2, 1">
     
     
         
@@ -244,14 +248,14 @@
         <div class="post-header main-content-wrap text-left">
     
         <h1 class="post-title">
-            gitlab
+            algorithm
         </h1>
     
     
         <div class="post-meta">
-    <time datetime="2017-08-21T08:58:06+08:00">
+    <time datetime="2017-09-19T15:42:24+08:00">
 	
-		    8月 21, 2017
+		    9月 19, 2017
     	
     </time>
     
@@ -263,12 +267,23 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            
+            <h4 id="插入排序"><a href="#插入排序" class="headerlink" title="插入排序"></a>插入排序</h4><p>将后面的元素插入前面已经排序好的序列中<br>循环每一个元素<br>从第二个元素开始循环，逆序与前面每一个元素比较(默认前面元素已经是排序好的)，如果小于则交换<br>[8, 7, 6, 5, 4, 3, 2, 1]<br>先选出7，逆序循环与前面排序好的[8]比较，小于交换<br>[7, 8, 6, 5, 4, 3, 2, 1]<br>选出6，逆序循环与前面排序好的[7,8]比较，小于交换<br>[7, 6, 8, 5, 4, 3, 2, 1]<br>[6, 7, 8, 5, 4, 3, 2, 1]<br>一次类推</p>
+<h4 id="希尔排序"><a href="#希尔排序" class="headerlink" title="希尔排序"></a>希尔排序</h4><p>根据序列长度分组后，对每个组进行插入排序<br>循环对数组分组，分完的组进行插入排序<br>[8, 7, 6, 5, 4, 3, 2, 1]<br>根据长度分组len(L)/2 = 4, gap = 4<br>[L[0], L[0 + 4]], [L[1], L[1 + 4]…<br>[8, 4], [7, 3], [6, 2], [5, 1] -&gt; [4, 8], [3, 7], [2, 6], [1, 5]<br>[4,3,2,1,8,7,6,5]<br>gap /= 2<br>[L[0], L[0 + 2], L[0 + 4], L[0 + 6]]…<br>[4, 2, 8, 6] [3, 1, 7, 5] -&gt; [2, 4, 6, 8] [1, 3, 5, 7]<br>gap /= 2<br>[2, 1, 4, 3, 6, 5, 8, 7]<br>gap /= 2<br>[2, 1, 4, 3, 6, 5, 8, 7] -&gt; [1, 2, 3, 4, 5, 6, 7, 8]</p>
+<h4 id="选择排序"><a href="#选择排序" class="headerlink" title="选择排序"></a>选择排序</h4><p>选择待排序子序列中最小值，最小值换到第一位置<br>[8, 7, 6, 5, 4, 3, 2, 1]<br>[1, 7, 6, 5, 4, 3, 2, 8]<br>[1, 2, 6, 5, 4, 3, 7, 8]<br>[1, 2, 3, 5, 4, 6, 7, 8]…</p>
+<h4 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h4><h4 id="冒泡排序"><a href="#冒泡排序" class="headerlink" title="冒泡排序"></a>冒泡排序</h4><p>从第一个元素比较，将大的元素往后面移<br>[8, 7, 6, 5, 4, 3, 2, 1]<br>[7, 8, 6, 5, 4, 3, 2, 1]…<br>[7, 6, 5, 4, 3, 2, 1, 8]…</p>
+
             
 
         </div>
     </div>
     <div id="post-footer" class="post-footer main-content-wrap">
+        
+            <div class="post-footer-tags">
+                <span class="text-color-light text-small">标签</span><br>
+                
+    <a class="tag tag--primary tag--small t-link" href="/tags/算法/">算法</a>
+
+            </div>
         
         
             <div class="post-actions-wrap">
@@ -277,7 +292,7 @@
             <li class="post-action">
                 
                     
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/08/21/抖音数据抓取/" data-tooltip="抖音数据抓取" aria-label="上一篇: 抖音数据抓取">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/02/07/nginx-pan-domain-name/" data-tooltip="Nginx进行泛域名解析" aria-label="上一篇: Nginx进行泛域名解析">
                 
                     <i class="fa fa-angle-left" aria-hidden="true"></i>
                     <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
@@ -286,7 +301,7 @@
             <li class="post-action">
                 
                     
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/08/18/docker/" data-tooltip="docker" aria-label="下一篇: docker">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/09/19/HTML5 惊艳 demo/" data-tooltip="HTML5 惊艳 demo" aria-label="下一篇: HTML5 惊艳 demo">
                 
                     <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
@@ -304,7 +319,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/2017/08/21/gitlab-ci-and-runner/" title="分享到 Facebook">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/2017/09/19/algorithm/" title="分享到 Facebook">
                     <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
@@ -312,7 +327,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://localhost:4000/2017/08/21/gitlab-ci-and-runner/" title="分享到 Twitter">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://localhost:4000/2017/09/19/algorithm/" title="分享到 Twitter">
                     <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
@@ -320,7 +335,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://localhost:4000/2017/08/21/gitlab-ci-and-runner/" title="分享到 Google+">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://localhost:4000/2017/09/19/algorithm/" title="分享到 Google+">
                     <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
@@ -363,7 +378,7 @@
             <li class="post-action">
                 
                     
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/08/21/抖音数据抓取/" data-tooltip="抖音数据抓取" aria-label="上一篇: 抖音数据抓取">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2018/02/07/nginx-pan-domain-name/" data-tooltip="Nginx进行泛域名解析" aria-label="上一篇: Nginx进行泛域名解析">
                 
                     <i class="fa fa-angle-left" aria-hidden="true"></i>
                     <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
@@ -372,7 +387,7 @@
             <li class="post-action">
                 
                     
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/08/18/docker/" data-tooltip="docker" aria-label="下一篇: docker">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/09/19/HTML5 惊艳 demo/" data-tooltip="HTML5 惊艳 demo" aria-label="下一篇: HTML5 惊艳 demo">
                 
                     <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
@@ -390,7 +405,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/2017/08/21/gitlab-ci-and-runner/" title="分享到 Facebook">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/2017/09/19/algorithm/" title="分享到 Facebook">
                     <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
@@ -398,7 +413,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://localhost:4000/2017/08/21/gitlab-ci-and-runner/" title="分享到 Twitter">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://localhost:4000/2017/09/19/algorithm/" title="分享到 Twitter">
                     <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
@@ -406,7 +421,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://localhost:4000/2017/08/21/gitlab-ci-and-runner/" title="分享到 Google+">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://localhost:4000/2017/09/19/algorithm/" title="分享到 Google+">
                     <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
@@ -434,7 +449,7 @@
                 
                 
                 <li class="share-option">
-                    <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/2017/08/21/gitlab-ci-and-runner/">
+                    <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/2017/09/19/algorithm/">
                         <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
                     </a>
                 </li>
@@ -442,7 +457,7 @@
                 
                 
                 <li class="share-option">
-                    <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http://localhost:4000/2017/08/21/gitlab-ci-and-runner/">
+                    <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http://localhost:4000/2017/09/19/algorithm/">
                         <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
                     </a>
                 </li>
@@ -450,7 +465,7 @@
                 
                 
                 <li class="share-option">
-                    <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http://localhost:4000/2017/08/21/gitlab-ci-and-runner/">
+                    <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http://localhost:4000/2017/09/19/algorithm/">
                         <i class="fab fa-google-plus" aria-hidden="true"></i><span>分享到 Google+</span>
                     </a>
                 </li>
