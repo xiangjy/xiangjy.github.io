@@ -28,7 +28,7 @@
         
     
     
-        <meta property="og:image" content="http://localhost:4000/assets/images/uu.png"/>
+        <meta property="og:image" content="http://localhost:4000/assets/images/dx.png"/>
     
     
     
@@ -52,7 +52,7 @@
         
     
 
-<header id="header" data-behavior="1">
+<header id="header" data-behavior="2">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
     <div class="header-title">
         <a class="header-title-link" href="/ ">Xiangjy&#39;s Blog</a>
@@ -62,7 +62,7 @@
             <a class="header-right-picture " href="#about">
         
         
-            <img class="header-picture" src="/assets/images/uu.png" alt="作者的图片">
+            <img class="header-picture" src="/assets/images/dx.png" alt="作者的图片">
         
         </a>
     
@@ -75,12 +75,12 @@
         
     
 
-<nav id="sidebar" data-behavior="1">
+<nav id="sidebar" data-behavior="2">
     <div class="sidebar-container">
         
             <div class="sidebar-profile">
                 <a href="/#about">
-                    <img class="sidebar-profile-picture" src="/assets/images/uu.png" alt="作者的图片">
+                    <img class="sidebar-profile-picture" src="/assets/images/dx.png" alt="作者的图片">
                 </a>
                 <h4 class="sidebar-profile-name">Xiangjy</h4>
                 
@@ -232,7 +232,7 @@
 </nav>
 
             
-            <div id="main" data-behavior="1"
+            <div id="main" data-behavior="2"
                  class="
                         hasCoverMetaIn
                         ">
@@ -263,9 +263,29 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h3 id="主要实现："><a href="#主要实现：" class="headerlink" title="主要实现："></a>主要实现：</h3><pre><code>xxx.domain2.domain1.com -&gt; domain2.domain1.com/xxx
-xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
-</code></pre><p>nginx rewrite实现二级或三级域名泛解析<br>在nginx的相对应的配置文件的server中添加<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ($host ~* ^([^\.]+)\.([^\.]+)\.([^\.]+)\.([^\.]+)$) &#123;  <span class="comment">#三级域名</span></span><br><span class="line">    set $subdomain $<span class="number">1</span>;</span><br><span class="line">    set $domain $<span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">location / &#123; <span class="comment">#添加rewrite</span></span><br><span class="line">    rewrite ^/(.*)$ /index.html/$<span class="number">1</span>$subdomain last;</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+                    <p>##nginx泛域名解析，实现多个二级域名</p>
+<p>利用nginx泛域名解析配置二级域名和多域名，实现二级域名子站，用户个性独立子域名。</p>
+<p>主要针对用户独立子域名这种情况，不可能在配置里面将用户子域名写完，因此需要通过nginx泛解析方式。</p>
+<p>配置方法：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">server_name  ~^(?&lt;subdomain&gt;.+)\.yourdomain\.com$;</span><br></pre></td></tr></table></figure>
+<p>通过匹配subdomain即可。而在下面的可以通过$subdomain这个变量获取当前子域名称。</p>
+<h3 id="情况一：绑定子域名到统一目录，作为用户个性域名"><a href="#情况一：绑定子域名到统一目录，作为用户个性域名" class="headerlink" title="情况一：绑定子域名到统一目录，作为用户个性域名"></a>情况一：绑定子域名到统一目录，作为用户个性域名</h3><p>这种情况下，只需要直接匹配就可以了，目录都是指向同一个地方的（一般）。</p>
+<p><strong>配置实例：</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line"></span><br><span class="line">    listen   80;</span><br><span class="line">    server_name yourdomain.com www.yourdomain.cpm ~^(?&lt;subdomain&gt;.+)\.m\.yourdomain\.com$;</span><br><span class="line"></span><br><span class="line">    index index.php index.html index.htm;</span><br><span class="line">    <span class="built_in">set</span> <span class="variable">$root_path</span> <span class="string">'/var/www/yanue.net'</span>;</span><br><span class="line">    root <span class="variable">$root_path</span>;</span><br><span class="line"></span><br><span class="line">    try_files <span class="variable">$uri</span> <span class="variable">$uri</span>/ @rewrite;</span><br><span class="line"></span><br><span class="line">    location @rewrite &#123;</span><br><span class="line">        rewrite ^/(.*)$ /index.php?_url=/<span class="variable">$1</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    location ~ \.php &#123;</span><br><span class="line">            fastcgi_pass   127.0.0.1:9000;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    location ~* ^/(css|img|js|flv|swf|download)/(.+)$ &#123;</span><br><span class="line">        root <span class="variable">$root_path</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    location ~ /\.ht &#123;</span><br><span class="line">        deny all;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这样可以实现：</p>
+<p><code>user.m.yourdomain.com</code> 跳转到用户自己页面</p>
+<p>当然跳转逻辑需要自己在程序里面去实现。</p>
+<h3 id="情况二：绑定子域名到不同目录（子站）"><a href="#情况二：绑定子域名到不同目录（子站）" class="headerlink" title="情况二：绑定子域名到不同目录（子站）"></a>情况二：绑定子域名到不同目录（子站）</h3><p>网站的目录结构为</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">html</span><br><span class="line">├── bbs</span><br><span class="line">└── www</span><br></pre></td></tr></table></figure>
+<p>html为nginx的安装目录下默认的存放源代码的路径。</p>
+<p>bbs为论坛程序源代码路径</p>
+<p>www为主页程序源代码路径</p>
+<p>把相应程序放入上面的路径通过</p>
+<p><a href="http://www.youdomain.com" target="_blank" rel="noopener">http://www.youdomain.com</a> 访问的就是主页</p>
+<p><a href="http://bbs.yourdomain.com" target="_blank" rel="noopener">http://bbs.yourdomain.com</a> 访问的就是论坛</p>
+<p>其它二级域名类推。</p>
+<p><strong>配置实例：</strong></p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">        listen       80;</span><br><span class="line">        server_name  ~^(?&lt;subdomain&gt;.+)\.yourdomain\.com$;</span><br><span class="line">        root   html/<span class="variable">$subdomain</span>; </span><br><span class="line">        index  index.html index.htm index.php;</span><br><span class="line">        fastcgi_intercept_errors on;</span><br><span class="line">        error_page  404      = /404.html;</span><br><span class="line">        location / &#123;</span><br><span class="line">                <span class="comment"># This is cool because no php is touched for static content.</span></span><br><span class="line">                <span class="comment"># include the "?$args" part so non-default permalinks doesn't</span></span><br><span class="line">                <span class="comment"># break when using query string</span></span><br><span class="line">                try_files <span class="variable">$uri</span> <span class="variable">$uri</span>/ =404;</span><br><span class="line">       &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"># redirect server error pages to the static page /50x.html</span></span><br><span class="line">        <span class="comment">#</span></span><br><span class="line">        error_page   500 502 503 504  /50x.html;</span><br><span class="line">        location = /50x.html &#123;</span><br><span class="line">            root   html;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"># pass the PHP scripts to FastCGI server listening on 127.0.0.1:9000</span></span><br><span class="line">        <span class="comment">#</span></span><br><span class="line">        location ~ \.php$ &#123;</span><br><span class="line">            fastcgi_pass   127.0.0.1:9000;</span><br><span class="line">            fastcgi_index  index.php;</span><br><span class="line">            fastcgi_param  SCRIPT_FILENAME  <span class="variable">$document_root</span><span class="variable">$fastcgi_script_name</span>;</span><br><span class="line">            fastcgi_param  domain <span class="variable">$subdomain</span>;</span><br><span class="line">            include        fastcgi_params;</span><br><span class="line">        &#125;</span><br><span class="line"></span><br><span class="line">        <span class="comment"># deny access to .htaccess files, if Apache's document root</span></span><br><span class="line">        <span class="comment"># concurs with nginx's one</span></span><br><span class="line">        <span class="comment">#</span></span><br><span class="line">        location ~ /\.ht &#123;</span><br><span class="line">            deny  all;</span><br><span class="line">        &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
                     
                         
@@ -317,7 +337,7 @@ xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
             <i class="fa fa-times"></i>
         </div>
         
-            <img id="about-card-picture" src="/assets/images/uu.png" alt="作者的图片">
+            <img id="about-card-picture" src="/assets/images/dx.png" alt="作者的图片">
         
             <h4 id="about-card-name">Xiangjy</h4>
         

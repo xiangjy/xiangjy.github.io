@@ -1,0 +1,565 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+    
+<head>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Xiangjy&#39;s Blog">
+    <title> - Xiangjy&#39;s Blog</title>
+    <meta name="author" content="Xiangjy">
+    
+    
+        <link rel="icon" href="http://localhost:4000/assets/images/dx.png">
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"],"image":"dx.png"},"articleBody":"Redis字符串定义Redis没有直接使用C语言传统的字符串表示（以空字符结尾的字符数组，以下简称C字符串），而是自己构建了一种名为简单动态字符串（simple dynamic string，SDS）的抽象类型，并将SDS用作Redis的默认字符串表示。比如说 “SET name kobe”这个命令，redis将在数据库中创建一个键值对。\n键值对的键是一个字符串对象，对象的底层实现是一个保存着字符串“name”的SDS\n键值对的值是一个字符串对象，对象的底层实现是一个保存着字符串“kobe”的SDS\n下图可以解释SDS的数据结构\n\n\nfree属性的值为0，表示这个SDS没有分配任何未使用空间。\nlen属性的值为5，表示这个SDS保存了一个五字节长的字符串。\nbuf属性是一个char类型的数组，数组的前五个字节分别保存了’R’、’e’、’d’、’i’、’s’五个字符，而最后一个字节则保存了空字符’’\n\n与C字符串相比，SDS具有以下优点：\n获取字符串长度的时间复杂度为O(1)C语言使用长度为N+1的字符数组来表示长度为N的字符串，并且字符数组的最后一个元素总是空字符’’。\n\n因为C字符串并不记录自身的长度信息，所以为了获取一个C字符串的长度，程序必须遍历整个字符串，对遇到的每个字符进行计数，直到遇到代表字符串结尾的空字符为止，这个操作的复杂度为O(N)。和C字符串不同，因为SDS在len属性中记录了SDS本身的长度，所以获取一个SDS长度的复杂度仅为O(1)。\n杜绝缓冲区溢出举个例子，假设程序里有两个在内存中紧邻着的C字符串s1和s2，其中s1保存了字符串”Redis”，而s2则保存了字符串”MongoDB\n\n如果一个程序员决定通过执行\nstrcat(s1, “ Cluster”)\n将s1的内容修改为”Redis Cluster”，但粗心的他却忘了在执行strcat之前为s1分配足够的空间，那么在strcat函数执行之后，s1的数据将溢出到s2所在的空间中，导致s2保存的内容被意外地修改。与C字符串不同，SDS的空间分配策略完全杜绝了发生缓冲区溢出的可能性：当SDS API需要对SDS进行修改时，API会先检查SDS的空间是否满足修改所需的要求，如果不满足的话，API会自动将SDS的空间扩展至执行修改所需的大小，然后才执行实际的修改操作，所以使用SDS既不需要手动修改SDS的空间大小，也不会出现前面所说的缓冲区溢出问题。\n减少修改字符串长度时所需的内存重分配次数\n空间预分配\n\n空间预分配用于优化SDS的字符串增长操作：当SDS的API对一个SDS进行修改，并且需要对SDS进行空间扩展的时候，程序不仅会为SDS分配修改所必须要的空间，还会为SDS分配额外的未使用空间。其中，额外分配的未使用空间数量由以下公式决定：\n如果对SDS进行修改之后，SDS的长度（也即是len属性的值）将小于1MB，那么程序分配和len属性同样大小的未使用空间，这时SDS len属性的值将和free属性的值相同。举个例子，如果进行修改之后，SDS的len将变成13字节，那么程序也会分配13字节的未使用空间，SDS的buf数组的实际长度将变成13+13+1=27字节（额外的一字节用于保存空字符）。如果对SDS进行修改之后，SDS的长度将大于等于1MB，那么程序会分配1MB的未使用空间。举个例子，如果进行修改之后，SDS的len将变成30MB，那么程序会分配1MB的未使用空间，SDS的buf数组的实际长度将为30MB+1MB+1byte。举个例子：\n如果存在“redis”SDS如下图：\n\n执行：\nstrcat(s1, “ Cluster”)\n那么sdscat将执行一次内存重分配操作，将SDS的长度修改为13字节，并将SDS的未使用空间同样修改为13字节，如下图所示：\n\n如果这时我们再次执行\nstrcat(s1, “ Tutorial”)\n那么这次sdscat将不需要执行内存重分配，因为未使用空间里面的13字节足以保存9字节的” Tutorial”，执行sdscat之后的SDS\n\n在扩展SDS空间之前，SDS API会先检查未使用空间是否足够，如果足够的话，API就会直接使用未使用空间，而无须执行内存重分配。通过这种预分配策略，SDS将连续增长N次字符串所需的内存重分配次数从必定N次降低为最多N次。\n\n惰性空间释放\n\n惰性空间释放用于优化SDS的字符串缩短操作：当SDS的API需要缩短SDS保存的字符串时，程序并不立即使用内存重分配来回收缩短后多出来的字节，而是使用free属性将这些字节的数量记录起来，并等待将来使用。举个例子，如果有个字符串：XYXaYYbcXYY\n\n现在要移除XY，SDS移除后如下图：\n\n注意执行sdstrim之后的SDS并没有释放多出来的8字节空间，而是将这8字节空间作为未使用空间保留在了SDS里面，如果将来要对SDS进行增长操作的话，这些未使用空间就可能会派上用场。现在想要对上面的字符串添加“ Redis”,注意Redis前面有个空格。因为SDS里面预留的8字节空间已经足以拼接6个字节长的” Redis”了，所以不需要重新分配内存。\n\n","dateCreated":"2019-02-19T09:12:53+08:00","dateModified":"2019-02-19T09:12:53+08:00","datePublished":"2019-02-19T09:12:53+08:00","description":"","headline":"","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2019/02/19/Redis字符串/"},"publisher":{"@type":"Organization","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"],"image":"dx.png","logo":{"@type":"ImageObject","url":"dx.png"}},"url":"http://localhost:4000/2019/02/19/Redis字符串/"}</script>
+    <meta name="description" content="Redis字符串定义Redis没有直接使用C语言传统的字符串表示（以空字符结尾的字符数组，以下简称C字符串），而是自己构建了一种名为简单动态字符串（simple dynamic string，SDS）的抽象类型，并将SDS用作Redis的默认字符串表示。比如说 “SET name kobe”这个命令，redis将在数据库中创建一个键值对。 键值对的键是一个字符串对象，对象的底层实现是一个保存着字符">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Xiangjy&#39;s Blog">
+<meta property="og:url" content="http://localhost:4000/2019/02/19/Redis字符串/index.html">
+<meta property="og:site_name" content="Xiangjy&#39;s Blog">
+<meta property="og:description" content="Redis字符串定义Redis没有直接使用C语言传统的字符串表示（以空字符结尾的字符数组，以下简称C字符串），而是自己构建了一种名为简单动态字符串（simple dynamic string，SDS）的抽象类型，并将SDS用作Redis的默认字符串表示。比如说 “SET name kobe”这个命令，redis将在数据库中创建一个键值对。 键值对的键是一个字符串对象，对象的底层实现是一个保存着字符">
+<meta property="og:locale" content="zh-cn">
+<meta property="og:image" content="http://p1.pstatp.com/large/pgc-image/c76ddab18f05469abbd36156cce071b7">
+<meta property="og:image" content="http://p1.pstatp.com/large/pgc-image/046a00507bac4e0b84d3fbf7c947c631">
+<meta property="og:image" content="http://p3.pstatp.com/large/pgc-image/0c76350300c344e785638e9d00c3cdc6">
+<meta property="og:image" content="http://p1.pstatp.com/large/pgc-image/e667f1a9003143c184125d223b8838ae">
+<meta property="og:image" content="http://p1.pstatp.com/large/pgc-image/f9ddf635f4424b32a85e58d25d059ffe">
+<meta property="og:image" content="http://p3.pstatp.com/large/pgc-image/349b51770daf44a387a37db972683c38">
+<meta property="og:image" content="http://p1.pstatp.com/large/pgc-image/c2fed33f61f643249cd7b8fe119b295f">
+<meta property="og:image" content="http://p1.pstatp.com/large/pgc-image/e1a735c70efd49abbf7ee29d401764de">
+<meta property="og:image" content="http://p3.pstatp.com/large/pgc-image/162816a36ea346269a96e13099d18717">
+<meta property="og:updated_time" content="2019-02-19T01:12:53.228Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Xiangjy&#39;s Blog">
+<meta name="twitter:description" content="Redis字符串定义Redis没有直接使用C语言传统的字符串表示（以空字符结尾的字符数组，以下简称C字符串），而是自己构建了一种名为简单动态字符串（simple dynamic string，SDS）的抽象类型，并将SDS用作Redis的默认字符串表示。比如说 “SET name kobe”这个命令，redis将在数据库中创建一个键值对。 键值对的键是一个字符串对象，对象的底层实现是一个保存着字符">
+<meta name="twitter:image" content="http://p1.pstatp.com/large/pgc-image/c76ddab18f05469abbd36156cce071b7">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="http://localhost:4000/assets/images/dx.png"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-c4ozcsklz4kht2pebhp44xorvyverh23toayhn7i6ubrpyedak24hv1v0hyd.min.css">
+    <!--STYLES END--><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+    
+
+    
+</head>
+
+    <body>
+        <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">Xiangjy&#39;s Blog</a>
+    </div>
+    
+        
+            <a class="header-right-picture " href="#about">
+        
+        
+            <img class="header-picture" src="/assets/images/dx.png" alt="作者的图片">
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="/assets/images/dx.png" alt="作者的图片">
+                </a>
+                <h4 class="sidebar-profile-name">Xiangjy</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="/ " title="首页">
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">首页</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="/all-categories" title="分类">
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">分类</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="/all-tags" title="标签">
+                    
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">标签</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="/all-archives" title="归档">
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">归档</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link open-algolia-search" href="#search" title="搜索">
+                    
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">搜索</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="#about" title="关于">
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">关于</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="https://github.com/" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="http://stackoverflow.com/users" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="https://twitter.com/" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="https://facebook.com/" target="_blank" rel="noopener" title="Facebook">
+                    
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="https://plus.google.com/" target="_blank" rel="noopener" title="Google Plus">
+                    
+                        <i class="sidebar-button-icon fab fa-google-plus" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Google Plus</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="https://www.linkedin.com/profile/" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="/mailto" title="邮箱">
+                    
+                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">邮箱</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="/atom.xml" title="RSS">
+                    
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="5"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            (无标题)
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2019-02-19T09:12:53+08:00">
+	
+		    2月 19, 2019
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h1 id="Redis字符串"><a href="#Redis字符串" class="headerlink" title="Redis字符串"></a>Redis字符串</h1><h1 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h1><p>Redis没有直接使用C语言传统的字符串表示（以空字符结尾的字符数组，以下简称C字符串），而是自己构建了一种名为简单动态字符串（simple dynamic string，SDS）的抽象类型，并将SDS用作Redis的默认字符串表示。比如说 “SET name kobe”这个命令，redis将在数据库中创建一个键值对。</p>
+<p>键值对的键是一个字符串对象，对象的底层实现是一个保存着字符串“name”的SDS</p>
+<p>键值对的值是一个字符串对象，对象的底层实现是一个保存着字符串“kobe”的SDS</p>
+<p>下图可以解释SDS的数据结构</p>
+<p><img src="http://p1.pstatp.com/large/pgc-image/c76ddab18f05469abbd36156cce071b7" alt="原来redis是这样存字符串的"></p>
+<ul>
+<li>free属性的值为0，表示这个SDS没有分配任何未使用空间。</li>
+<li>len属性的值为5，表示这个SDS保存了一个五字节长的字符串。</li>
+<li>buf属性是一个char类型的数组，数组的前五个字节分别保存了’R’、’e’、’d’、’i’、’s’五个字符，而最后一个字节则保存了空字符’’</li>
+</ul>
+<p>与C字符串相比，SDS具有以下优点：</p>
+<h1 id="获取字符串长度的时间复杂度为O-1"><a href="#获取字符串长度的时间复杂度为O-1" class="headerlink" title="获取字符串长度的时间复杂度为O(1)"></a>获取字符串长度的时间复杂度为O(1)</h1><p>C语言使用长度为N+1的字符数组来表示长度为N的字符串，并且字符数组的最后一个元素总是空字符’’。</p>
+<p><img src="http://p1.pstatp.com/large/pgc-image/046a00507bac4e0b84d3fbf7c947c631" alt="原来redis是这样存字符串的"></p>
+<p>因为C字符串并不记录自身的长度信息，所以为了获取一个C字符串的长度，程序必须遍历整个字符串，对遇到的每个字符进行计数，直到遇到代表字符串结尾的空字符为止，这个操作的复杂度为<strong>O(N)</strong>。和C字符串不同，因为SDS在len属性中记录了SDS本身的长度，所以获取一个SDS长度的复杂度仅为O(1)。</p>
+<h1 id="杜绝缓冲区溢出"><a href="#杜绝缓冲区溢出" class="headerlink" title="杜绝缓冲区溢出"></a>杜绝缓冲区溢出</h1><p>举个例子，假设程序里有两个在内存中紧邻着的C字符串s1和s2，其中s1保存了字符串”Redis”，而s2则保存了字符串”MongoDB</p>
+<p><img src="http://p3.pstatp.com/large/pgc-image/0c76350300c344e785638e9d00c3cdc6" alt="原来redis是这样存字符串的"></p>
+<p>如果一个程序员决定通过执行</p>
+<p>strcat(s1, “ Cluster”)</p>
+<p>将s1的内容修改为”Redis Cluster”，但粗心的他却忘了在执行strcat之前为s1分配足够的空间，那么在strcat函数执行之后，s1的数据将溢出到s2所在的空间中，导致s2保存的内容被意外地修改。与C字符串不同，SDS的空间分配策略完全杜绝了发生缓冲区溢出的可能性：当SDS API需要对SDS进行修改时，API会先检查SDS的空间是否满足修改所需的要求，如果不满足的话，API会自动将SDS的空间扩展至执行修改所需的大小，然后才执行实际的修改操作，所以使用SDS既不需要手动修改SDS的空间大小，也不会出现前面所说的缓冲区溢出问题。</p>
+<h1 id="减少修改字符串长度时所需的内存重分配次数"><a href="#减少修改字符串长度时所需的内存重分配次数" class="headerlink" title="减少修改字符串长度时所需的内存重分配次数"></a>减少修改字符串长度时所需的内存重分配次数</h1><ul>
+<li>空间预分配</li>
+</ul>
+<p>空间预分配用于优化SDS的字符串增长操作：当SDS的API对一个SDS进行修改，并且需要对SDS进行空间扩展的时候，程序不仅会为SDS分配修改所必须要的空间，还会为SDS分配额外的未使用空间。其中，额外分配的未使用空间数量由以下公式决定：</p>
+<p>如果对SDS进行修改之后，SDS的长度（也即是len属性的值）将小于1MB，那么程序分配和len属性同样大小的未使用空间，这时SDS len属性的值将和free属性的值相同。举个例子，如果进行修改之后，SDS的len将变成13字节，那么程序也会分配13字节的未使用空间，SDS的buf数组的实际长度将变成13+13+1=27字节（额外的一字节用于保存空字符）。如果对SDS进行修改之后，SDS的长度将大于等于1MB，那么程序会分配1MB的未使用空间。举个例子，如果进行修改之后，SDS的len将变成30MB，那么程序会分配1MB的未使用空间，SDS的buf数组的实际长度将为30MB+1MB+1byte。举个例子：</p>
+<p>如果存在“redis”SDS如下图：</p>
+<p><img src="http://p1.pstatp.com/large/pgc-image/e667f1a9003143c184125d223b8838ae" alt="原来redis是这样存字符串的"></p>
+<p>执行：</p>
+<p>strcat(s1, “ Cluster”)</p>
+<p>那么sdscat将执行一次内存重分配操作，将SDS的长度修改为13字节，并将SDS的未使用空间同样修改为13字节，如下图所示：</p>
+<p><img src="http://p1.pstatp.com/large/pgc-image/f9ddf635f4424b32a85e58d25d059ffe" alt="原来redis是这样存字符串的"></p>
+<p>如果这时我们再次执行</p>
+<p>strcat(s1, “ Tutorial”)</p>
+<p>那么这次sdscat将不需要执行内存重分配，因为未使用空间里面的13字节足以保存9字节的” Tutorial”，执行sdscat之后的SDS</p>
+<p><img src="http://p3.pstatp.com/large/pgc-image/349b51770daf44a387a37db972683c38" alt="原来redis是这样存字符串的"></p>
+<p>在扩展SDS空间之前，SDS API会先检查未使用空间是否足够，如果足够的话，API就会直接使用未使用空间，而无须执行内存重分配。通过这种预分配策略，SDS将连续增长N次字符串所需的内存重分配次数从必定N次降低为最多N次。</p>
+<ul>
+<li>惰性空间释放</li>
+</ul>
+<p>惰性空间释放用于优化SDS的字符串缩短操作：当SDS的API需要缩短SDS保存的字符串时，程序并不立即使用内存重分配来回收缩短后多出来的字节，而是使用free属性将这些字节的数量记录起来，并等待将来使用。举个例子，如果有个字符串：XYXaYYbcXYY</p>
+<p><img src="http://p1.pstatp.com/large/pgc-image/c2fed33f61f643249cd7b8fe119b295f" alt="原来redis是这样存字符串的"></p>
+<p>现在要移除XY，SDS移除后如下图：</p>
+<p><img src="http://p1.pstatp.com/large/pgc-image/e1a735c70efd49abbf7ee29d401764de" alt="原来redis是这样存字符串的"></p>
+<p>注意执行sdstrim之后的SDS并没有释放多出来的8字节空间，而是将这8字节空间作为未使用空间保留在了SDS里面，如果将来要对SDS进行增长操作的话，这些未使用空间就可能会派上用场。现在想要对上面的字符串添加“ Redis”,注意Redis前面有个空格。因为SDS里面预留的8字节空间已经足以拼接6个字节长的” Redis”了，所以不需要重新分配内存。</p>
+<p><img src="http://p3.pstatp.com/large/pgc-image/162816a36ea346269a96e13099d18717" alt="原来redis是这样存字符串的"></p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/04/02/好用小工具/" data-tooltip="(无标题)" aria-label="上一篇: (无标题)">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/02/16/深入详解美团点评CAT跨语言服务监控（一） CAT简介与部署/" data-tooltip="(无标题)" aria-label="下一篇: (无标题)">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Diesen Beitrag teilen">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/2019/02/19/Redis字符串/" title="分享到 Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://localhost:4000/2019/02/19/Redis字符串/" title="分享到 Twitter">
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://localhost:4000/2019/02/19/Redis字符串/" title="分享到 Google+">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 Xiangjy. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/04/02/好用小工具/" data-tooltip="(无标题)" aria-label="上一篇: (无标题)">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/02/16/深入详解美团点评CAT跨语言服务监控（一） CAT简介与部署/" data-tooltip="(无标题)" aria-label="下一篇: (无标题)">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Diesen Beitrag teilen">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/2019/02/19/Redis字符串/" title="分享到 Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://localhost:4000/2019/02/19/Redis字符串/" title="分享到 Twitter">
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://localhost:4000/2019/02/19/Redis字符串/" title="分享到 Google+">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/2019/02/19/Redis字符串/">
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http://localhost:4000/2019/02/19/Redis字符串/">
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http://localhost:4000/2019/02/19/Redis字符串/">
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>分享到 Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/dx.png" alt="作者的图片">
+        
+            <h4 id="about-card-name">Xiangjy</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br>
+                <p>author.job</p>
+
+            </div>
+        
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-dbd16rvloemmuxdzniplmnxxvwoz24eya9wol0b7vvmlokgqsjivmb8dnscy.min.js"></script>
+<!--SCRIPTS END--><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+    
+
+
+
+    </body>
+</html>

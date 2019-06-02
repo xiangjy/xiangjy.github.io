@@ -28,7 +28,7 @@
         
     
     
-        <meta property="og:image" content="http://localhost:4000/assets/images/uu.png"/>
+        <meta property="og:image" content="http://localhost:4000/assets/images/dx.png"/>
     
     
     
@@ -52,7 +52,7 @@
         
     
 
-<header id="header" data-behavior="1">
+<header id="header" data-behavior="2">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
     <div class="header-title">
         <a class="header-title-link" href="/ ">Xiangjy&#39;s Blog</a>
@@ -62,7 +62,7 @@
             <a class="header-right-picture " href="#about">
         
         
-            <img class="header-picture" src="/assets/images/uu.png" alt="作者的图片">
+            <img class="header-picture" src="/assets/images/dx.png" alt="作者的图片">
         
         </a>
     
@@ -75,12 +75,12 @@
         
     
 
-<nav id="sidebar" data-behavior="1">
+<nav id="sidebar" data-behavior="2">
     <div class="sidebar-container">
         
             <div class="sidebar-profile">
                 <a href="/#about">
-                    <img class="sidebar-profile-picture" src="/assets/images/uu.png" alt="作者的图片">
+                    <img class="sidebar-profile-picture" src="/assets/images/dx.png" alt="作者的图片">
                 </a>
                 <h4 class="sidebar-profile-name">Xiangjy</h4>
                 
@@ -232,12 +232,60 @@
 </nav>
 
             
-            <div id="main" data-behavior="1"
+            <div id="main" data-behavior="2"
                  class="
                         hasCoverMetaIn
                         ">
                 
     <section class="postShorten-group main-content-wrap">
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2017/08/14/ID3/">
+                            决策树ID3算法
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2017-08-14T16:12:20+08:00">
+	
+		    8月 14, 2017
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h4 id="决策树ID3算法和python实现"><a href="#决策树ID3算法和python实现" class="headerlink" title="决策树ID3算法和python实现"></a>决策树ID3算法和python实现</h4><p>决策树是一棵树，其叶子节点决定了该类的归属，其内部节点则根据特征的值对数据进行子树寻找，以决定在哪棵子树上继续该决策过程。<br>选择信息熵增益最大的feature作为node，实现对数据的归纳分类。</p>
+<p>熵：表示随机变量的不确定性。<br>条件熵：在一个条件下，随机变量的不确定性。<br>信息增益：熵 - 条件熵<br>举个栗子：X(明天下雨)是一个随机变量，X的熵可以算出来， Y(明天阴天)也是随机变量，在阴天情况下下雨的信息熵我们如果也知道的话（此处需要知道其联合概率分布或是通过数据估计）即是条件熵。两者相减就是信息增益！原来明天下雨例如信息熵是2，条件熵是0.01（因为如果是阴天就下雨的概率很大，信息就少了），这样相减后为1.99，在获得阴天这个信息后，下雨信息不确定性减少了1.99！是很多的！所以信息增益大！也就是说，阴天这个信息对下雨来说是很重要的！所以在特征选择的时候常常用信息增益，如果IG（信息增益大）的话那么这个特征对于分类来说很关键，决策树就是这样来找特征的！</p>
+<p>信息的定义：待分类的事务可能处于多个分类中，则符号$x_i$的信息定义如下：<br>$$ l(x_i) = -log_2p(x_i) $$</p>
+<p>信息熵公式(计算熵，需要计算所有类别所有可能值包含的信息期望值)：</p>
+<p>$$ H(x) = -sum(p(x)log_2p(x)) $$</p>
+<p>$$ H(X) = -\sum_{i=0}^n p(x_i)log_2p(x_i) $$</p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2017/08/14/ID3/#post-footer" class="postShorten-excerpt_link link">
+                                评论和共享
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
     
     
     <article class="postShorten postShorten--thumbnailimg-bottom">
@@ -327,7 +375,7 @@
             <i class="fa fa-times"></i>
         </div>
         
-            <img id="about-card-picture" src="/assets/images/uu.png" alt="作者的图片">
+            <img id="about-card-picture" src="/assets/images/dx.png" alt="作者的图片">
         
             <h4 id="about-card-name">Xiangjy</h4>
         

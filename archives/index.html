@@ -28,7 +28,7 @@
         
     
     
-        <meta property="og:image" content="http://localhost:4000/assets/images/uu.png"/>
+        <meta property="og:image" content="http://localhost:4000/assets/images/dx.png"/>
     
     
     
@@ -52,7 +52,7 @@
         
     
 
-<header id="header" data-behavior="1">
+<header id="header" data-behavior="2">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
     <div class="header-title">
         <a class="header-title-link" href="/ ">Xiangjy&#39;s Blog</a>
@@ -62,7 +62,7 @@
             <a class="header-right-picture " href="#about">
         
         
-            <img class="header-picture" src="/assets/images/uu.png" alt="作者的图片">
+            <img class="header-picture" src="/assets/images/dx.png" alt="作者的图片">
         
         </a>
     
@@ -75,12 +75,12 @@
         
     
 
-<nav id="sidebar" data-behavior="1">
+<nav id="sidebar" data-behavior="2">
     <div class="sidebar-container">
         
             <div class="sidebar-profile">
                 <a href="/#about">
-                    <img class="sidebar-profile-picture" src="/assets/images/uu.png" alt="作者的图片">
+                    <img class="sidebar-profile-picture" src="/assets/images/dx.png" alt="作者的图片">
                 </a>
                 <h4 class="sidebar-profile-name">Xiangjy</h4>
                 
@@ -232,7 +232,7 @@
 </nav>
 
             
-            <div id="main" data-behavior="1"
+            <div id="main" data-behavior="2"
                  class="
                         hasCoverMetaIn
                         ">
@@ -246,15 +246,15 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/09/04/data-structures&algorithms/">
-                            data structures &amp; algorithms
+                        <a class="link-unstyled" href="/2019/05/06/抖音数据抓取/">
+                            (无标题)
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2018-09-04T13:44:00+08:00">
+    <time datetime="2019-05-06T11:09:49+08:00">
 	
-		    9月 04, 2018
+		    5月 06, 2019
     	
     </time>
     
@@ -263,14 +263,41 @@
             </div>
             
                 <div class="postShorten-content">
-                    
+                    <h1 id="抖音数据抓取"><a href="#抖音数据抓取" class="headerlink" title="抖音数据抓取"></a>抖音数据抓取</h1><ul>
+<li><p>参考链接</p>
+<p><a href="https://idig8.com/2019/04/08/dockershizhanpianpythondedocker-douyinwebduanshujuzhuaqu19/" target="_blank" rel="noopener">https://idig8.com/2019/04/08/dockershizhanpianpythondedocker-douyinwebduanshujuzhuaqu19/</a></p>
+</li>
+<li><p>模拟手机请求数据</p>
+<p>设置user-agent</p>
+<p>“User-Agent”,”Mozilla/5.0 (Linux;U;Android 2.3;en-us;Nexus One Build/FRF91)AppleWebKit/999+(KHTML, like Gecko)Version/4.0 Mobile Safari/999.9”</p>
+<p>设置方法：</p>
+<p>1、</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="keyword">from</span> urllib2 <span class="keyword">import</span> Request, urlopen</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fetchurl</span><span class="params">(url)</span>:</span></span><br><span class="line">    req = Request(url)</span><br><span class="line">    req.add_header(<span class="string">"User-Agent"</span>, <span class="string">"Mozilla/5.0 (Linux;U;Android 2.3;en-us;Nexus One Build/FRF91)AppleWebKit/999+(KHTML, like Gecko)Version/4.0 Mobile Safari/999.9"</span>)</span><br><span class="line">    f = urlopen(req)</span><br><span class="line">    <span class="keyword">return</span> f.read()</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    url = <span class="string">"https://www.iesdouyin.com/share/video/6686379726505774349/?region=CN&amp;mid=6686395143635077901&amp;u_code=hldm8blf&amp;titleType=title"</span></span><br><span class="line">    <span class="keyword">print</span> fetchurl(url)</span><br></pre></td></tr></table></figure>
+<p>2、</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fetchurl</span><span class="params">(url)</span>:</span></span><br><span class="line">    header = &#123;</span><br><span class="line">        <span class="string">'user-agent'</span>: <span class="string">'Mozilla/5.0 (Linux;U;Android 2.3;en-us;Nexus One Build/FRF91)AppleWebKit/999+(KHTML, like Gecko)Version/4.0 Mobile Safari/999.9'</span></span><br><span class="line">    &#125;</span><br><span class="line">    response = requests.get(url=url, headers=header)</span><br><span class="line">    <span class="keyword">return</span> response.text</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">"__main__"</span>:</span><br><span class="line">    url = <span class="string">'https://www.douyin.com/share/user/76055758243'</span></span><br><span class="line">    <span class="keyword">print</span> fetchurl(url)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>抖音做了反爬，数字变成icon font，进行替换。</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">regex_list = [</span><br><span class="line">        &#123;<span class="string">'name'</span>:[<span class="string">' &amp;#xe603; '</span>,<span class="string">' &amp;#xe60d; '</span>,<span class="string">' &amp;#xe616; '</span>],<span class="string">'value'</span>:<span class="number">0</span>&#125;,</span><br><span class="line">        &#123;<span class="string">'name'</span>:[<span class="string">' &amp;#xe602; '</span>,<span class="string">' &amp;#xe60e; '</span>,<span class="string">' &amp;#xe618; '</span>],<span class="string">'value'</span>:<span class="number">1</span>&#125;,</span><br><span class="line">        &#123;<span class="string">'name'</span>:[<span class="string">' &amp;#xe605; '</span>,<span class="string">' &amp;#xe610; '</span>,<span class="string">' &amp;#xe617; '</span>],<span class="string">'value'</span>:<span class="number">2</span>&#125;,</span><br><span class="line">        &#123;<span class="string">'name'</span>:[<span class="string">' &amp;#xe604; '</span>,<span class="string">' &amp;#xe611; '</span>,<span class="string">' &amp;#xe61a; '</span>],<span class="string">'value'</span>:<span class="number">3</span>&#125;,</span><br><span class="line">        &#123;<span class="string">'name'</span>:[<span class="string">' &amp;#xe606; '</span>,<span class="string">' &amp;#xe60c; '</span>,<span class="string">' &amp;#xe619; '</span>],<span class="string">'value'</span>:<span class="number">4</span>&#125;,</span><br><span class="line">        &#123;<span class="string">'name'</span>:[<span class="string">' &amp;#xe607; '</span>,<span class="string">' &amp;#xe60f; '</span>,<span class="string">' &amp;#xe61b; '</span>],<span class="string">'value'</span>:<span class="number">5</span>&#125;,</span><br><span class="line">        &#123;<span class="string">'name'</span>:[<span class="string">' &amp;#xe608; '</span>,<span class="string">' &amp;#xe612; '</span>,<span class="string">' &amp;#xe61f; '</span>],<span class="string">'value'</span>:<span class="number">6</span>&#125;,</span><br><span class="line">        &#123;<span class="string">'name'</span>:[<span class="string">' &amp;#xe60a; '</span>,<span class="string">' &amp;#xe613; '</span>,<span class="string">' &amp;#xe61c; '</span>],<span class="string">'value'</span>:<span class="number">7</span>&#125;,</span><br><span class="line">        &#123;<span class="string">'name'</span>:[<span class="string">' &amp;#xe60b; '</span>,<span class="string">' &amp;#xe614; '</span>,<span class="string">' &amp;#xe61d; '</span>],<span class="string">'value'</span>:<span class="number">8</span>&#125;,</span><br><span class="line">        &#123;<span class="string">'name'</span>:[<span class="string">' &amp;#xe609; '</span>,<span class="string">' &amp;#xe615; '</span>,<span class="string">' &amp;#xe61e; '</span>],<span class="string">'value'</span>:<span class="number">9</span>&#125;,</span><br><span class="line">    ]</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>获取信息的节点xpath</p>
+</li>
+<li><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 昵称</span></span><br><span class="line">//div[@class='personal-card']/div[@class='info1']//p[@class='nickname']/text()</span><br><span class="line"></span><br><span class="line"><span class="comment">#抖音ID</span></span><br><span class="line">//div[@class='personal-card']/div[@class='info1']//p[@class='nickname']/text()</span><br><span class="line"></span><br><span class="line"><span class="comment">#工作</span></span><br><span class="line">//div[@class='personal-card']/div[@class='info2']/div[@class='verify-info']/span[@class='info']/text()</span><br><span class="line"></span><br><span class="line"><span class="comment">#描述</span></span><br><span class="line">//div[@class='personal-card']/div[@class='info2']/p[@class='signature']/text()</span><br><span class="line"></span><br><span class="line"><span class="comment">#地址 已去掉</span></span><br><span class="line">//div[@class='personal-card']/div[@class='info2']/p[@class='extra-info']/span[1]/text()</span><br><span class="line"></span><br><span class="line"><span class="comment">#星座 已去掉</span></span><br><span class="line">//div[@class='personal-card']/div[@class='info2']/p[@class='extra-info']/span[2]/text()</span><br><span class="line"></span><br><span class="line"><span class="comment">#关注数</span></span><br><span class="line">//div[@class='personal-card']/div[@class='info2']/p[@class='follow-info']//span[@class='focus block']//i[@class='icon iconfont follow-num']/text()</span><br><span class="line"></span><br><span class="line"><span class="comment">#粉丝数</span></span><br><span class="line">//div[@class='personal-card']/div[@class='info2']/p[@class='follow-info']//span[@class='follower block']//i[@class='icon iconfont follow-num']/text()</span><br><span class="line"></span><br><span class="line"><span class="comment">#赞数</span></span><br><span class="line">//div[@class='personal-card']/div[@class='info2']/p[@class='follow-info']//span[@class='follower block']/span[@class='num']/text()</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>获取一个人的信息</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">handle_decode</span><span class="params">(input_data)</span>:</span></span><br><span class="line">    search_douyin_str = re.compile(<span class="string">r'抖音ID：'</span>)</span><br><span class="line">    <span class="comment"># 匹配icon font</span></span><br><span class="line">    regex_list = [</span><br><span class="line">        &#123;<span class="string">'name'</span>: [<span class="string">' &amp;#xe603; '</span>, <span class="string">' &amp;#xe60d; '</span>, <span class="string">' &amp;#xe616; '</span>], <span class="string">'value'</span>: <span class="number">0</span>&#125;,</span><br><span class="line">        &#123;<span class="string">'name'</span>: [<span class="string">' &amp;#xe602; '</span>, <span class="string">' &amp;#xe60e; '</span>, <span class="string">' &amp;#xe618; '</span>], <span class="string">'value'</span>: <span class="number">1</span>&#125;,</span><br><span class="line">        &#123;<span class="string">'name'</span>: [<span class="string">' &amp;#xe605; '</span>, <span class="string">' &amp;#xe610; '</span>, <span class="string">' &amp;#xe617; '</span>], <span class="string">'value'</span>: <span class="number">2</span>&#125;,</span><br><span class="line">        &#123;<span class="string">'name'</span>: [<span class="string">' &amp;#xe604; '</span>, <span class="string">' &amp;#xe611; '</span>, <span class="string">' &amp;#xe61a; '</span>], <span class="string">'value'</span>: <span class="number">3</span>&#125;,</span><br><span class="line">        &#123;<span class="string">'name'</span>: [<span class="string">' &amp;#xe606; '</span>, <span class="string">' &amp;#xe60c; '</span>, <span class="string">' &amp;#xe619; '</span>], <span class="string">'value'</span>: <span class="number">4</span>&#125;,</span><br><span class="line">        &#123;<span class="string">'name'</span>: [<span class="string">' &amp;#xe607; '</span>, <span class="string">' &amp;#xe60f; '</span>, <span class="string">' &amp;#xe61b; '</span>], <span class="string">'value'</span>: <span class="number">5</span>&#125;,</span><br><span class="line">        &#123;<span class="string">'name'</span>: [<span class="string">' &amp;#xe608; '</span>, <span class="string">' &amp;#xe612; '</span>, <span class="string">' &amp;#xe61f; '</span>], <span class="string">'value'</span>: <span class="number">6</span>&#125;,</span><br><span class="line">        &#123;<span class="string">'name'</span>: [<span class="string">' &amp;#xe60a; '</span>, <span class="string">' &amp;#xe613; '</span>, <span class="string">' &amp;#xe61c; '</span>], <span class="string">'value'</span>: <span class="number">7</span>&#125;,</span><br><span class="line">        &#123;<span class="string">'name'</span>: [<span class="string">' &amp;#xe60b; '</span>, <span class="string">' &amp;#xe614; '</span>, <span class="string">' &amp;#xe61d; '</span>], <span class="string">'value'</span>: <span class="number">8</span>&#125;,</span><br><span class="line">        &#123;<span class="string">'name'</span>: [<span class="string">' &amp;#xe609; '</span>, <span class="string">' &amp;#xe615; '</span>, <span class="string">' &amp;#xe61e; '</span>], <span class="string">'value'</span>: <span class="number">9</span>&#125;,</span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i1 <span class="keyword">in</span> regex_list:</span><br><span class="line">        <span class="keyword">for</span> i2 <span class="keyword">in</span> i1[<span class="string">'name'</span>]:</span><br><span class="line">            input_data = re.sub(i2, str(i1[<span class="string">'value'</span>]), input_data)</span><br><span class="line"></span><br><span class="line">    html = etree.HTML(input_data)</span><br><span class="line">    douyin_info = &#123;&#125;</span><br><span class="line">    <span class="comment"># 获取昵称</span></span><br><span class="line">    douyin_info[<span class="string">'nick_name'</span>] = html.xpath(<span class="string">"//div[@class='personal-card']/div[@class='info1']//p[@class='nickname']/text()"</span>)[<span class="number">0</span>]</span><br><span class="line">    <span class="comment"># 获取抖音ID</span></span><br><span class="line">    douyin_id = <span class="string">''</span>.join(html.xpath(<span class="string">"//div[@class='personal-card']/div[@class='info1']/p[@class='shortid']/i/text()"</span>))</span><br><span class="line">    douyin_info[<span class="string">'douyin_id'</span>] = re.sub(search_douyin_str, <span class="string">''</span>, html.xpath(<span class="string">"//div[@class='personal-card']/div[@class='info1']//p[@class='nickname']/text()"</span>)[<span class="number">0</span>]).strip() + douyin_id</span><br><span class="line">    <span class="comment"># 职位类型</span></span><br><span class="line">    <span class="keyword">try</span>:</span><br><span class="line">        douyin_info[<span class="string">'job'</span>] = html.xpath(<span class="string">"//div[@class='personal-card']/div[@class='info2']/div[@class='verify-info']/span[@class='info']/text()"</span>)[<span class="number">0</span>].strip()</span><br><span class="line">    <span class="keyword">except</span>:</span><br><span class="line">        <span class="keyword">pass</span></span><br><span class="line">    <span class="comment"># 描述</span></span><br><span class="line">    douyin_info[<span class="string">'describe'</span>] = html.xpath(<span class="string">"//div[@class='personal-card']/div[@class='info2']/p[@class='signature']/text()"</span>)[<span class="number">0</span>].replace(<span class="string">'\n'</span>, <span class="string">','</span>)</span><br><span class="line">    <span class="comment"># 关注</span></span><br><span class="line">    douyin_info[<span class="string">'follow_count'</span>] = html.xpath(<span class="string">"//div[@class='personal-card']/div[@class='info2']/p[@class='follow-info']//span[@class='focus block']//i[@class='icon iconfont follow-num']/text()"</span>)[<span class="number">0</span>].strip()</span><br><span class="line">    <span class="comment"># 粉丝</span></span><br><span class="line">    fans_value = <span class="string">''</span>.join(html.xpath(<span class="string">"//div[@class='personal-card']/div[@class='info2']/p[@class='follow-info']//span[@class='follower block']//i[@class='icon iconfont follow-num']/text()"</span>))</span><br><span class="line">    unit = html.xpath(<span class="string">"//div[@class='personal-card']/div[@class='info2']/p[@class='follow-info']//span[@class='follower block']/span[@class='num']/text()"</span>)</span><br><span class="line">    <span class="keyword">if</span> unit[<span class="number">-1</span>].strip() == <span class="string">'w'</span>:</span><br><span class="line">        douyin_info[<span class="string">'fans'</span>] = str(float(fans_value) / <span class="number">10</span>) + <span class="string">'w'</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        douyin_info[<span class="string">'fans'</span>] = fans_value</span><br><span class="line">    <span class="comment"># 点赞</span></span><br><span class="line">    like = <span class="string">''</span>.join(html.xpath(<span class="string">"//div[@class='personal-card']/div[@class='info2']/p[@class='follow-info']//span[@class='liked-num block']//i[@class='icon iconfont follow-num']/text()"</span>))</span><br><span class="line">    unit = html.xpath(<span class="string">"//div[@class='personal-card']/div[@class='info2']/p[@class='follow-info']//span[@class='liked-num block']/span[@class='num']/text()"</span>)</span><br><span class="line">    <span class="keyword">if</span> unit[<span class="number">-1</span>].strip() == <span class="string">'w'</span>:</span><br><span class="line">        douyin_info[<span class="string">'like'</span>] = str(float(like) / <span class="number">10</span>) + <span class="string">'w'</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        douyin_info[<span class="string">'like'</span>] = like</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> douyin_info</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">handle_douyin_info</span><span class="params">(url)</span>:</span></span><br><span class="line">    header = &#123;</span><br><span class="line">        <span class="string">'user-agent'</span>: <span class="string">'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.75 Safari/537.36'</span></span><br><span class="line">    &#125;</span><br><span class="line">    response = requests.get(url=url, headers=header)</span><br><span class="line">    <span class="keyword">return</span> handle_decode(response.text, url)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    url = <span class="string">'https://www.douyin.com/share/user/76055758243'</span></span><br><span class="line">    <span class="keyword">print</span> handle_douyin_info(url)</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>获取一个视频</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># -*- coding:utf-8 -*-</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> requests</span><br><span class="line"><span class="keyword">from</span> lxml <span class="keyword">import</span> etree</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">handle_decode</span><span class="params">(input_data, url)</span>:</span></span><br><span class="line">    search_douyin_str = re.compile(<span class="string">r'抖音ID：'</span>)</span><br><span class="line">    <span class="comment"># 匹配icon font</span></span><br><span class="line">    regex_list = [</span><br><span class="line">        &#123;<span class="string">'name'</span>:[<span class="string">' &amp;#xe603; '</span>,<span class="string">' &amp;#xe60d; '</span>,<span class="string">' &amp;#xe616; '</span>],<span class="string">'value'</span>:<span class="number">0</span>&#125;,</span><br><span class="line">        &#123;<span class="string">'name'</span>:[<span class="string">' &amp;#xe602; '</span>,<span class="string">' &amp;#xe60e; '</span>,<span class="string">' &amp;#xe618; '</span>],<span class="string">'value'</span>:<span class="number">1</span>&#125;,</span><br><span class="line">        &#123;<span class="string">'name'</span>:[<span class="string">' &amp;#xe605; '</span>,<span class="string">' &amp;#xe610; '</span>,<span class="string">' &amp;#xe617; '</span>],<span class="string">'value'</span>:<span class="number">2</span>&#125;,</span><br><span class="line">        &#123;<span class="string">'name'</span>:[<span class="string">' &amp;#xe604; '</span>,<span class="string">' &amp;#xe611; '</span>,<span class="string">' &amp;#xe61a; '</span>],<span class="string">'value'</span>:<span class="number">3</span>&#125;,</span><br><span class="line">        &#123;<span class="string">'name'</span>:[<span class="string">' &amp;#xe606; '</span>,<span class="string">' &amp;#xe60c; '</span>,<span class="string">' &amp;#xe619; '</span>],<span class="string">'value'</span>:<span class="number">4</span>&#125;,</span><br><span class="line">        &#123;<span class="string">'name'</span>:[<span class="string">' &amp;#xe607; '</span>,<span class="string">' &amp;#xe60f; '</span>,<span class="string">' &amp;#xe61b; '</span>],<span class="string">'value'</span>:<span class="number">5</span>&#125;,</span><br><span class="line">        &#123;<span class="string">'name'</span>:[<span class="string">' &amp;#xe608; '</span>,<span class="string">' &amp;#xe612; '</span>,<span class="string">' &amp;#xe61f; '</span>],<span class="string">'value'</span>:<span class="number">6</span>&#125;,</span><br><span class="line">        &#123;<span class="string">'name'</span>:[<span class="string">' &amp;#xe60a; '</span>,<span class="string">' &amp;#xe613; '</span>,<span class="string">' &amp;#xe61c; '</span>],<span class="string">'value'</span>:<span class="number">7</span>&#125;,</span><br><span class="line">        &#123;<span class="string">'name'</span>:[<span class="string">' &amp;#xe60b; '</span>,<span class="string">' &amp;#xe614; '</span>,<span class="string">' &amp;#xe61d; '</span>],<span class="string">'value'</span>:<span class="number">8</span>&#125;,</span><br><span class="line">        &#123;<span class="string">'name'</span>:[<span class="string">' &amp;#xe609; '</span>,<span class="string">' &amp;#xe615; '</span>,<span class="string">' &amp;#xe61e; '</span>],<span class="string">'value'</span>:<span class="number">9</span>&#125;,</span><br><span class="line">    ]</span><br><span class="line"></span><br><span class="line">    <span class="keyword">for</span> i1 <span class="keyword">in</span> regex_list:</span><br><span class="line">        <span class="keyword">for</span> i2 <span class="keyword">in</span> i1[<span class="string">'name'</span>]:</span><br><span class="line">            input_data = re.sub(i2,str(i1[<span class="string">'value'</span>]),input_data)</span><br><span class="line"></span><br><span class="line">    html = etree.HTML(input_data)</span><br><span class="line">    douyin_info = &#123;&#125;</span><br><span class="line">    douyin_info[<span class="string">'nick_name'</span>] = html.xpath(<span class="string">"//p[@class='user-info-name']/text()"</span>)[<span class="number">0</span>]</span><br><span class="line">    douyin_id = <span class="string">''</span>.join(html.xpath(<span class="string">"//p[@class='user-info-id']/i/text()"</span>))</span><br><span class="line">    douyin_info[<span class="string">'douyin_id'</span>] = re.sub(search_douyin_str,<span class="string">''</span>,html.xpath(<span class="string">"//p[@class='user-info-name']/text()"</span>)[<span class="number">0</span>]).strip() + douyin_id</span><br><span class="line"></span><br><span class="line">    douyin_info[<span class="string">'describe'</span>] = html.xpath(<span class="string">"//div[@class='user-title']/text()"</span>)[<span class="number">0</span>].replace(<span class="string">'\n'</span>,<span class="string">','</span>)</span><br><span class="line"></span><br><span class="line">    like = <span class="string">''</span>.join(html.xpath(<span class="string">"//div[@data-item='like']/p[@class='count']//i[@class='icon iconfont ']/text()"</span>))</span><br><span class="line">    unit = html.xpath(<span class="string">"//div[@data-item='like']/p[@class='count']/text()"</span>)</span><br><span class="line">    <span class="keyword">if</span> unit[<span class="number">-1</span>].strip() == <span class="string">'w'</span>:</span><br><span class="line">        douyin_info[<span class="string">'like'</span>] = str(float(like)/<span class="number">10</span>)+<span class="string">'w'</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        douyin_info[<span class="string">'like'</span>] = like</span><br><span class="line"></span><br><span class="line">    comment = <span class="string">''</span>.join(html.xpath(<span class="string">"//div[@data-item='comment']//i[@class='icon iconfont ']/text()"</span>))</span><br><span class="line">    unit = html.xpath(<span class="string">"//div[@data-item='comment']/p[@class='count']/text()"</span>)</span><br><span class="line">    <span class="keyword">if</span> unit[<span class="number">-1</span>].strip() == <span class="string">'w'</span>:</span><br><span class="line">        douyin_info[<span class="string">'comment'</span>] = str((float(comment)/<span class="number">10</span>))+<span class="string">'w'</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        douyin_info[<span class="string">'comment'</span>] = comment</span><br><span class="line"></span><br><span class="line">    <span class="keyword">return</span> douyin_info</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">handle_douyin_info</span><span class="params">(url)</span>:</span></span><br><span class="line">    header = &#123;</span><br><span class="line">        <span class="string">'User-Agent'</span>:<span class="string">'Mozilla/5.0 (Linux;U;Android 2.3;en-us;Nexus One Build/FRF91)AppleWebKit/999+(KHTML, like Gecko)Version/4.0 Mobile Safari/999.9'</span></span><br><span class="line">    &#125;</span><br><span class="line">    response = requests.get(url=url, headers=header)</span><br><span class="line">    <span class="keyword">return</span> handle_decode(response.text, url)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__ == <span class="string">'__main__'</span>:</span><br><span class="line">    url = <span class="string">'https://www.iesdouyin.com/share/video/6681141729246186760/?mid=6659642087115328259'</span></span><br><span class="line">    <span class="keyword">print</span> handle_douyin_info(url)</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+
                     
                         
 
                     
                     
                         <p>
-                            <a href="/2018/09/04/data-structures&algorithms/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2019/05/06/抖音数据抓取/#post-footer" class="postShorten-excerpt_link link">
                                 评论和共享
                             </a>
                         </p>
@@ -288,15 +315,15 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2018/02/07/nginx-pan-domain-name/">
-                            Nginx进行泛域名解析
+                        <a class="link-unstyled" href="/2019/05/05/了解软件架构：Serverless架构、微服务架构、分布式架构、单体架构/">
+                            (无标题)
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2018-02-07T17:55:52+08:00">
+    <time datetime="2019-05-05T15:06:14+08:00">
 	
-		    2月 07, 2018
+		    5月 05, 2019
     	
     </time>
     
@@ -305,9 +332,49 @@
             </div>
             
                 <div class="postShorten-content">
-                    <h3 id="主要实现："><a href="#主要实现：" class="headerlink" title="主要实现："></a>主要实现：</h3><pre><code>xxx.domain2.domain1.com -&gt; domain2.domain1.com/xxx
-xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
-</code></pre><p>nginx rewrite实现二级或三级域名泛解析<br>在nginx的相对应的配置文件的server中添加<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> ($host ~* ^([^\.]+)\.([^\.]+)\.([^\.]+)\.([^\.]+)$) &#123;  <span class="comment">#三级域名</span></span><br><span class="line">    set $subdomain $<span class="number">1</span>;</span><br><span class="line">    set $domain $<span class="number">2</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">location / &#123; <span class="comment">#添加rewrite</span></span><br><span class="line">    rewrite ^/(.*)$ /index.html/$<span class="number">1</span>$subdomain last;</span><br><span class="line">    <span class="keyword">break</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+                    <h2 id="了解软件架构：Serverless架构、微服务架构、分布式架构、单体架构"><a href="#了解软件架构：Serverless架构、微服务架构、分布式架构、单体架构" class="headerlink" title="了解软件架构：Serverless架构、微服务架构、分布式架构、单体架构"></a>了解软件架构：Serverless架构、微服务架构、分布式架构、单体架构</h2><p>SimpleEasy talkwithtrend  <em>今天</em></p>
+<p>如果一个软件开发人员，不了解软件架构的演进，会制约技术的选型和开发人员的生存、晋升空间。这里列举了目前主要的四种软件架构以及他们的优缺点，希望能够帮助软件开发人员拓展知识面。</p>
+<h2 id="一、单体架构"><a href="#一、单体架构" class="headerlink" title="一、单体架构"></a><strong>一、单体架构</strong></h2><p>单体架构比较初级，典型的三级架构，前端(Web/手机端)+中间业务逻辑层+数据库层。这是一种典型的Java Spring mvc或者Python Drango框架的应用。其架构图如下所示：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz/icdBCpcEToIicjNOmLOYEHib6j7uzhhpEkbQ3PrxicsxR9C9U4eWGuncuTyTKFJE94bk2ibzficO0v73IjzEY91PdDBg/640?wx_fmt=other&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="img"></p>
+<p>单体架构的应用比较容易部署、测试， 在项目的初期，单体应用可以很好地运行。然而，随着需求的不断增加， 越来越多的人加入开发团队，代码库也在飞速地膨胀。慢慢地，单体应用变得越来越臃肿，可维护性、灵活性逐渐降低，维护成本越来越高。下面是单体架构应用的一些<strong>缺点：</strong></p>
+<p>复杂性高：以一个百万行级别的单体应用为例，整个项目包含的模块非常多、模块的边界模糊、 依赖关系不清晰、 代码质量参差不齐、 混乱地堆砌在一起。可想而知整个项目非常复杂。每次修改代码都心惊胆战， 甚至添加一个简单的功能， 或者修改一个Bug都会带来隐含的缺陷。</p>
+<p>技术债务：随着时间推移、需求变更和人员更迭，会逐渐形成应用程序的技术债务， 并且越积 越多。“ 不坏不修”， 这在软件开发中非常常见， 在单体应用中这种思想更甚。已使用的系统设计或代码难以被修改，因为应用程序中的其他模块可能会以意料之外的方式使用它。</p>
+<p>部署频率低：随着代码的增多，构建和部署的时间也会增加。而在单体应用中， 每次功能的变更或缺陷的修复都会导致需要重新部署整个应用。全量部署的方式耗时长、 影响范围大、 风险高， 这使得单体应用项目上线部署的频率较低。而部署频率低又导致两次发布之间会有大量的功能变更和缺陷修复，出错率比较高。</p>
+<p>可靠性差：某个应用Bug，例如死循环、内存溢出等， 可能会导致整个应用的崩溃。</p>
+<p>扩展能力受限：单体应用只能作为一个整体进行扩展，无法根据业务模块的需要进行伸缩。例如，应用中有的模块是计算密集型的，它需要强劲的CPU；有的模块则是IO密集型的，需要更大的内存。由于这些模块部署在一起，不得不在硬件的选择上做出妥协。</p>
+<p>阻碍技术创新：单体应用往往使用统一的技术平台或方案解决所有的问题， 团队中的每个成员 都必须使用相同的开发语言和框架，要想引入新框架或新技术平台会非常困难。</p>
+<h2 id="二、分布式应用"><a href="#二、分布式应用" class="headerlink" title="二、分布式应用"></a><strong>二、分布式应用</strong></h2><p>中级架构，分布式应用，中间层分布式+数据库分布式，是单体架构的并发扩展，将一个大的系统划分为多个业务模块，业务模块分别部署在不同的服务器上，各个业务模块之间通过接口进行数据交互。数据库也大量采用分布式数据库，如redis、ES、solor等。通过LVS/Nginx代理应用，将用户请求均衡的负载到不同的服务器上。其架构图如下所示：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz/icdBCpcEToIicjNOmLOYEHib6j7uzhhpEkb5Oa2lLbfAibIZ3fd9nc51AgHPNEmzzY6LfYcANnhFmUq1LhDkdSgKFA/640?wx_fmt=other&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="img"></p>
+<p>该架构相对于单体架构来说，这种架构提供了负载均衡的能力，大大提高了系统负载能力，解决了网站高并发的需求。另外还有以下特点：</p>
+<p>降低了耦合度：把模块拆分,使用接口通信,降低模块之间的耦合度。</p>
+<p>责任清晰：把项目拆分成若干个子项目,不同的团队负责不同的子项目。</p>
+<p>扩展方便：增加功能时只需要再增加一个子项目,调用其他系统的接口就可以。</p>
+<p>部署方便:可以灵活的进行分布式部署。</p>
+<p>提高代码的复用性：比如service层,如果不采用分布式rest服务方式架构就会在手机wap商城,微信商城,pc,android，ios每个端都要写一个service层逻辑,开发量大,难以维护一起升级,这时候就可以采用分布式rest服务方式,公用一个service层。</p>
+<p><strong>缺点 :</strong> 系统之间的交互要使用远程通信,接口开发增大工作量,但是利大于弊。</p>
+<h2 id="三、微服务架构"><a href="#三、微服务架构" class="headerlink" title="三、微服务架构"></a><strong>三、微服务架构</strong></h2><p>微服务架构，主要是中间层分解，将系统拆分成很多小应用（微服务），微服务可以部署在不同的服务器上，也可以部署在相同的服务器不同的容器上。当应用的故障不会影响到其他应用，单应用的负载也不会影响到其他应用，其代表框架有Spring cloud、Dubbo等。其架构图如下所示：</p>
+<p><img src="https://mmbiz.qpic.cn/mmbiz/icdBCpcEToIicjNOmLOYEHib6j7uzhhpEkbjIvaRC3qR4P9lZ90vlTso9J4kdibO8ZOh93Sf6lyAadmhRTKW9o3k2A/640?wx_fmt=other&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="img"></p>
+<p>易于开发和维护：一个微服务只会关注一个特定的业务功能，所以它业务清晰、代码量较少。开发和维护单个微服务相对简单。而整个应用是由若干个微服务构建而成的，所以整个应用也会被维持在一个可控状态。</p>
+<p>单个微服务启动较快：单个微服务代码量较少， 所以启动会比较快。</p>
+<p>局部修改容易部署：单体应用只要有修改，就得重新部署整个应用，微服务解决了这样的问题。一般来说，对某个微服务进行修改，只需要重新部署这个服务即可。</p>
+<p>技术栈不受限：在微服务架构中，可以结合项目业务及团队的特点，合理地选择技术栈。例如某些服务可使用关系型数据库MySQL；某些微服务有图形计算的需求，可以使用Neo4j；甚至可根据需要，部分微服务使用Java开发，部分微服务使用Node.js开发。</p>
+<p>微服务虽然有很多吸引人的地方，但它并不是免费的午餐，使用它是有代价的。使用微服务架构面临的挑战。</p>
+<p>运维要求较高：更多的服务意味着更多的运维投入。在单体架构中，只需要保证一个应用的正常运行。而在微服务中，需要保证几十甚至几百个服务服务的正常运行与协作，这给运维带来了很大的挑战。</p>
+<p>分布式固有的复杂性：使用微服务构建的是分布式系统。对于一个分布式系统，系统容错、网络延迟、分布式事务等都会带来巨大的挑战。</p>
+<p>接口调整成本高：微服务之间通过接口进行通信。如果修改某一个微服务的API，可能所有使用了该接口的微服务都需要做调整。</p>
+<p>重复劳动：很多服务可能都会使用到相同的功能，而这个功能并没有达到分解为一个微服务的程度，这个时候，可能各个服务都会开发这一功能，从而导致代码重复。尽管可以使用共享库来解决这个问题（例如可以将这个功能封装成公共组件，需要该功能的微服务引用该组件），但共享库在多语言环境下就不一定行得通了。</p>
+<h2 id="四、Serverless架构"><a href="#四、Serverless架构" class="headerlink" title="四、Serverless架构"></a><strong>四、Serverless架构</strong></h2><p><img src="https://mmbiz.qpic.cn/mmbiz/icdBCpcEToIicjNOmLOYEHib6j7uzhhpEkbBxNib7XybvLOTNC7AjibVeOktOQ0MxMDhVUiaRL5sx92oPmFB8glzG8og/640?wx_fmt=other&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" alt="img"></p>
+<p>2014年11月14日，亚马逊AWS发布了Lambda。当时Lambda被描述为：一种计算服务，根据时间运行用户的代码，无需关心底层的计算资源。从某种意义上来说，Lambda姗姗来迟，它像云计算的PaaS理念：客户只管业务，无需担心存储和计算资源。2014年10月22日，谷歌收购了实时后端数据库创业公司Firebase。Firebase声称开发者只需引用一个API库文件就可以使用标准REST API的各种接口对数据进行读写操作，只需编写HTML＋CSS＋JavaScrip前端代码，不需要服务器端代码（如需整合，也极其简单）。</p>
+<p>相对于上两者，Facebook 在2014年二月收购的 Parse，则侧重于提供一个通用的后台服务。这些服务被称为Serverless或no sever。想到PaaS（平台即服务）了是吗？很像，用户不需要关心基础设施，只需要关心业务，这是迟到的PaaS，也是更实用的PaaS。这很有可能将会变革整个开发过程和传统的应用生命周期，一旦开发者们习惯了这种全自动的云上资源的创建和分配，或许就再也回不到那些需要微应用配置资源的时代里去了。</p>
+<p>Serverless架构能够让开发者在构建应用的过程中无需关注计算资源的获取和运维，由平台来按需分配计算资源并保证应用执行的SLA（服务等级协议），按照调用次数进行计费，有效的节省应用成本。ServerLess的架构如上图所示。其优点如下所示：</p>
+<p>低运营成本：在业务突发性极高的场景下，系统为了应对业务高峰，必须构建能够应对峰值需求的系统，这个系统在大部分时间是空闲的，这就导致了严重的资源浪费和成本上升。在微服务架构中，服务需要一直运行，实际上在高负载情况下每个服务都不止一个实例，这样才能完成高可用性；在Serverless架构下，服务将根据用户的调用次数进行计费，按照云计算pay-as-you-go原则，如果没有东西运行，你就不必付款，节省了使用成本。同时，用户能够通过共享网络、硬盘、CPU等计算资源，在业务高峰期通过弹性扩容方式有效的应对业务峰值，在业务波谷期将资源分享给其他用户，有效的节约了成本。</p>
+<p>简化设备运维：在原有的IT体系中，开发团队即需要维护应用程序，同时还要维护硬件基础设施；Serverless架构中，开发人员面对的将是第三方开发或自定义的API 和URL，底层硬件对于开发人员透明化了，技术团队无需再关注运维工作，能够更加专注于应用系统开发。</p>
+<p>提升可维护性：Serverless架构中，应用程序将调用多种第三方功能服务，组成最终的应用逻辑。目前，例如登陆鉴权服务，云数据库服务等第三方服务在安全性、可用性、性能方面都进行了大量优化，开发团队直接集成第三方的服务，能够有效的降低开发成本，同时使得应用的运维过程变得更加清晰，有效的提升了应用的可维护性。</p>
+<p>更快的开发速度：这一点在现在互联网创业公司得到很好的体现，创业公司往往开始由于人员和资金等问题，不可能每个产品线都同时进行，这时候就可以考虑第三方的Baas平台，比如使用微信的用户认证、阿里云提供的RDS，第三方支付及地理位置等等，能够很快进行产品开发的速度，把工作重点放在业务实现上，把产品更快的推向市场。</p>
+<p>但ServerLess架构也有其<strong>缺点：</strong></p>
+<p>厂商平台绑定：平台会提供Serverless架构给大玩家，比如AWS Lambda，运行它需要使用AWS指定的服务，比如API网关，DynamoDB，S3等等，一旦你在这些服务上开发一个复杂系统，你会粘牢AWS，以后只好任由他们涨价定价或者下架等操作，个性化需求很难满足，不能进行随意的迁移或者迁移的成本比较大，同时不可避免带来一些损失。Baas行业内一个比较典型的事件，2016年1月19日Facebook关闭曾经花巨额资金收购的Parse，造成用户不得不迁移在这个平台中产生一年多的数据，无疑需要花费比较大的人力和时间成本。</p>
+<p>成功案例比较少，没有行业标准：目前的情况也只适合简单的应用开发，缺乏大型成功案例的推动。对于Serverless缺乏统一的认知以及相应的标准，无法适应所有的云平台。</p>
+<p>目前微服务架构在四种架构中处于主流地位，很多应用第一、第二种架构的企业也开始慢慢转向微服务架构。到目前为止微服务的技术相对于二三年前已经比较成熟，第四种架构将是未来发展的一种趋势。</p>
 
                     
                         
@@ -315,7 +382,7 @@ xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
                     
                     
                         <p>
-                            <a href="/2018/02/07/nginx-pan-domain-name/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2019/05/05/了解软件架构：Serverless架构、微服务架构、分布式架构、单体架构/#post-footer" class="postShorten-excerpt_link link">
                                 评论和共享
                             </a>
                         </p>
@@ -333,15 +400,15 @@ xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2017/09/19/algorithm/">
-                            algorithm
+                        <a class="link-unstyled" href="/2019/04/25/二维码生成/">
+                            (无标题)
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-09-19T15:42:24+08:00">
+    <time datetime="2019-04-25T00:44:18+08:00">
 	
-		    9月 19, 2017
+		    4月 25, 2019
     	
     </time>
     
@@ -350,10 +417,12 @@ xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
             </div>
             
                 <div class="postShorten-content">
-                    <h4 id="插入排序"><a href="#插入排序" class="headerlink" title="插入排序"></a>插入排序</h4><p>将后面的元素插入前面已经排序好的序列中<br>循环每一个元素<br>从第二个元素开始循环，逆序与前面每一个元素比较(默认前面元素已经是排序好的)，如果小于则交换<br>[8, 7, 6, 5, 4, 3, 2, 1]<br>先选出7，逆序循环与前面排序好的[8]比较，小于交换<br>[7, 8, 6, 5, 4, 3, 2, 1]<br>选出6，逆序循环与前面排序好的[7,8]比较，小于交换<br>[7, 6, 8, 5, 4, 3, 2, 1]<br>[6, 7, 8, 5, 4, 3, 2, 1]<br>一次类推</p>
-<h4 id="希尔排序"><a href="#希尔排序" class="headerlink" title="希尔排序"></a>希尔排序</h4><p>根据序列长度分组后，对每个组进行插入排序<br>循环对数组分组，分完的组进行插入排序<br>[8, 7, 6, 5, 4, 3, 2, 1]<br>根据长度分组len(L)/2 = 4, gap = 4<br>[L[0], L[0 + 4]], [L[1], L[1 + 4]…<br>[8, 4], [7, 3], [6, 2], [5, 1] -&gt; [4, 8], [3, 7], [2, 6], [1, 5]<br>[4,3,2,1,8,7,6,5]<br>gap /= 2<br>[L[0], L[0 + 2], L[0 + 4], L[0 + 6]]…<br>[4, 2, 8, 6] [3, 1, 7, 5] -&gt; [2, 4, 6, 8] [1, 3, 5, 7]<br>gap /= 2<br>[2, 1, 4, 3, 6, 5, 8, 7]<br>gap /= 2<br>[2, 1, 4, 3, 6, 5, 8, 7] -&gt; [1, 2, 3, 4, 5, 6, 7, 8]</p>
-<h4 id="选择排序"><a href="#选择排序" class="headerlink" title="选择排序"></a>选择排序</h4><p>选择待排序子序列中最小值，最小值换到第一位置<br>[8, 7, 6, 5, 4, 3, 2, 1]<br>[1, 7, 6, 5, 4, 3, 2, 8]<br>[1, 2, 6, 5, 4, 3, 7, 8]<br>[1, 2, 3, 5, 4, 6, 7, 8]…</p>
-<h4 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h4><h4 id="冒泡排序"><a href="#冒泡排序" class="headerlink" title="冒泡排序"></a>冒泡排序</h4><p>从第一个元素比较，将大的元素往后面移<br>[8, 7, 6, 5, 4, 3, 2, 1]<br>[7, 8, 6, 5, 4, 3, 2, 1]…<br>[7, 6, 5, 4, 3, 2, 1, 8]…</p>
+                    <h1 id="二维码生成"><a href="#二维码生成" class="headerlink" title="二维码生成"></a>二维码生成</h1><p>二维码生成</p>
+<p><a href="https://github.com/sylnsfar/qrcode" target="_blank" rel="noopener">https://github.com/sylnsfar/qrcode</a></p>
+<p>图片背景二维码</p>
+<p><a href="https://github.com/aralejs/qrcode" target="_blank" rel="noopener">https://github.com/aralejs/qrcode</a></p>
+<p>艺术二维码</p>
+<p><a href="https://github.com/252860883/Art-QRCode-min" target="_blank" rel="noopener">https://github.com/252860883/Art-QRCode-min</a></p>
 
                     
                         
@@ -361,7 +430,7 @@ xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
                     
                     
                         <p>
-                            <a href="/2017/09/19/algorithm/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2019/04/25/二维码生成/#post-footer" class="postShorten-excerpt_link link">
                                 评论和共享
                             </a>
                         </p>
@@ -379,15 +448,15 @@ xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2017/09/12/scrapy/">
-                            scrapy
+                        <a class="link-unstyled" href="/2019/04/23/十种世界顶级思维/">
+                            (无标题)
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-09-12T10:10:38+08:00">
+    <time datetime="2019-04-23T12:19:47+08:00">
 	
-		    9月 12, 2017
+		    4月 23, 2019
     	
     </time>
     
@@ -396,14 +465,73 @@ xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
             </div>
             
                 <div class="postShorten-content">
-                    
+                    <h1 id="十种世界顶级思维"><a href="#十种世界顶级思维" class="headerlink" title="十种世界顶级思维"></a>十种世界顶级思维</h1><ol>
+<li>墨菲定律</li>
+</ol>
+<p>如果有两种或两种以上的方式去做某件事情，而其中一种选择方式将导致灾难，则必定有人会做出这种选择。</p>
+<p>解析：墨菲定律是一种心理学效应，由爱德华·墨菲提出。</p>
+<p>根本内容：如果事情有变坏的可能，不管这种可能性有多小，它总会发生。</p>
+<p>主要有四个方面:任何事都没有表面看起来那么简单;所有的事都会比你预计的时间长；会出错的事总会出错；如果你担心某种情况发生，那么它越有可能发生。</p>
+<ol>
+<li>波克定理</li>
+</ol>
+<p>只有在争辩中，才可能诞生最好的主意和最好的决定。</p>
+<p>解析：提出者是美国庄臣公司总经理詹姆士·波克，</p>
+<p>主要内容：无摩擦便无磨合，有争论才有高论。</p>
+<ol>
+<li>奥格尔维法则</li>
+</ol>
+<p>如果我们每个人都雇用比我们自己都更强的人，我们就能成为巨人公司。</p>
+<p>解析：它强调的是人才的重要性。一个好的公司固然是因为它有好的产品，有好的硬件设施，有雄厚的财力作为支撑，但最重要的还是要有优秀的人才。光有财、物，并不能带来任何新的变化，只有具有大批的优秀人才才是最重要、最根本的。</p>
+<ol>
+<li>美既好效应</li>
+</ol>
+<p>对一个外表英俊漂亮的人，人们很容易误认为他或她的其他方面也很不错。</p>
+<p>解析：美国心理学家丹尼尔·麦克尼尔提出，</p>
+<p>主要内容：印象一旦以情绪为基础，这一印象常会偏离事实。 看不到优秀背面的东西，就不能很好地解读它。也就是（以貌取人）的另外一种说法。</p>
+<ol>
+<li>蓝斯登定律</li>
+</ol>
+<p>和一位朋友一起工作，远较在父亲之下工作有趣得多。</p>
+<p>解析：给员工快乐的工作环境，可以提高工作效率。</p>
+<p>主要内容:可敬不可亲，终可敬；有权没有威，常失权。</p>
+<ol>
+<li>洛伯定理</li>
+</ol>
+<p>对于一个经理人来说，最要紧的不是你在场时的情况，而是你不在场时发生了什么。</p>
+<p>解析：让员工成为有工作责任的主人。</p>
+<p>主要内容：如果只想让下属听你的，那么当你不在身边时他们就不知道应该听谁的了。</p>
+<ol>
+<li>刺猬理论</li>
+</ol>
+<p>刺猬在天冷时彼此靠拢取暖但保持一定距离，以免互相刺伤。</p>
+<p>解析：在管理学中，刺猬理论强调的就是人际交往中的“心理距离效应”。运用到管理实践中，就是领导者如要搞好工作，应该与下属保持亲密关系，但这是“亲密有间”的关系，是一种不远不近的恰当合作关系。与下属保持心理距离，可以避免下属的防备和紧张，可以减少下属对自己的恭维、奉承等行为，可以防止与下属称兄道弟、吃喝不分。这样做既可以获得下属的尊重，又能保证在工作中不丧失原则。一个优秀的领导者和管理者，要做到疏者密之，密者疏之，这才是成功之道。</p>
+<ol>
+<li>托利得定理</li>
+</ol>
+<p>测验一个人的智力是否属于上乘，只看脑子里能否同时容纳两种相反的思想而无碍于其处世行事。</p>
+<p>解析：思可相反，得须相成。</p>
+<p>主要内容：人非圣贤，孰能无过。很多时候，我们都需要宽容，宽容不仅是给别人机会，更是为自己创造机会。同样老板在面对下属的微小过失时，则应有所容忍和掩盖，这样做是为了保全他人的体面和企业的利益。</p>
+<ol>
+<li>沃尔森法则</li>
+</ol>
+<p>把信息和情报放在第一位，金钱就会滚滚而来。</p>
+<p>解析：你能得到多少，往往取决于你能知道多少。</p>
+<p>主要内容：要在变幻莫测的市场竞争中立于不败之地，你就必须准确快速地获悉各种情报：市场有什么新动向？竞争对手有什么新举措？……在获得了这些情报后，果敢迅速地采取行动，这样你不成功都难。</p>
+<ol>
+<li>吉德林法则</li>
+</ol>
+<p>把难题清清楚楚地写出来，问题便已经解决了一半。</p>
+<p>解析：谁都会遇到难题，人如此，企业也是如此。在瞬间万变的环境下，怎样才能最有效地解决难题，并没有一个固定的规律。但是，成功并不是没有程序可循的。遇到难题，不管你要怎样解决它，成功的前提是看清难题的关键在哪里。找到了问题的关键，也就找到了解决问题的方法，剩下的就是如何来具体实行了。</p>
+<p><img src="https:////p1-tt.bytecdn.cn/img/tos-cn-i-0022/ff368811c4954edd90edbc07e15e1206~noop_690x862.jpeg" alt="img"></p>
+
                     
                         
 
                     
                     
                         <p>
-                            <a href="/2017/09/12/scrapy/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2019/04/23/十种世界顶级思维/#post-footer" class="postShorten-excerpt_link link">
                                 评论和共享
                             </a>
                         </p>
@@ -421,15 +549,15 @@ xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2017/09/08/pypi-server/">
-                            pypi私有服务器
+                        <a class="link-unstyled" href="/2019/04/12/Nginx/">
+                            (无标题)
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-09-08T18:57:18+08:00">
+    <time datetime="2019-04-12T09:54:52+08:00">
 	
-		    9月 08, 2017
+		    4月 12, 2019
     	
     </time>
     
@@ -438,18 +566,14 @@ xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
             </div>
             
                 <div class="postShorten-content">
-                    <h2 id="pypi-server搭建"><a href="#pypi-server搭建" class="headerlink" title="pypi-server搭建"></a>pypi-server搭建</h2><h3 id="pypi官方说明"><a href="#pypi官方说明" class="headerlink" title="pypi官方说明"></a><a href="http://wiki.python.org/moin/PyPiImplementations" target="_blank" rel="noopener">pypi官方说明</a></h3><h3 id="1-基础安装和启动"><a href="#1-基础安装和启动" class="headerlink" title="1.基础安装和启动"></a>1.基础安装和启动</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ pip install pypiserver</span><br><span class="line">$ mkdir ~/pypi/packages</span><br><span class="line"># copy some source packages or eggs to this directory</span><br><span class="line">$ pypi-server -p 3141 ~/pypi/packages</span><br><span class="line">$ pip install -i http://localhost:8001/simple/ ...</span><br></pre></td></tr></table></figure>
-<h3 id="2-添加上传密码"><a href="#2-添加上传密码" class="headerlink" title="2.添加上传密码"></a>2.添加上传密码</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$ pip install passlib</span><br><span class="line">$ apt-get install apache2-utils     # Mac OS不用安装</span><br><span class="line">$ htpasswd -sc ~/pypi/.htaccess user   # 回车后会提示输入密码，输入123</span><br></pre></td></tr></table></figure>
-<h3 id="3-启动pypi-server时加载密钥文件"><a href="#3-启动pypi-server时加载密钥文件" class="headerlink" title="3.启动pypi server时加载密钥文件"></a>3.启动pypi server时加载密钥文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pypi-server -p 3141 -P ~/pypi/.htaccess ./packages</span><br></pre></td></tr></table></figure>
-<h3 id="4-在用户根目录下创建-pypirc文件"><a href="#4-在用户根目录下创建-pypirc文件" class="headerlink" title="4.在用户根目录下创建.pypirc文件"></a>4.在用户根目录下创建.pypirc文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">[distutils]</span><br><span class="line">index-servers =</span><br><span class="line">  privatepypi</span><br><span class="line"></span><br><span class="line">[privatepypi]</span><br><span class="line">repository:http://127.0.0.1:3141</span><br><span class="line">username:user</span><br><span class="line">password:123</span><br></pre></td></tr></table></figure>
-<h3 id="5-上传package"><a href="#5-上传package" class="headerlink" title="5.上传package"></a>5.上传package</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">python setup.py sdist upload -r privatepypi</span><br></pre></td></tr></table></figure>
-<h3 id="6-下载package"><a href="#6-下载package" class="headerlink" title="6.下载package"></a>6.下载package</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ pip install -i http://localhost:3134/simple/ package-name</span><br></pre></td></tr></table></figure>
-<h3 id="7-setup-py文件示例"><a href="#7-setup-py文件示例" class="headerlink" title="7.setup.py文件示例"></a>7.setup.py文件示例</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">import sys</span><br><span class="line">import importlib</span><br><span class="line">from setuptools import setup, find_packages</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">PROJECT = &apos;libs&apos;</span><br><span class="line">requires = []</span><br><span class="line"># 读取requirements.txt文件，获得需要安装基础包</span><br><span class="line">with open(&apos;requirements.txt&apos;) as f:</span><br><span class="line">    for line in f.readlines():</span><br><span class="line">        requires.append(line.strip())</span><br><span class="line"></span><br><span class="line"># 打包时替换version.py文件</span><br><span class="line">if sys.argv[1] == &apos;sdist&apos;:</span><br><span class="line">    version_py = importlib.import_module(&apos;&#123;project&#125;.version&apos;.format(project=PROJECT))</span><br><span class="line">    version_py.update_version_file(&apos;&#123;project&#125;/version.py&apos;.format(project=PROJECT))</span><br><span class="line"># reload version模块，确保在替换version.py文件后获得最新的version号</span><br><span class="line">version = reload(importlib.import_module(&apos;&#123;pro&#125;.version&apos;.format(pro=PROJECT))).get_version()</span><br><span class="line"></span><br><span class="line">with open(&apos;README.md&apos;, &apos;r&apos;) as f:</span><br><span class="line">    readme = f.read()</span><br><span class="line"></span><br><span class="line">setup(</span><br><span class="line">    name=&apos;libs&apos;,</span><br><span class="line">    version=version,</span><br><span class="line">    description=&apos;libs is the common lib for Django project&apos;,</span><br><span class="line">    long_description=readme,</span><br><span class="line">    author=&apos;xxx&apos;,</span><br><span class="line">    author_email=&apos;xxx@gmail.com&apos;,</span><br><span class="line">    url=&apos;&apos;,</span><br><span class="line">    packages=find_packages(),</span><br><span class="line">    include_package_data=True,</span><br><span class="line">    install_requires=requires,</span><br><span class="line">    test_suite=&apos;nose.collector&apos;,</span><br><span class="line">    license=&apos;All rights reserved by xxx.&apos;,</span><br><span class="line">    zip_safe=False,</span><br><span class="line">    classifiers=(</span><br><span class="line">        &apos;Development Status :: 5 - Production/Stable&apos;,</span><br><span class="line">        &apos;Intended Audience :: Developers&apos;,</span><br><span class="line">        &apos;Natural Language :: English&apos;,</span><br><span class="line">        &apos;Programming Language :: Python&apos;,</span><br><span class="line">        &apos;Programming Language :: Python :: 2.7&apos;,</span><br><span class="line">    ),</span><br><span class="line">)</span><br></pre></td></tr></table></figure>
-<h3 id="setup-py官方文档"><a href="#setup-py官方文档" class="headerlink" title="setup.py官方文档"></a><a href="https://docs.python.org/2/distutils/setupscript.html" target="_blank" rel="noopener">setup.py官方文档</a></h3><h2 id="使用supervisor管理pypi-server"><a href="#使用supervisor管理pypi-server" class="headerlink" title="使用supervisor管理pypi-server"></a>使用supervisor管理pypi-server</h2><h3 id="1-生成run-pypi-sh文件，supervisor执行命令文件"><a href="#1-生成run-pypi-sh文件，supervisor执行命令文件" class="headerlink" title="1.生成run-pypi.sh文件，supervisor执行命令文件"></a>1.生成run-pypi.sh文件，supervisor执行命令文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">#!/bin/sh</span><br><span class="line"># 启动virtualenv</span><br><span class="line">. ~/pypi/pypienv/bin/activate</span><br><span class="line">exec pypi-server -p 3141 ~/pypi/packages</span><br></pre></td></tr></table></figure>
-<h3 id="2-生成supervisor配置文件，-etc-supervisor-conf-d-pypi-server-conf"><a href="#2-生成supervisor配置文件，-etc-supervisor-conf-d-pypi-server-conf" class="headerlink" title="2.生成supervisor配置文件，/etc/supervisor/conf.d/pypi-server.conf"></a>2.生成supervisor配置文件，/etc/supervisor/conf.d/pypi-server.conf</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">[program:pypi-server]</span><br><span class="line">  directory=~/pypi/</span><br><span class="line">  command=sh run-pypi.sh</span><br><span class="line">  autostart=true</span><br><span class="line">  autorestart=true</span><br><span class="line">  redirect_stderr=true</span><br></pre></td></tr></table></figure>
-<h3 id="3-启动和停止supervisor"><a href="#3-启动和停止supervisor" class="headerlink" title="3.启动和停止supervisor"></a>3.启动和停止supervisor</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ sudo /etc/init.d/supervisor start</span><br><span class="line">$ sudo /etc/init.d/supervisor stop</span><br></pre></td></tr></table></figure>
-<h2 id="公有云pypi"><a href="#公有云pypi" class="headerlink" title="公有云pypi"></a>公有云pypi</h2><h3 id="1-将包的相关信息-根据PyPI账户的注册信息-在PyPI主页上注册。"><a href="#1-将包的相关信息-根据PyPI账户的注册信息-在PyPI主页上注册。" class="headerlink" title="1.将包的相关信息, 根据PyPI账户的注册信息, 在PyPI主页上注册。"></a>1.将包的相关信息, 根据PyPI账户的注册信息, 在PyPI主页上注册。</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ python setup.py register -r pypi</span><br></pre></td></tr></table></figure>
-<h3 id="2-将包的源代码内容打包上传。"><a href="#2-将包的源代码内容打包上传。" class="headerlink" title="2.将包的源代码内容打包上传。"></a>2.将包的源代码内容打包上传。</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ python setup.py sdist upload -r pypi</span><br></pre></td></tr></table></figure>
+                    <h1 id="Nginx"><a href="#Nginx" class="headerlink" title="Nginx"></a>Nginx</h1><h3 id="我眼中的-Nginx（一）：Nginx-和位运算"><a href="#我眼中的-Nginx（一）：Nginx-和位运算" class="headerlink" title="我眼中的 Nginx（一）：Nginx 和位运算"></a><a href="http://email.mail.upyun.com/c/eJxFjkEOgyAURE8jSwJ-EFywsFrvgYhCi9ZYTGtP399VM5PJyywmMxrJdUWiKRmvmUABB6Yop50WZdeqq2ZN0_G2LwRbbEz02M5jpe6xkGA8SA-2ckMN4BwMk9AWpJosgHKjZmQxNXCukZIJOW_PApqi7NHZu_DfwsLuObrkkUBpTE5DXhLZzS2u82nXmb4jJt74BI9NpL8Jks2xXeLL-3s6ZT2uX-dyP1c" target="_blank" rel="noopener"><strong>我眼中的 Nginx（一）：Nginx 和位运算</strong></a></h3><p>众所周知 Nginx 以性能而出名，这和它优秀的代码实现有着密切的关系，而本文所要讲述的——位运算，也是促成 Nginx 优秀性能的原因之一。</p>
+<p><strong>了解详情</strong></p>
+<h3 id="我眼中的-Nginx（二）：HTTP-2-dynamic-table-size-update"><a href="#我眼中的-Nginx（二）：HTTP-2-dynamic-table-size-update" class="headerlink" title="我眼中的 Nginx（二）：HTTP/2 dynamic table size update"></a><a href="http://email.mail.upyun.com/c/eJxFjsEOgjAQRL-GHptd2sJy6AFB_wPLYqsFiZYofr31ZGYymczhZUZrkCoRbAnYgM5SqKCWKHvSZd_VR4K27bE7FRrmIUS5rfu2SHefhbc01eC0NiNPFQCPzhimqjR0npgn48RsG4VIBCJan9L6LFRblKfsxM7_WXkYHim4yLkpwpwofZqjeNhrWC77sFzkO-TMNz6e8xLkDyGS3dZDeDHf4m6acfkC_40_kw" target="_blank" rel="noopener"><strong>我眼中的 Nginx（二）：HTTP/2 dynamic table size update</strong></a></h3><p>HTTP/2 使用了 HPACK 来压缩头部，通过使用索引替代原始的文本来减少传输的字节数。</p>
+<p><strong>了解详情</strong></p>
+<h3 id="我眼中的-Nginx（三）：Nginx-变量和变量插值"><a href="#我眼中的-Nginx（三）：Nginx-变量和变量插值" class="headerlink" title="我眼中的 Nginx（三）：Nginx 变量和变量插值"></a><a href="http://email.mail.upyun.com/c/eJxFjkEOwiAURE9TloTfD_azYFFbvQcCCkprozRaTy-uzEwmk1m8jDcKaMeSaQVoIasQUHQc-EiyHYfuQKLvRxiOjRSTTZmvy7bO3N0nFo2SSA6URrK-E-LspNeddSdUOzifyLPJaAQgEiybWMrybLBv2mN1CS7-WXWwj5JcDrUhYU3gsUyZPcw1zZfNzhf-TjXrjU8MdUn8h2DFrMs-vUK45U1pP38BrkU--g" target="_blank" rel="noopener"><strong>我眼中的 Nginx（三）：Nginx 变量和变量插值</strong></a></h3><p>Nginx 允许我们在配置文件里嵌入”变量”，这些变量由 Nginx 的各个模块定义，其目的是为了提升配置的灵活性。<strong>了解详情</strong></p>
+<h3 id="我眼中的-Nginx（四）：是什么让你的-Nginx-服务退出这么慢？"><a href="#我眼中的-Nginx（四）：是什么让你的-Nginx-服务退出这么慢？" class="headerlink" title="我眼中的 Nginx（四）：是什么让你的 Nginx 服务退出这么慢？"></a><a href="http://email.mail.upyun.com/c/eJxFjkEOgyAURE8jS8L3g-KChdV6DxRaaNEai2nt6fu7amYymbzFZJxRoCsWTSmgEZKEgKLmwHsty76rz1q0bQ_dUEgx25j4vh77wqfHzILxQqKqnZ5GqawWmiwvHgBHiVg5z2bTIABxlkzIeX0W2BblQM5-Cv8tAnbLcUqeGmpFCTzkObHN3OJyPexy5e9ISTc-wROJ_DfBstnXU3x5f0-HatzyBYFzPpc" target="_blank" rel="noopener"><strong>我眼中的 Nginx（四）：是什么让你的 Nginx 服务退出这么慢？</strong></a></h3><p>本文将介绍 Nginx worker 进程退出时的准备步骤，延缓退出的原因，并介绍对应的解决办法。</p>
+<p><strong>了解详情</strong></p>
+<p><a href="http://email.mail.upyun.com/c/eJxFjk0OwiAUhE9TluQ96A8sWNTW3gMpFRSwqTRaTy-uzEwmk1l8mVk1KFriFQOUUBdx5NBRpKOo2Th0ZwF9P-IwVTVE7QPd12NP1DwiccpotsxNqxfQlqGUwoDsQF6skAta05GoJEcUAkhQLuf1WfG-YlNxtsb9WWXQW_Ym2NK4aEsidTkGsqmbT9dDpyt9-5LlxsfZsnj6Q5Cs9vXkX9bew9HIOX0B75Q_ZQ" target="_blank" rel="noopener"><strong>我眼中的 Nginx（五）：Nginx — 子请求设计之道</strong></a><br>使用子请求机制的意义在于，它能够分散原本集中在单个请求里的处理逻辑，简化任务，大大降低请求的复杂度。<strong>了解详情</strong></p>
 
                     
                         
@@ -457,7 +581,7 @@ xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
                     
                     
                         <p>
-                            <a href="/2017/09/08/pypi-server/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2019/04/12/Nginx/#post-footer" class="postShorten-excerpt_link link">
                                 评论和共享
                             </a>
                         </p>
@@ -475,15 +599,15 @@ xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2017/09/08/gitlib-runner/">
-                            gitlib-runner
+                        <a class="link-unstyled" href="/2019/04/08/MySQL/">
+                            (无标题)
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-09-08T17:26:17+08:00">
+    <time datetime="2019-04-08T10:45:33+08:00">
 	
-		    9月 08, 2017
+		    4月 08, 2019
     	
     </time>
     
@@ -492,12 +616,8 @@ xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
             </div>
             
                 <div class="postShorten-content">
-                    <h3 id="1-使用docker运行gitlab-runner"><a href="#1-使用docker运行gitlab-runner" class="headerlink" title="1.使用docker运行gitlab-runner"></a>1.使用docker运行gitlab-runner</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">gitlab-runner:</span><br><span class="line">    container_name: gitlab-runner</span><br><span class="line">    image: gitlab/gitlab-runner:latest</span><br><span class="line">    restart: always</span><br><span class="line">    volumes:</span><br><span class="line">        - /etc/localtime:/etc/localtime</span><br><span class="line">        - /home/data/docker/gitlab-runner/home/.pypirc:/root/.pypirc</span><br><span class="line">        - /var/run/docker.sock:/var/run/docker.sock</span><br><span class="line">        - /home/data/docker/gitlab-runner/config:/etc/gitlab-runner</span><br><span class="line">    command: [run, --working-directory=/home/gitlab-runner]</span><br><span class="line">    dns:</span><br><span class="line">        - 192.168.0.100</span><br></pre></td></tr></table></figure>
-<h3 id="2-进入docker"><a href="#2-进入docker" class="headerlink" title="2.进入docker"></a>2.进入docker</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo docker exec -it gitlab-runner bash</span><br></pre></td></tr></table></figure>
-<h3 id="3-执行gitlab-runner或gitlab-ci-multi-runner-reigster"><a href="#3-执行gitlab-runner或gitlab-ci-multi-runner-reigster" class="headerlink" title="3.执行gitlab-runner或gitlab-ci-multi-runner reigster"></a>3.执行gitlab-runner或gitlab-ci-multi-runner reigster</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">$ sudo gitlab-runner register</span><br><span class="line"></span><br><span class="line">Please enter the gitlab-ci coordinator URL (e.g. https://gitlab.com )</span><br><span class="line">## 输入gitlab地址</span><br><span class="line">Please enter the gitlab-ci token for this runner</span><br><span class="line">## gitlab的token(在gitlab的Admin Area中) 或者仓库的token(仓库-&gt;设置-&gt;Runner)</span><br><span class="line">Please enter the gitlab-ci description for this runner</span><br><span class="line">## Runner描述信息</span><br><span class="line">Please enter the gitlab-ci tags for this runner (comma separated):</span><br><span class="line">## Runner的标签 可以指定仓库，之后在.gitlab-ci.yml中配置相对应tags </span><br><span class="line">Please enter the executor: parallels, shell, ssh, virtualbox, docker+machine, docker-ssh+machine, docker, docker-ssh, kubernetes:</span><br><span class="line">docker  ## 执行类型 </span><br><span class="line">Please enter the Docker image (eg. ruby:2.1):</span><br><span class="line">build-image  ## 编译环境的镜像</span><br><span class="line">Runner registered successfully. Feel free to start it, but if it&apos;s running already the config should be automatically reloaded!</span><br></pre></td></tr></table></figure>
-<p>注册runner执行类型有多种方式，具体参考：<a href="https://docs.gitlab.com/ce/ci/docker/using_docker_build.html" target="_blank" rel="noopener">Using Docker Build</a></p>
-<h3 id="4-查看已经注册的runner"><a href="#4-查看已经注册的runner" class="headerlink" title="4.查看已经注册的runner"></a>4.查看已经注册的runner</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">gitlab-runner list</span><br><span class="line">Listing configured runners                          ConfigFile=/mypath/.gitlab-runner/config.toml</span><br></pre></td></tr></table></figure>
-<h3 id="5-配置-gitlab-ci-yml"><a href="#5-配置-gitlab-ci-yml" class="headerlink" title="5.配置.gitlab-ci.yml"></a>5.配置.gitlab-ci.yml</h3><p>详情参考：<a href="https://docs.gitlab.com/ce/ci/yaml/README.html" target="_blank" rel="noopener">gitlab-ci说明文档</a></p>
+                    <h1 id="MySQL"><a href="#MySQL" class="headerlink" title="MySQL"></a>MySQL</h1><p>CentOS默认不支持mysql</p>
+<p>yum remove mariadb-server<br>cd /var/lib &amp;&amp; rm -rfv mysql<br>yum install mariadb-server</p>
 
                     
                         
@@ -505,7 +625,7 @@ xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
                     
                     
                         <p>
-                            <a href="/2017/09/08/gitlib-runner/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2019/04/08/MySQL/#post-footer" class="postShorten-excerpt_link link">
                                 评论和共享
                             </a>
                         </p>
@@ -523,15 +643,15 @@ xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2017/08/21/fibonacci/">
-                            Python实现斐波那契
+                        <a class="link-unstyled" href="/2019/04/04/HTML5 惊艳 demo/">
+                            (无标题)
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-08-21T18:41:40+08:00">
+    <time datetime="2019-04-04T15:41:34+08:00">
 	
-		    8月 21, 2017
+		    4月 04, 2019
     	
     </time>
     
@@ -540,11 +660,27 @@ xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
             </div>
             
                 <div class="postShorten-content">
-                    <p>斐波那契数列(Fibonacci sequence)，又称黄金分割数列，也称为”兔子数列”：<br>F(0)=0,F(1)=1,F(n)=F(n-1)+F(n-2) （n $\ge$ 2, n $\in$ N*)。例如 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233，377，610，987，1597，2584，4181，6765，10946，17711，28657，46368……..这个数列从第3项开始，每一项都等于前两项之和，而且当n趋向于无穷大时，前一项与后一项的比值越来越逼近黄金分割比例0.618。  </p>
-<p>不同方法实现斐波那契：   </p>
-<h3 id="普通循环"><a href="#普通循环" class="headerlink" title="普通循环"></a>普通循环</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/bin/env python</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fib</span><span class="params">(n)</span>:</span></span><br><span class="line">    a, b = <span class="number">0</span>, <span class="number">1</span></span><br><span class="line">    <span class="keyword">for</span> i <span class="keyword">in</span> range(n):</span><br><span class="line">        a, b = b, a + b</span><br><span class="line">    <span class="keyword">return</span> a</span><br></pre></td></tr></table></figure>
-<h3 id="递归版本"><a href="#递归版本" class="headerlink" title="递归版本"></a>递归版本</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/bin/env python</span></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">fib</span><span class="params">(n)</span>:</span></span><br><span class="line">    <span class="keyword">if</span> <span class="number">0</span> == n:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">0</span></span><br><span class="line">    <span class="keyword">elif</span> <span class="number">1</span> == n:</span><br><span class="line">        <span class="keyword">return</span> <span class="number">1</span></span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        <span class="keyword">return</span> fib(n - <span class="number">1</span>) + fib(n - <span class="number">2</span>)</span><br></pre></td></tr></table></figure>
-<h3 id="迭代器版本"><a href="#迭代器版本" class="headerlink" title="迭代器版本"></a>迭代器版本</h3><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">Fib</span><span class="params">()</span>:</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__init__</span><span class="params">(self, n)</span>:</span></span><br><span class="line">        self.a = <span class="number">0</span></span><br><span class="line">        self.b = <span class="number">1</span></span><br><span class="line">        self.n = n</span><br><span class="line">        self.count = <span class="number">0</span></span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">__iter__</span><span class="params">(self)</span>:</span></span><br><span class="line">        <span class="keyword">return</span> self</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">next</span><span class="params">(self)</span>:</span></span><br><span class="line">        result = self.a</span><br><span class="line">        self.a, self.b = self.b, self.a + self.b</span><br><span class="line">        <span class="keyword">if</span> self.count &gt; self.n:</span><br><span class="line">            <span class="keyword">raise</span> StopIteration</span><br><span class="line">        self.count += <span class="number">1</span></span><br><span class="line">        <span class="keyword">return</span> result</span><br></pre></td></tr></table></figure>
+                    <h1 id="HTML5-惊艳-demo"><a href="#HTML5-惊艳-demo" class="headerlink" title="HTML5 惊艳 demo"></a>HTML5 惊艳 demo</h1><p>链接：<a href="https://www.zhihu.com/question/24398907/answer/30239864" target="_blank" rel="noopener">https://www.zhihu.com/question/24398907/answer/30239864</a></p>
+<p>来源：知乎</p>
+<p>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
+<p>找不到之前所见过的网页，深有同感！<br><a href="https://link.zhihu.com/?target=http%3A//tympanus.net/Development/AnimatedBooks/" target="_blank" rel="noopener">Animated Books with CSS 3D Transforms</a>  这是一个3D书本，CSS3完成</p>
+<p>=========HTML5特效聚集网站========<br><a href="https://link.zhihu.com/?target=http%3A//christmasexperiments.com/" target="_blank" rel="noopener">christmasexperiments.com 的页面</a><br><a href="https://link.zhihu.com/?target=http%3A//www.chromeexperiments.com/" target="_blank" rel="noopener">chromeexperiments.com 的页面</a><br><a href="https://link.zhihu.com/?target=http%3A//www.mrdoob.com/" target="_blank" rel="noopener">Mr.doob</a><br><a href="https://link.zhihu.com/?target=http%3A//litewerx.dk/" target="_blank" rel="noopener">litewerx.showcase</a><br><a href="https://link.zhihu.com/?target=http%3A//fff.cmiscm.com/%23%21/main" target="_blank" rel="noopener">Form Follows Function</a><br><a href="https://link.zhihu.com/?target=http%3A//alteredqualia.com/" target="_blank" rel="noopener">AlteredQualia</a><br><a href="https://link.zhihu.com/?target=http%3A//www.html5rocks.com/en/resources" target="_blank" rel="noopener">html5rocks.com 的页面</a></p>
+<p>===========视觉特效与交互式视频============<br><a href="https://link.zhihu.com/?target=http%3A//www.thewildernessdowntown.com/" target="_blank" rel="noopener">http://www.thewildernessdowntown.com/</a><br><a href="https://link.zhihu.com/?target=http%3A//www.itsumokawaii.jp/en/" target="_blank" rel="noopener">Interactive Film “itsumo kawaii”</a><br><a href="https://link.zhihu.com/?target=http%3A//www.beonlineb.com/" target="_blank" rel="noopener">http://www.beonlineb.com/</a><br><a href="https://link.zhihu.com/?target=http%3A//www.justareflektor.com/" target="_blank" rel="noopener">Arcade Fire / Just a Reflektor</a><br><a href="https://link.zhihu.com/?target=http%3A//www.aaronkoblin.com/Aaronetrope/" target="_blank" rel="noopener">Aaronetrope</a>  3D科幻视频投影对话<br><a href="https://link.zhihu.com/?target=http%3A//aleksandarrodic.com/" target="_blank" rel="noopener">Aleksandar Rodic</a> 3D立体博客<br><a href="https://link.zhihu.com/?target=http%3A//inear.se/beanstalk/" target="_blank" rel="noopener">Beanstalk</a><br><a href="https://link.zhihu.com/?target=http%3A//www.ro.me/" target="_blank" rel="noopener">http://www.ro.me/</a><br><a href="https://link.zhihu.com/?target=http%3A//alteredqualia.com/three/examples/webgl_terrain_dynamic.html" target="_blank" rel="noopener">three.js webgl</a> 动态地图<br><a href="https://link.zhihu.com/?target=http%3A//ogreen.special-t.com/en/" target="_blank" rel="noopener">Ô Green by SPECIAL.T</a> 水中植物广告<br><a href="https://link.zhihu.com/?target=http%3A//kimatica.net/%23/leafs/" target="_blank" rel="noopener">Kimatica - Creative Connections</a> 树脉<br><a href="https://link.zhihu.com/?target=http%3A//callhimecho.com/%23" target="_blank" rel="noopener">Earth to Echo</a> 电影科幻宣传网站<br><a href="https://link.zhihu.com/?target=http%3A//middle-earth.thehobbit.com/map" target="_blank" rel="noopener">http://middle-earth.thehobbit.com/map</a> 霍比特人<br><a href="https://link.zhihu.com/?target=http%3A//hellorun.helloenjoy.com/" target="_blank" rel="noopener">HelloRun™</a>  线稿房间，第一人称动<br><a href="https://link.zhihu.com/?target=http%3A//letters-inc.jp/%3Ft%3Dd" target="_blank" rel="noopener">LETTERS, INC.</a> 集成电路<br><a href="https://link.zhihu.com/?target=http%3A//dataveyes.com/%23%21/en" target="_blank" rel="noopener">Dataveyes | Human Data Interactions</a> 视觉粒子</p>
+<p>=========音乐与可视化==========<br><a href="https://link.zhihu.com/?target=http%3A//do.adive.in/" target="_blank" rel="noopener">http://do.adive.in/</a><br><a href="https://link.zhihu.com/?target=http%3A//www.clicktorelease.com/code/rocking-dendrites/" target="_blank" rel="noopener">Rocking dendrites</a> 摇滚与触手<br><a href="https://link.zhihu.com/?target=http%3A//jabtunes.com/labs/arabesque/" target="_blank" rel="noopener">Arabesque - Music Colour Particles</a> 优美的纯音乐与彩色烟雾<br><a href="https://link.zhihu.com/?target=http%3A//blackpawn.com/demos/vrtx-01-compo-filler/" target="_blank" rel="noopener">compo.filler</a>  蓝电之音<br><a href="https://link.zhihu.com/?target=http%3A//lights.helloenjoy.com/" target="_blank" rel="noopener">Lights</a> 波点<br><a href="https://link.zhihu.com/?target=http%3A//www.airtightinteractive.com/demos/js/uberviz/wordproblems/" target="_blank" rel="noopener">ĂberViz</a> 电子<br>[A <a href="https://link.zhihu.com/?target=http%3A//www.nihilogic.dk/labs/canvas_music_visualization/" target="_blank" rel="noopener"> Radiohead</a>   音乐画画</p>
+<p>=========物理特性元素============<br><a href="https://link.zhihu.com/?target=http%3A//hakim.se/experiments/html5/blob/03/" target="_blank" rel="noopener">Blob </a> 大水球<br><a href="https://link.zhihu.com/?target=http%3A//andrew-hoyer.com/experiments/cloth/" target="_blank" rel="noopener">Andrew Hoyer</a> 布-骨架<br><a href="https://link.zhihu.com/?target=http%3A//ie.microsoft.com/testdrive/Performance/FishBowl/" target="_blank" rel="noopener">HTML5 Fish Bowl</a> IE-鱼缸<br><a href="https://link.zhihu.com/?target=http%3A//webglsamples.googlecode.com/hg/aquarium/aquarium.html" target="_blank" rel="noopener">googlecode.com 的页面</a> chrome-水族馆<br><a href="https://link.zhihu.com/?target=http%3A//alteredqualia.com/three/examples/webgl_animals.html" target="_blank" rel="noopener">three.js webgl</a> 动物<br><a href="https://link.zhihu.com/?target=http%3A//www.spielzeugz.de/html5/liquid-particles-3D/" target="_blank" rel="noopener">Liquid Particles 3D</a> 3D粒子流</p>
+<p>==========画绘与生成===========<br><a href="https://link.zhihu.com/?target=http%3A//www.queness.com/post/4650/10-jaw-dropping-html5-and-javascript-effects" target="_blank" rel="noopener">10 Jaw Dropping HTML5 and Javascript Effects</a>  10个画绘特效<br><a href="https://link.zhihu.com/?target=http%3A//html5-pro.com/wormz/" target="_blank" rel="noopener">wormz . html5 canvas experiment</a> 图片生成毛毛虫~~<br><a href="https://link.zhihu.com/?target=http%3A//weavesilk.com/" target="_blank" rel="noopener">Silk – Interactive Generative Art</a>  光效<br><a href="https://link.zhihu.com/?target=http%3A//sketchtoy.com/" target="_blank" rel="noopener">Sketch Toy: Draw sketches and share replays with friends!</a> 记录线稿步骤<br><a href="https://link.zhihu.com/?target=http%3A//asciiflow.com/" target="_blank" rel="noopener">ASCIIFlow Infinity</a> ASCII字符生成图表</p>
+<p>========一些融入了HTML5的网站=======<br><a href="https://link.zhihu.com/?target=http%3A//andrevv.com/" target="_blank" rel="noopener">Andrew McCarthy</a>  滚动动物奔跑<br><a href="https://link.zhihu.com/?target=http%3A//tokyomildfoundation.com/" target="_blank" rel="noopener">http://tokyomildfoundation.com/</a>  东京温柔基金<br><a href="https://link.zhihu.com/?target=http%3A//www.fifty-five.com/" target="_blank" rel="noopener">fifty-five | the data agency</a>  垂直分割<br><a href="https://link.zhihu.com/?target=http%3A//aprilzero.com/" target="_blank" rel="noopener">A P R I L Z E R O</a>  数据分析<br><a href="https://link.zhihu.com/?target=http%3A//gamingmedia.ru/" target="_blank" rel="noopener">Gaming Media</a> 创意横向滚动<br><a href="https://link.zhihu.com/?target=http%3A//www.luxaqua-design.com/" target="_blank" rel="noopener">Luxaqua | Aquarium Design</a> 深邃海底纵向滚动<br><a href="https://link.zhihu.com/?target=http%3A//www.kilfish.com/" target="_blank" rel="noopener">KILFISH</a>  鬼畜纵向滚动<br><a href="https://link.zhihu.com/?target=http%3A//fullten-plums.com.tw/" target="_blank" rel="noopener">有顆梅，在台灣</a>  食品纵向滚动<br><a href="https://link.zhihu.com/?target=http%3A//www.vespillo-lefilm.com/" target="_blank" rel="noopener">Vespillo le film</a>  Vespillo纵向滚动<br><a href="https://link.zhihu.com/?target=http%3A//moonbear.animalsasia.org/ie/en/" target="_blank" rel="noopener">Exploring Moon Bears</a> IE-月熊志<br><a href="https://link.zhihu.com/?target=http%3A//metaljunkthegame.com/" target="_blank" rel="noopener">Metal Junk: The Game</a> HTML5游戏：金属废墟，游戏就不展开了~~</p>
+<p>最近写的 基于 HTML5 的指南针和水平仪：<a href="https://link.zhihu.com/?target=http%3A//island205.github.io/H5Compass/" target="_blank" rel="noopener">H5Compass</a> iPhone 5s/5c 测试可用</p>
+<p>最近看到一个惊艳的HTML5网站，<a href="https://link.zhihu.com/?target=http%3A//species-in-pieces.com/%23" target="_blank" rel="noopener">In Pieces - 30 Endangered Species, 30 Pieces.</a></p>
+<p><a href="https://link.zhihu.com/?target=http%3A//tympanus.net/codrops/" target="_blank" rel="noopener">Codrops | Useful resources and inspiration for creative minds</a><br><a href="https://link.zhihu.com/?target=http%3A//tutorialzine.com/" target="_blank" rel="noopener">Tutorialzine</a><br>上面有很多的Demo，质量都很高，开源免费可商用</p>
+<p>还有<a href="https://link.zhihu.com/?target=http%3A//codepen.io/" target="_blank" rel="noopener">CodePen - Front End Developer Playground &amp; Code Editor in the Browser</a>，像是前端界的github</p>
+<p>3D立体书Codrops上有几个，不知道是不是你找的：<br><a href="https://link.zhihu.com/?target=http%3A//tympanus.net/Development/AnimatedBooks/index.html" target="_blank" rel="noopener">Animated Books with CSS 3D Transforms</a><br><a href="https://link.zhihu.com/?target=http%3A//tympanus.net/Tutorials/3DShadingWithBoxShadows/" target="_blank" rel="noopener">3D Shading with Box-Shadows</a><br><a href="https://link.zhihu.com/?target=http%3A//tympanus.net/Development/3DBookShowcase/index.html" target="_blank" rel="noopener">3D Book Showcase</a></p>
+<p><a href="https://www.uisdc.com/10-best-free-animation-libraries" target="_blank" rel="noopener">https://www.uisdc.com/10-best-free-animation-libraries</a></p>
+<h5 id="WOW-js-–-让页面滚动更有趣"><a href="#WOW-js-–-让页面滚动更有趣" class="headerlink" title="WOW.js – 让页面滚动更有趣"></a><a href="https://link.jianshu.com?t=https%3A%2F%2Fgithub.com%2Fmatthieua%2FWOW" target="_blank" rel="noopener">WOW.js – 让页面滚动更有趣</a></h5><p>使用说明：<a href="https://link.jianshu.com?t=http%3A%2F%2Fwww.dowebok.com%2F131.html" target="_blank" rel="noopener">链接地址</a><br> 演示地址：<a href="https://link.jianshu.com?t=http%3A%2F%2Fwww.dowebok.com%2Fdemo%2F131%2Findex2.html" target="_blank" rel="noopener">OW.js演示-oppo官网首页</a></p>
+<h5 id="jQuery全屏滚动插件fullPage-js"><a href="#jQuery全屏滚动插件fullPage-js" class="headerlink" title="jQuery全屏滚动插件fullPage.js"></a><a href="https://link.jianshu.com?t=https%3A%2F%2Fgithub.com%2Falvarotrigo%2Ffullpage.js%2F" target="_blank" rel="noopener">jQuery全屏滚动插件<em>fullPage.js</em></a></h5><p>官网地址：<a href="https://link.jianshu.com?t=https%3A%2F%2Falvarotrigo.com%2FfullPage%2F" target="_blank" rel="noopener">链接地址</a><br> 使用说明：<a href="https://link.jianshu.com?t=http%3A%2F%2Fwww.jq22.com%2Fjquery-info1124" target="_blank" rel="noopener">链接地址</a><br> 演示地址：<a href="https://link.jianshu.com?t=http%3A%2F%2Fwww.jq22.com%2Fyanshi1124" target="_blank" rel="noopener">链接地址</a></p>
+<h5 id="Animate-css-一款强大的预设css3动画库"><a href="#Animate-css-一款强大的预设css3动画库" class="headerlink" title="Animate.css 一款强大的预设css3动画库"></a><a href="https://link.jianshu.com?t=https%3A%2F%2Fgithub.com%2Fdaneden%2Fanimate.css" target="_blank" rel="noopener">Animate.css 一款强大的预设css3动画库</a></h5><p>官网地址：<a href="https://link.jianshu.com?t=https%3A%2F%2Fdaneden.github.io%2Fanimate.css%2F" target="_blank" rel="noopener">链接地址</a><br> 使用说明：<a href="https://link.jianshu.com?t=https%3A%2F%2Fwww.awesomes.cn%2Frepo%2Fdaneden%2Fanimate-css" target="_blank" rel="noopener">链接地址</a><br> 演示地址：<a href="https://link.jianshu.com?t=http%3A%2F%2Fwww.jq22.com%2Fyanshi819" target="_blank" rel="noopener">链接地址</a></p>
+<p>Loading</p>
+<p><a href="https://loading.io/" target="_blank" rel="noopener">https://loading.io/</a></p>
 
                     
                         
@@ -552,7 +688,7 @@ xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
                     
                     
                         <p>
-                            <a href="/2017/08/21/fibonacci/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2019/04/04/HTML5 惊艳 demo/#post-footer" class="postShorten-excerpt_link link">
                                 评论和共享
                             </a>
                         </p>
@@ -570,15 +706,15 @@ xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2017/08/21/gitlab-ci-and-runner/">
-                            gitlab
+                        <a class="link-unstyled" href="/2019/04/02/好用小工具/">
+                            (无标题)
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-08-21T08:58:06+08:00">
+    <time datetime="2019-04-02T16:06:34+08:00">
 	
-		    8月 21, 2017
+		    4月 02, 2019
     	
     </time>
     
@@ -587,14 +723,43 @@ xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
             </div>
             
                 <div class="postShorten-content">
-                    
+                    <h1 id="好用小工具"><a href="#好用小工具" class="headerlink" title="好用小工具"></a>好用小工具</h1><p>图片压缩</p>
+<p><a href="https://www.bejson.com/ui/compress_img/" target="_blank" rel="noopener">https://www.bejson.com/ui/compress_img/</a></p>
+<p><a href="https://tinypng.com/" target="_blank" rel="noopener">https://tinypng.com/</a></p>
+<p>音频压缩</p>
+<p><a href="https://online-audio-converter.com/cn/" target="_blank" rel="noopener">https://online-audio-converter.com/cn/</a></p>
+<p>抠图</p>
+<p><a href="https://www.gaoding.com/" target="_blank" rel="noopener">https://www.gaoding.com/</a></p>
+<p>PDF</p>
+<p><a href="https://smallpdf.com" target="_blank" rel="noopener">https://smallpdf.com</a></p>
+<p>二维码</p>
+<p><a href="https://cli.im" target="_blank" rel="noopener">https://cli.im</a></p>
+<p><a href="http://qrmake.cn/" target="_blank" rel="noopener">http://qrmake.cn</a></p>
+<p><a href="https://github.com/252860883/Art-QRCode-min" target="_blank" rel="noopener">https://github.com/252860883/Art-QRCode-min</a></p>
+<p><a href="https://github.com/sylnsfar/qrcode" target="_blank" rel="noopener">https://github.com/sylnsfar/qrcode</a></p>
+<p>图片处理</p>
+<p><a href="https://www.remove.bg/" target="_blank" rel="noopener">https://www.remove.bg/</a></p>
+<p><a href="https://burner.bonanza.com/" target="_blank" rel="noopener">https://burner.bonanza.com/</a></p>
+<p><a href="https://www.fotor.com.cn/zhaopian/zaixiankoutu.html" target="_blank" rel="noopener">https://www.fotor.com.cn/zhaopian/zaixiankoutu.html</a></p>
+<p><a href="https://github.com/foamliu/Deep-Image-Matting" target="_blank" rel="noopener">https://github.com/foamliu/Deep-Image-Matting</a></p>
+<p><a href="https://github.com/egoist/logo-maker" target="_blank" rel="noopener">https://github.com/egoist/logo-maker</a></p>
+<p><a href="https://www.bejson.com/ui/compress_img/" target="_blank" rel="noopener">https://www.bejson.com/ui/compress_img/</a></p>
+<p>根据文字生成字符画</p>
+<p><a href="https://link.jianshu.com?t=http://patorjk.com/software/taag" target="_blank" rel="noopener">http://patorjk.com/software/taag</a><br> <a href="https://link.jianshu.com?t=http://www.network-science.de/ascii/" target="_blank" rel="noopener">http://www.network-science.de/ascii/</a></p>
+<p>根据图片生成字符画</p>
+<p><a href="https://link.jianshu.com?t=http://www.degraeve.com/img2txt.php" target="_blank" rel="noopener">http://www.degraeve.com/img2txt.php</a><br> <a href="https://link.jianshu.com?t=http://life.chacuo.net/convertphoto2char" target="_blank" rel="noopener">http://life.chacuo.net/convertphoto2char</a></p>
+<p>根据流程图生成字符画</p>
+<p><a href="https://link.jianshu.com?t=http://asciiflow.com/" target="_blank" rel="noopener">http://asciiflow.com/</a></p>
+<p>博客评论</p>
+<p><a href="https://valine.js.org/" target="_blank" rel="noopener">https://valine.js.org</a></p>
+
                     
                         
 
                     
                     
                         <p>
-                            <a href="/2017/08/21/gitlab-ci-and-runner/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2019/04/02/好用小工具/#post-footer" class="postShorten-excerpt_link link">
                                 评论和共享
                             </a>
                         </p>
@@ -612,15 +777,15 @@ xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2017/08/18/docker/">
-                            docker
+                        <a class="link-unstyled" href="/2019/02/19/Redis字符串/">
+                            (无标题)
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-08-18T18:33:11+08:00">
+    <time datetime="2019-02-19T09:12:53+08:00">
 	
-		    8月 18, 2017
+		    2月 19, 2019
     	
     </time>
     
@@ -629,14 +794,58 @@ xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
             </div>
             
                 <div class="postShorten-content">
-                    
+                    <h1 id="Redis字符串"><a href="#Redis字符串" class="headerlink" title="Redis字符串"></a>Redis字符串</h1><h1 id="定义"><a href="#定义" class="headerlink" title="定义"></a>定义</h1><p>Redis没有直接使用C语言传统的字符串表示（以空字符结尾的字符数组，以下简称C字符串），而是自己构建了一种名为简单动态字符串（simple dynamic string，SDS）的抽象类型，并将SDS用作Redis的默认字符串表示。比如说 “SET name kobe”这个命令，redis将在数据库中创建一个键值对。</p>
+<p>键值对的键是一个字符串对象，对象的底层实现是一个保存着字符串“name”的SDS</p>
+<p>键值对的值是一个字符串对象，对象的底层实现是一个保存着字符串“kobe”的SDS</p>
+<p>下图可以解释SDS的数据结构</p>
+<p><img src="http://p1.pstatp.com/large/pgc-image/c76ddab18f05469abbd36156cce071b7" alt="原来redis是这样存字符串的"></p>
+<ul>
+<li>free属性的值为0，表示这个SDS没有分配任何未使用空间。</li>
+<li>len属性的值为5，表示这个SDS保存了一个五字节长的字符串。</li>
+<li>buf属性是一个char类型的数组，数组的前五个字节分别保存了’R’、’e’、’d’、’i’、’s’五个字符，而最后一个字节则保存了空字符’’</li>
+</ul>
+<p>与C字符串相比，SDS具有以下优点：</p>
+<h1 id="获取字符串长度的时间复杂度为O-1"><a href="#获取字符串长度的时间复杂度为O-1" class="headerlink" title="获取字符串长度的时间复杂度为O(1)"></a>获取字符串长度的时间复杂度为O(1)</h1><p>C语言使用长度为N+1的字符数组来表示长度为N的字符串，并且字符数组的最后一个元素总是空字符’’。</p>
+<p><img src="http://p1.pstatp.com/large/pgc-image/046a00507bac4e0b84d3fbf7c947c631" alt="原来redis是这样存字符串的"></p>
+<p>因为C字符串并不记录自身的长度信息，所以为了获取一个C字符串的长度，程序必须遍历整个字符串，对遇到的每个字符进行计数，直到遇到代表字符串结尾的空字符为止，这个操作的复杂度为<strong>O(N)</strong>。和C字符串不同，因为SDS在len属性中记录了SDS本身的长度，所以获取一个SDS长度的复杂度仅为O(1)。</p>
+<h1 id="杜绝缓冲区溢出"><a href="#杜绝缓冲区溢出" class="headerlink" title="杜绝缓冲区溢出"></a>杜绝缓冲区溢出</h1><p>举个例子，假设程序里有两个在内存中紧邻着的C字符串s1和s2，其中s1保存了字符串”Redis”，而s2则保存了字符串”MongoDB</p>
+<p><img src="http://p3.pstatp.com/large/pgc-image/0c76350300c344e785638e9d00c3cdc6" alt="原来redis是这样存字符串的"></p>
+<p>如果一个程序员决定通过执行</p>
+<p>strcat(s1, “ Cluster”)</p>
+<p>将s1的内容修改为”Redis Cluster”，但粗心的他却忘了在执行strcat之前为s1分配足够的空间，那么在strcat函数执行之后，s1的数据将溢出到s2所在的空间中，导致s2保存的内容被意外地修改。与C字符串不同，SDS的空间分配策略完全杜绝了发生缓冲区溢出的可能性：当SDS API需要对SDS进行修改时，API会先检查SDS的空间是否满足修改所需的要求，如果不满足的话，API会自动将SDS的空间扩展至执行修改所需的大小，然后才执行实际的修改操作，所以使用SDS既不需要手动修改SDS的空间大小，也不会出现前面所说的缓冲区溢出问题。</p>
+<h1 id="减少修改字符串长度时所需的内存重分配次数"><a href="#减少修改字符串长度时所需的内存重分配次数" class="headerlink" title="减少修改字符串长度时所需的内存重分配次数"></a>减少修改字符串长度时所需的内存重分配次数</h1><ul>
+<li>空间预分配</li>
+</ul>
+<p>空间预分配用于优化SDS的字符串增长操作：当SDS的API对一个SDS进行修改，并且需要对SDS进行空间扩展的时候，程序不仅会为SDS分配修改所必须要的空间，还会为SDS分配额外的未使用空间。其中，额外分配的未使用空间数量由以下公式决定：</p>
+<p>如果对SDS进行修改之后，SDS的长度（也即是len属性的值）将小于1MB，那么程序分配和len属性同样大小的未使用空间，这时SDS len属性的值将和free属性的值相同。举个例子，如果进行修改之后，SDS的len将变成13字节，那么程序也会分配13字节的未使用空间，SDS的buf数组的实际长度将变成13+13+1=27字节（额外的一字节用于保存空字符）。如果对SDS进行修改之后，SDS的长度将大于等于1MB，那么程序会分配1MB的未使用空间。举个例子，如果进行修改之后，SDS的len将变成30MB，那么程序会分配1MB的未使用空间，SDS的buf数组的实际长度将为30MB+1MB+1byte。举个例子：</p>
+<p>如果存在“redis”SDS如下图：</p>
+<p><img src="http://p1.pstatp.com/large/pgc-image/e667f1a9003143c184125d223b8838ae" alt="原来redis是这样存字符串的"></p>
+<p>执行：</p>
+<p>strcat(s1, “ Cluster”)</p>
+<p>那么sdscat将执行一次内存重分配操作，将SDS的长度修改为13字节，并将SDS的未使用空间同样修改为13字节，如下图所示：</p>
+<p><img src="http://p1.pstatp.com/large/pgc-image/f9ddf635f4424b32a85e58d25d059ffe" alt="原来redis是这样存字符串的"></p>
+<p>如果这时我们再次执行</p>
+<p>strcat(s1, “ Tutorial”)</p>
+<p>那么这次sdscat将不需要执行内存重分配，因为未使用空间里面的13字节足以保存9字节的” Tutorial”，执行sdscat之后的SDS</p>
+<p><img src="http://p3.pstatp.com/large/pgc-image/349b51770daf44a387a37db972683c38" alt="原来redis是这样存字符串的"></p>
+<p>在扩展SDS空间之前，SDS API会先检查未使用空间是否足够，如果足够的话，API就会直接使用未使用空间，而无须执行内存重分配。通过这种预分配策略，SDS将连续增长N次字符串所需的内存重分配次数从必定N次降低为最多N次。</p>
+<ul>
+<li>惰性空间释放</li>
+</ul>
+<p>惰性空间释放用于优化SDS的字符串缩短操作：当SDS的API需要缩短SDS保存的字符串时，程序并不立即使用内存重分配来回收缩短后多出来的字节，而是使用free属性将这些字节的数量记录起来，并等待将来使用。举个例子，如果有个字符串：XYXaYYbcXYY</p>
+<p><img src="http://p1.pstatp.com/large/pgc-image/c2fed33f61f643249cd7b8fe119b295f" alt="原来redis是这样存字符串的"></p>
+<p>现在要移除XY，SDS移除后如下图：</p>
+<p><img src="http://p1.pstatp.com/large/pgc-image/e1a735c70efd49abbf7ee29d401764de" alt="原来redis是这样存字符串的"></p>
+<p>注意执行sdstrim之后的SDS并没有释放多出来的8字节空间，而是将这8字节空间作为未使用空间保留在了SDS里面，如果将来要对SDS进行增长操作的话，这些未使用空间就可能会派上用场。现在想要对上面的字符串添加“ Redis”,注意Redis前面有个空格。因为SDS里面预留的8字节空间已经足以拼接6个字节长的” Redis”了，所以不需要重新分配内存。</p>
+<p><img src="http://p3.pstatp.com/large/pgc-image/162816a36ea346269a96e13099d18717" alt="原来redis是这样存字符串的"></p>
+
                     
                         
 
                     
                     
                         <p>
-                            <a href="/2017/08/18/docker/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2019/02/19/Redis字符串/#post-footer" class="postShorten-excerpt_link link">
                                 评论和共享
                             </a>
                         </p>
@@ -654,15 +863,15 @@ xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2017/08/16/python-time-complexity/">
-                            Python内置方法的时间复杂度
+                        <a class="link-unstyled" href="/2019/02/16/深入详解美团点评CAT跨语言服务监控（一） CAT简介与部署/">
+                            (无标题)
                         </a>
                     
                 </h1>
                 <div class="postShorten-meta">
-    <time datetime="2017-08-16T09:38:35+08:00">
+    <time datetime="2019-02-16T23:11:03+08:00">
 	
-		    8月 16, 2017
+		    2月 16, 2019
     	
     </time>
     
@@ -671,240 +880,167 @@ xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
             </div>
             
                 <div class="postShorten-content">
-                    <h4 id="列表-list"><a href="#列表-list" class="headerlink" title="列表(list)"></a>列表(list)</h4><p>以完全随机的列表考虑平均情况。<br>列表是以数组(Array)实现的。最大的开销发生在超过当前分配大小的增长，这种情况下所有元素都需要移动；或者是在起始位置附近插入或者删除元素，这种情况下所有在该位置后面的元素都需要移动。如果你需要在一个队列的两端进行增删的操作，应当使用collections.deque(双向队列)</p>
-<table>
-<thead>
-<tr>
-<th>操作</th>
-<th>平均情况</th>
-<th>最坏情况</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>复制</td>
-<td>O(n)</td>
-<td>O(n)</td>
-</tr>
-<tr>
-<td>append</td>
-<td>O(1)</td>
-<td>O(1)</td>
-</tr>
-<tr>
-<td>插入</td>
-<td>O(1)</td>
-<td>O(n)</td>
-</tr>
-<tr>
-<td>取元素</td>
-<td>O(1)</td>
-<td>O(1)</td>
-</tr>
-<tr>
-<td>更改元素</td>
-<td>O(1)</td>
-<td>O(1)</td>
-</tr>
-<tr>
-<td>输出元素</td>
-<td>O(n)</td>
-<td>O(n)</td>
-</tr>
-<tr>
-<td>遍历</td>
-<td>O(n)</td>
-<td>O(n)</td>
-</tr>
-<tr>
-<td>取切片</td>
-<td>O(k)</td>
-<td>O(k)</td>
-</tr>
-<tr>
-<td>删除切片</td>
-<td>O(n)</td>
-<td>O(n)</td>
-</tr>
-<tr>
-<td>更改切片</td>
-<td>O(k+n)</td>
-<td>O(k+n)</td>
-</tr>
-<tr>
-<td>extend</td>
-<td>O(k)</td>
-<td>O(k)</td>
-</tr>
-<tr>
-<td>排序</td>
-<td>O(n log n)</td>
-<td>O(n log n)</td>
-</tr>
-<tr>
-<td>列表乘法</td>
-<td>O(nk)</td>
-<td>O(nk)</td>
-</tr>
-<tr>
-<td>x in s</td>
-<td>O(n)</td>
-<td></td>
-</tr>
-<tr>
-<td>min(s),max(s)</td>
-<td>O(n)</td>
-<td></td>
-</tr>
-<tr>
-<td>长度计算</td>
-<td>O(1)</td>
-<td>O(1)</td>
-</tr>
-</tbody>
-</table>
-<h4 id="双向队列-collections-deque"><a href="#双向队列-collections-deque" class="headerlink" title="双向队列(collections.deque)"></a>双向队列(collections.deque)</h4><p>deque(double-ended queue，双向队列)是以双向链表的形式实现的(Well,a list of arrays rather than objects,for greater efficiency)。双向队列的两端都是可达的，但从查找队列中间的元素较为缓慢，增删元素就更慢了。</p>
-<table>
-<thead>
-<tr>
-<th>操作</th>
-<th>平均情况</th>
-<th>最坏情况</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>复制</td>
-<td>O(n)</td>
-<td>O(n)</td>
-</tr>
-<tr>
-<td>append</td>
-<td>O(1)</td>
-<td>O(1)</td>
-</tr>
-<tr>
-<td>appendleft</td>
-<td>O(1)</td>
-<td>O(n)</td>
-</tr>
-<tr>
-<td>pop</td>
-<td>O(1)</td>
-<td>O(1)</td>
-</tr>
-<tr>
-<td>popleft</td>
-<td>O(1)</td>
-<td>O(1)</td>
-</tr>
-<tr>
-<td>extend</td>
-<td>O(k)</td>
-<td>O(k)</td>
-</tr>
-<tr>
-<td>extendleft</td>
-<td>O(k)</td>
-<td>O(k)</td>
-</tr>
-<tr>
-<td>rotate</td>
-<td>O(k)</td>
-<td>O(k)</td>
-</tr>
-<tr>
-<td>remove</td>
-<td>O(n)</td>
-<td>O(n)</td>
-</tr>
-</tbody>
-</table>
-<h4 id="集合-set"><a href="#集合-set" class="headerlink" title="集合(set)"></a>集合(set)</h4><p>未列出的操作可参考dict——二者的实现非常相似。</p>
-<table>
-<thead>
-<tr>
-<th>操作</th>
-<th>平均情况</th>
-<th>最坏情况</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>x in s</td>
-<td>O(1)</td>
-<td>O(n)</td>
-</tr>
-<tr>
-<td>并集s&#124;t</td>
-<td>O(len(s)+len(t))</td>
-<td></td>
-</tr>
-<tr>
-<td>交集s&amp;t</td>
-<td>O(min(len(s), len(t)))</td>
-<td>O(len(s)*len(t))</td>
-</tr>
-<tr>
-<td>差集s-t</td>
-<td>O(len(s))</td>
-<td></td>
-</tr>
-<tr>
-<td>s.difference_update(t)</td>
-<td>O(len(t))</td>
-<td></td>
-</tr>
-<tr>
-<td>对称差集s^t</td>
-<td>O(len(s))</td>
-<td>O(len(s)*len(t))</td>
-</tr>
-<tr>
-<td>s.symmetric_difference_update(t)</td>
-<td>O(len(t))</td>
-<td>O(len(t)*len(s))</td>
-</tr>
-</tbody>
-</table>
-<p>由源码得知，求差集(s-t，或s.difference(t))运算与更新为差集(s.difference_update(t))运算的时间复杂度并不相同！前者是将在s中，但不在t中的元素添加到新的集合中，因此时间复杂度为O(len(s))；后者是将在t中的元素从s中移除，因此时间复杂度为O(len(t)。因此，使用时请留心，根据两个集合的大小以及是否需要新集合来选择合适的方法。<br>集合的s-t运算中，并不要求t也一定是集合。只要t是可遍历的对象即可。</p>
-<h4 id="字典-dict"><a href="#字典-dict" class="headerlink" title="字典(dict)"></a>字典(dict)</h4><p>下列字典的平均情况基于以下假设：<br>1.对象的散列函数足够撸棒(robust)，不会发生冲突。<br>2.字典的键是从所有可能的键的集合中随机选择的。<br>只使用字符串最为字典的键。这么做虽然不会影响算法的时间复杂度，但会对常数项产生显著的影响，这决定了你的一段程序能对快跑完。</p>
-<table>
-<thead>
-<tr>
-<th>操作</th>
-<th>平均情况</th>
-<th>最坏情况</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>复制</td>
-<td>O(n)</td>
-<td>O(n)</td>
-</tr>
-<tr>
-<td>取元素</td>
-<td>O(1)</td>
-<td>O(n)</td>
-</tr>
-<tr>
-<td>更改元素</td>
-<td>O(1)</td>
-<td>O(n)</td>
-</tr>
-<tr>
-<td>删除元素</td>
-<td>O(1)</td>
-<td>O(n)</td>
-</tr>
-<tr>
-<td>遍历</td>
-<td>O(n)</td>
-<td>O(n)</td>
-</tr>
-</tbody>
-</table>
+                    <h1 id="深入详解美团点评CAT跨语言服务监控（一）-CAT简介与部署"><a href="#深入详解美团点评CAT跨语言服务监控（一）-CAT简介与部署" class="headerlink" title="深入详解美团点评CAT跨语言服务监控（一） CAT简介与部署"></a>深入详解美团点评CAT跨语言服务监控（一） CAT简介与部署</h1><p>置顶 2018年07月02日 12:50:45 <a href="https://me.csdn.net/caohao0591" target="_blank" rel="noopener">曹号</a> 阅读数：4676</p>
+<p><a href="https://blog.csdn.net/caohao0591/article/details/80207771" target="_blank" rel="noopener">下一篇： CAT跨语言服务链监控（二） CAT服务端初始化</a></p>
+<p>前言： CAT是一个实时和接近全量的监控系统，它侧重于对Java应用的监控，除了与点评RPC组件融合的很好之外，他将会能与Spring、MyBatis、Dubbo 等框架以及Log4j 等结合，支持PHP、C++、Go等多语言应用，基本接入了美团点评上海侧所有核心应用。目前在中间件（MVC、RPC、数据库、缓存等）框架中得到广泛应用，为美团点评各业务线提供系统的性能指标、健康状况、监控告警等，在微服务监控领域也是非常有用的一套组件。支撑这美团每天450亿的消息，50TB的数据监控，应用于 7000+应用服务器，2000+的业务，单台机器能15W qps，15台CAT物理集群，有着极高的性能，同时CAT支持丰富的报表，架构拥有灵活的扩展性，用户可以定制自己的监控、报表需求，本文将就CAT的部署、架构源码以及多语言支持等方面展开剖析。CAT在携程、陆金所、猎聘网、找钢网、<a href="https://www.baidu.com/s?wd=%E5%B9%B3%E5%AE%89%E9%93%B6%E8%A1%8C&amp;tn=24004469_oem_dg&amp;rsv_dl=gh_pl_sl_csd" target="_blank" rel="noopener">平安银行</a>等多家互联网公司生产环境应用。</p>
+<p>目录：</p>
+<p><a href="https://blog.csdn.net/caohao0591/article/details/80693289" target="_blank" rel="noopener">（一） CAT简介与部署</a></p>
+<p>​    介绍<br>​    背景介绍<br>​    Cat系统的特性<br>​    消息树<br>​    CAT服务端部署<br>​    CAT客户端Demo</p>
+<p><a href="https://blog.csdn.net/caohao0591/article/details/80207771" target="_blank" rel="noopener">（二） CAT服务端初始化</a><br>    Cat模块<br>    Cat-servlet初始化<br>    plexus - IOC容器<br>    模块的加载 - 模型模式<br>    cat-home的setup<br>    TcpSocketReceiver— netty reactor 模式的应用<br>    消息的解码<br><a href="https://blog.csdn.net/caohao0591/article/details/80207806" target="_blank" rel="noopener">（三） CAT客户端原理</a><br>    cat客户端部分核心类<br>    消息的组织 - 消息树<br>    客户端的初始化<br>    消息生产 – 入栈<br>    Context 线程本地变量<br>    Transaction事务的开启<br>    其他类型消息组合<br>    消息的完成-出栈<br>    消息的发送-队列化<br>    消息的序列化<br>    MessageId的设计<br><a href="https://blog.csdn.net/caohao0591/article/details/80200769" target="_blank" rel="noopener">（四） 服务端消息分发</a><br>    分发架构<br>    分析管理器的初始化<br>    消费者与周期管理器的初始化<br>    什么是周期？<br>    周期任务-任务队列<br>    消息分发<br>    周期策略<br><a href="https://blog.csdn.net/caohao0591/article/details/80293833" target="_blank" rel="noopener">（五） 配置与数据库操作</a><br>    CAT配置<br>    代码自动生成<br>    数据库操作<br>    数据库连接管理<br><a href="https://blog.csdn.net/caohao0591/article/details/80231519" target="_blank" rel="noopener">（六） 消息分析器与报表(一)</a><br>    消息分析器的构建<br>    TopAnalyzer<br>    EventAnalyzer - 事件发生次数分析<br>    MetricAnalyzer - 业务分析<br>    ProblemAnalyzer -异常分析<br>    TransactionAnalyzer - 事务分析<br><a href="https://blog.csdn.net/caohao0591/article/details/80448847" target="_blank" rel="noopener">（七）消息分析器与报表(二)</a><br>    CrossAnalyzer-调用链分析<br>    StorageAnalyzer  –数据库/缓存分析<br>    StateAnalyzer – CAT状态分析<br>    HeartbeatAnalyzer  – 心跳分析<br>    DumpAnalyzer – 原始消息LogView存储<br>    自定义分析器与报表<br><a href="https://blog.csdn.net/caohao0591/article/details/80558779" target="_blank" rel="noopener">（八） 报表持久化</a><br>    周期结束<br>    分析器的结束 – 报表持久化<br>    报表预处理<br>    报表的文件存储 – 重入锁<br>    报表的数据库存储<br>    定时任务<br><a href="https://blog.csdn.net/caohao0591/article/details/80691252" target="_blank" rel="noopener">（九） 管理平台MVC框架</a><br>    Servlet容器与请求生命周期<br>    页面路由初始化<br>    请求处理流程<br>（十）与JAVA框架的集成<br>    与Spring MVC集成<br>    与Spring Boot 集成<br>    与Spring Cloud 集成<br>    与dubbo集成<br>    与MyBatis集成<br>    与Log4j集成<br>（十一） 其他语言支持<br>    PHP语言<br>    C++语言<br>    LUA语言<br>    Go语言<br>    Python语言<br>    Node.js语言<br>    Android埋点</p>
+<p>​     Object  C – IOS 埋点</p>
+<p> （十二） 报警与监控提醒</p>
+<p>​    短信通知</p>
+<p>​    邮件通知</p>
+<p>（十三） CAT与实时计算<br>    hadoop模块</p>
+<p>​    spark实时计算模块</p>
+<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p><a href="https://www.oschina.net/p/cat-dianping" target="_blank" rel="noopener">        大众点评CAT</a>系统原型和理念来源于eBay的CAL的系统，CAT系统第一代设计者吴其敏在eBay工作长达十几年，对CAL系统有深刻的理解。CAT不仅增强了CAL系统核心模型，还添加了更丰富的报表。自2014年开源以来，CAT在携程、陆金所、猎聘网、找钢网等多家互联网公司生产环境应用。</p>
+<p>​    CAT是一个实时和接近全量的监控系统，它侧重于对Java应用的监控，除了与点评RPC组件融合的很好之外，他将会能与Spring、MyBatis、Dubbo 等框架以及Log4j 等结合，不久将会支持PHP、C++、Go等多语言应用，基本接入了美团点评上海侧所有核心应用。目前在中间件（MVC、RPC、数据库、缓存等）框架中得到广泛应用，为美团点评各业务线提供系统的性能指标、健康状况、监控告警等，在微服务监控领域也是非常有用的一套组件。</p>
+<p>​    在详细了解CAT的整体设计细节之后，我们可以在CAT基础之上轻松扩展我们自己的监控和数据收集模块。</p>
+<p>​    CAT项目的开源地址： <a href="https://github.com/dianping/cat" target="_blank" rel="noopener">https://github.com/dianping/cat</a></p>
+<h1 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a><strong>背景介绍</strong></h1><p>​    CAT整个产品研发是从2011年底开始的，当时正是大众点评App Net迁移Java的核心起步阶段。当初大众点评App已经有核心的基础中间件、RPC组件Pigeon、统一配置组件lion。整体Java迁移已经在服务化的路上。随着服务化的深入，整体Java在线上部署规模逐渐变多，同时，暴露的问题也越来越多。典型的问题有：</p>
+<ul>
+<li>大量报错，特别是核心服务，需要花很久时间才能定位。</li>
+<li>异常日志都需要线上权限登陆线上机器排查，排错时间长。</li>
+<li>有些简单的错误定位都非常困难（一次将线上的库配置到了Beta，花了整个通宵排错）。</li>
+<li>很多<a href="https://www.baidu.com/s?wd=%E4%B8%8D%E4%BA%86%E4%BA%86%E4%B9%8B&amp;tn=24004469_oem_dg&amp;rsv_dl=gh_pl_sl_csd" target="_blank" rel="noopener">不了了之</a>的问题都怀疑是网络问题（从现在看，内网真的很少出问题）。</li>
+</ul>
+<p>​    虽然那时候也有一些简单的监控工具（比如Zabbix，自己研发的Hawk系统等），可能单个工具在某方面的功能还不错，但整体服务化水平<a href="https://www.baidu.com/s?wd=%E5%8F%82%E5%B7%AE%E4%B8%8D%E9%BD%90&amp;tn=24004469_oem_dg&amp;rsv_dl=gh_pl_sl_csd" target="_blank" rel="noopener">参差不齐</a>、扩展能力相对较弱，监控工具间不能互通互联，使得查找问题根源基本都需要在多个系统之间切换，有时候真的是靠“人品”才能找出根源。适逢吴其敏从eBay加入大众点评成为首席架构师，eBay的CAL系统在内部非常成功，就在这样天时地利与人和的情况下，我们开始研发了大众点评App第一代监控系统——CAT。</p>
+<h1 id="Cat系统的特性"><a href="#Cat系统的特性" class="headerlink" title="Cat系统的特性"></a>Cat系统的特性</h1><ul>
+<li>实时处理：信息的价值会随时间锐减，尤其是事故处理过程中。</li>
+<li>全量数据：最开始的设计目标就是全量采集，全量的好处有很多。</li>
+<li>高可用：所有应用都倒下了，需要监控还站着，并告诉工程师发生了什么，做到故障还原和问题定位。</li>
+<li>故障容忍：CAT本身故障不应该影响业务正常运转，CAT挂了，应用不该受影响，只是监控能力暂时减弱。</li>
+<li>高吞吐：要想还原真相，需要全方位地监控和度量，必须要有超强的处理吞吐能力。</li>
+<li><p>可扩展：支持分布式、跨IDC部署，横向扩展的监控系统。</p>
+</li>
+<li><p>不保证可靠：允许消息丢失，这是一个很重要的trade-off，目前CAT服务端可以做到4个9的可靠性，可靠系统和不可靠性系统的设计差别非常大。</p>
+</li>
+</ul>
+<p>CAT支持的监控消息类型包括：</p>
+<ul>
+<li>Transaction 适合记录跨越系统边界的程序访问行为,比如远程调用，数据库调用，也适合执行时间较长的业务逻辑监控，Transaction用来记录一段代码的执行时间和次数。</li>
+<li>Event 用来记录一件事发生的次数，比如记录系统异常，它和transaction相比缺少了时间的统计，开销比transaction要小。</li>
+<li>Heartbeat 表示程序内定期产生的统计信息, 如CPU%, MEM%, 连接池状态, 系统负载等。</li>
+<li>Metric 用于记录业务指标、指标可能包含对一个指标记录次数、记录平均值、记录总和，业务指标最低统计粒度为1分钟。</li>
+<li>Trace 用于记录基本的trace信息，类似于log4j的info信息，这些信息仅用于查看一些相关信息</li>
+</ul>
+<h1 id="消息树"><a href="#消息树" class="headerlink" title="消息树"></a>消息树</h1><p>​    CAT监控系统将每次URL、Service的请求内部执行情况都封装为一个完整的消息树、消息树可能包括Transaction、Event、Heartbeat、Metric和Trace信息，各个消息树之间，通过 rootMessageId以及parentMessageId串联起来，形成整个调用链条。</p>
+<p><img src="https://img-blog.csdn.net/20180710092446596" alt="img"></p>
+<p><strong>完整的消息树：</strong></p>
+<p><img src="https://img-blog.csdn.net/20180710092835555" alt="img"></p>
+<p><strong>可视化的消息树：</strong></p>
+<p><img src="https://img-blog.csdn.net/20180710092946795" alt="img"></p>
+<p><strong>分布式消息树【一台机器调用另外一台机器】：</strong></p>
+<p><img src="https://img-blog.csdn.net/20180710093106548" alt="img"></p>
+<h1 id="CAT服务端部署"><a href="#CAT服务端部署" class="headerlink" title="CAT服务端部署"></a>CAT服务端部署</h1><p><strong>CAT安装环境：</strong></p>
+<ul>
+<li><ul>
+<li>Linux 2.6以及之上（2.6内核才可以支持epoll），线上服务端部署请使用Linux环境，Mac以及Windows环境可以作为开发环境，美团点评内部CentOS 6.5</li>
+<li>Java 6，7，8，服务端推荐是用jdk7的版本，客户端jdk6、7、8都支持</li>
+<li>Maven 3.3.3</li>
+<li>MySQL 5.6，5.7，更高版本MySQL都不建议使用，不清楚兼容性</li>
+<li>J2EE容器建议使用tomcat，建议版本7.0.70</li>
+<li>Hadoop环境可选，一般建议规模较小的公司直接使用磁盘模式，可以申请CAT服务端，500GB磁盘或者更大磁盘，这个磁盘挂载在/data/目录上</li>
+</ul>
+</li>
+</ul>
+<p><strong>目前我司线上环境：</strong></p>
+<p>​    Distributor ID: CentOS<br>​    Description: CentOS release 6.5 (Final)<br>​    Release: 6.5<br>​    Codename: Final<br>​    Server version: Apache Tomcat/8.0.30<br>​    Server built:   Dec 1 2015 22:30:46 UTC<br>​    Server number:  8.0.30.0<br>​    OS Name:        Linux<br>​    OS Version:     2.6.32-431.el6.x86_64<br>​    Architecture:   amd64<br>​    JVM Version:    1.8.0_111-b14<br>​    JVM Vendor:     Oracle Corporation<br>​    Maven 3.3.3<br>​    Mysql 5.6<br>​    Tomcat  7.0.70  建议使用此版本</p>
+<p>我的开发环境：</p>
+<p>​    操作系统： Windows 7<br>​    IDE： Intelij IDEA<br>​    JDK版本：1.8<br>​    Mysql： 5.6<br>​    Maven： 3.3.3<br>​    Server version：Apache Tomcat/8.0.30</p>
+<p><strong>安装CAT集群大致步骤</strong></p>
+<p>​    初始化Mysql数据库，一套CAT集群部署一个数据库，初始化脚本在script下的Cat.sql<br>​    准备三台CAT服务器，IP比如为10.1.1.1，10.1.1.2，10.1.1.3，下面的例子会以这个IP为例子<br>​    初始化/data/目录，配置几个配置文件/data/appdatas/cat/*.xml 几个配置文件，具体下面有详细说明<br>​    打包cat.war 放入tomcat容器</p>
+<p>​    修改一个路由配置，重启tomcat</p>
+<p><strong>Tomcat启动参数调整，修改 catalina.sh文件【服务端】</strong></p>
+<p>​    需要每台CAT集群10.1.1.1，10.1.1.2，10.1.1.3都进行部署<br>​    建议使用cms gc策略<br>​    建议cat的使用堆大小至少10G以上，开发环境启动2G堆启动即可</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CATALINA_OPTS=<span class="string">"$CATALINA_OPTS -server -Djava.awt.headless=true -Xms25G -Xmx25G -XX:PermSize=256m -XX:MaxPermSize=256m -XX:NewSize=10144m -XX:MaxNewSize=10144m -XX:SurvivorRatio=10 -XX:+UseParNewGC -XX:ParallelGCThreads=4 -XX:MaxTenuringThreshold=13 -XX:+UseConcMarkSweepGC -XX:+DisableExplicitGC -XX:+UseCMSInitiatingOccupancyOnly -XX:+ScavengeBeforeFullGC -XX:+UseCMSCompactAtFullCollection -XX:+CMSParallelRemarkEnabled -XX:CMSFullGCsBeforeCompaction=9 -XX:CMSInitiatingOccupancyFraction=60 -XX:+CMSClassUnloadingEnabled -XX:SoftRefLRUPolicyMSPerMB=0 -XX:-ReduceInitialCardMarks -XX:+CMSPermGenSweepingEnabled -XX:CMSInitiatingPermOccupancyFraction=70 -XX:+ExplicitGCInvokesConcurrent -Djava.nio.channels.spi.SelectorProvider=sun.nio.ch.EPollSelectorProvider -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Djava.util.logging.config.file="</span>%CATALINA_HOME%\conf\logging.properties<span class="string">" -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+PrintGCApplicationConcurrentTime -XX:+PrintHeapAtGC -Xloggc:/data/applogs/heap_trace.txt -XX:-HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/data/applogs/HeapDumpOnOutOfMemoryError -Djava.util.Arrays.useLegacyMergeSort=true"</span></span><br></pre></td></tr></table></figure>
+<p>​    修改中文乱码 tomcat conf 目录下 server.xml：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Connector</span> <span class="attr">port</span>=<span class="string">"8080"</span> <span class="attr">protocol</span>=<span class="string">"HTTP/1.1"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">URIEncoding</span>=<span class="string">"utf-8"</span>    <span class="attr">connectionTimeout</span>=<span class="string">"20000"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">redirectPort</span>=<span class="string">"8443"</span> /&gt;</span>  增加  URIEncoding="utf-8"</span><br></pre></td></tr></table></figure>
+<h3 id="程序对于-data-目录具体读写权限【包括客户端-amp-服务端】"><a href="#程序对于-data-目录具体读写权限【包括客户端-amp-服务端】" class="headerlink" title="程序对于/data/目录具体读写权限【包括客户端&amp;服务端】"></a>程序对于/data/目录具体读写权限【包括客户端&amp;服务端】</h3><ul>
+<li>注意无论是CAT客户端和服务端都要求/data/目录能进行读写操作，如果/data/目录不能写，建议使用linux的软链接链接到一个固定可写的目录，软链接的基本命令请自行搜索google</li>
+<li>此目录会存一些CAT必要的配置文件，运行时候的缓存文件，建议不要修改，如果想改，请自行研究好源码里面的东西，在酌情修改，此目录不支持进行配置化</li>
+<li>mkdir /data</li>
+<li>chmod 777 /data/ -R</li>
+<li>如果是Windows开发环境则是对程序运行盘下的/data/appdatas/cat和/data/applogs/cat有读写权限,如果cat服务运行在e盘的tomcat中，则需要对e:/data/appdatas/cat和e:/data/applogs/cat有读写权限</li>
+<li>如果windows实在不知道哪个盘，就所有盘都建好，最后看哪个盘多文件，就知道哪个了，当然你也可以通过配置系统环境变量CAT_HOME来指定服务器日志存储的路径，不过好像数据库连接xml信息等好像不太好自己配置，最好还是采用系统默认的 /data 目录。</li>
+</ul>
+<h3 id="配置-data-appdatas-cat-client-xml【包括客户端-amp-服务端】"><a href="#配置-data-appdatas-cat-client-xml【包括客户端-amp-服务端】" class="headerlink" title="配置/data/appdatas/cat/client.xml【包括客户端&amp;服务端】"></a>配置/data/appdatas/cat/client.xml【包括客户端&amp;服务端】</h3><ul>
+<li>此配置文件的作用是所有的客户端都需要一个地址指向CAT的服务端，比如CAT服务端有三个IP，10.1.1.1，10.1.1.2，10.1.1.3，2280是默认的CAT服务端接受数据的端口，不允许修改，http-port是Tomcat启动的端口，默认是8080，建议使用默认端口。</li>
+<li>此文件可以通过运维统一进行部署和维护，比如使用puppert等运维工具。</li>
+<li>不同环境这份文件不一样，比如区分prod环境以及test环境，在美团点评内部一共是2套环境的CAT，一份是生产环境，一份是测试环境</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span><br><span class="line">    <span class="tag">&lt;<span class="name">config</span> <span class="attr">mode</span>=<span class="string">"client"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servers</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">server</span> <span class="attr">ip</span>=<span class="string">"10.1.1.1"</span> <span class="attr">port</span>=<span class="string">"2280"</span> <span class="attr">http-port</span>=<span class="string">"8080"</span>/&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">server</span> <span class="attr">ip</span>=<span class="string">"10.1.1.2"</span> <span class="attr">port</span>=<span class="string">"2280"</span> <span class="attr">http-port</span>=<span class="string">"8080"</span>/&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">server</span> <span class="attr">ip</span>=<span class="string">"10.1.1.3"</span> <span class="attr">port</span>=<span class="string">"2280"</span> <span class="attr">http-port</span>=<span class="string">"8080"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">servers</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">config</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="安装CAT的数据库"><a href="#安装CAT的数据库" class="headerlink" title="安装CAT的数据库"></a>安装CAT的数据库</h3><ul>
+<li>数据库的脚本文件 script/Cat.sql</li>
+<li>MySQL的一个系统参数：max_allowed_packet，其默认值为1048576(1M)，修改为1000M，修改完需要重启mysql</li>
+<li>注意：一套独立的CAT集群只需要一个数据库（之前碰到过个别同学在每台cat的服务端节点都安装了一个数据库）</li>
+</ul>
+<h3 id="配置-data-appdatas-cat-datasources-xml【服务端配置】"><a href="#配置-data-appdatas-cat-datasources-xml【服务端配置】" class="headerlink" title="配置/data/appdatas/cat/datasources.xml【服务端配置】"></a>配置/data/appdatas/cat/datasources.xml【服务端配置】</h3><p>需要每台CAT集群10.1.1.1，10.1.1.2，10.1.1.3都进行部署</p>
+<p>注意：此xml仅仅为模板，请根据自己实际的情况替换jdbc.url,jdbc.user,jdbc.password的实际值。 app数据库和cat数据配置为一样，app库不起作用，为了运行时候代码不报错。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">data-sources</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">data-source</span> <span class="attr">id</span>=<span class="string">"cat"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">maximum-pool-size</span>&gt;</span>3<span class="tag">&lt;/<span class="name">maximum-pool-size</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">connection-timeout</span>&gt;</span>1s<span class="tag">&lt;/<span class="name">connection-timeout</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">idle-timeout</span>&gt;</span>10m<span class="tag">&lt;/<span class="name">idle-timeout</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">statement-cache-size</span>&gt;</span>1000<span class="tag">&lt;/<span class="name">statement-cache-size</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">properties</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">driver</span>&gt;</span>com.mysql.jdbc.Driver<span class="tag">&lt;/<span class="name">driver</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">url</span>&gt;</span>&lt;![CDATA[$&#123;jdbc.url&#125;]]&gt;<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">user</span>&gt;</span>$&#123;jdbc.user&#125;<span class="tag">&lt;/<span class="name">user</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">password</span>&gt;</span>$&#123;jdbc.password&#125;<span class="tag">&lt;/<span class="name">password</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">connectionProperties</span>&gt;</span>&lt;![CDATA[useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true&amp;socketTimeout=120000]]&gt;<span class="tag">&lt;/<span class="name">connectionProperties</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">data-source</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">data-source</span> <span class="attr">id</span>=<span class="string">"app"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">maximum-pool-size</span>&gt;</span>3<span class="tag">&lt;/<span class="name">maximum-pool-size</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">connection-timeout</span>&gt;</span>1s<span class="tag">&lt;/<span class="name">connection-timeout</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">idle-timeout</span>&gt;</span>10m<span class="tag">&lt;/<span class="name">idle-timeout</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">statement-cache-size</span>&gt;</span>1000<span class="tag">&lt;/<span class="name">statement-cache-size</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">properties</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">driver</span>&gt;</span>com.mysql.jdbc.Driver<span class="tag">&lt;/<span class="name">driver</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">url</span>&gt;</span>&lt;![CDATA[$&#123;jdbc.url&#125;]]&gt;<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">user</span>&gt;</span>$&#123;jdbc.user&#125;<span class="tag">&lt;/<span class="name">user</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">password</span>&gt;</span>$&#123;jdbc.password&#125;<span class="tag">&lt;/<span class="name">password</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">connectionProperties</span>&gt;</span>&lt;![CDATA[useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true&amp;socketTimeout=120000]]&gt;<span class="tag">&lt;/<span class="name">connectionProperties</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">data-source</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">data-sources</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>配置/data/appdatas/cat/server.xml【服务端配置】</strong><br>    需要每台CAT集群10.1.1.1，10.1.1.2，10.1.1.3都进行部署<br>    CAT节点一共有四个职责</p>
+<p>​    控制台 - 提供给业务人员进行数据查看【默认所有的cat节点都可以作为控制台，不可配置】<br>​    消费机 - 实时接收业务数据，实时处理，提供实时分析报表【默认所有的cat节点都可以作为消费机，不可配置】<br>​    告警端 - 启动告警线程，进行规则匹配，发送告警（目前仅支持单点部署）【可以配置】<br>​    任务机 - 做一些离线的任务，合并天、周、月等报表 【可以配置】<br>​    线上做多集群部署，比如说10.1.1.1，10.1.1.2，10.1.1.3这三台机器</p>
+<pre><code>建议选取一台10.1.1.1 负责角色有控制台、告警端、任务机，建议配置域名访问CAT，就配置一台机器10.1.1.1一台机器挂在域名下面
+10.1.1.2，10.1.1.3 负责消费机处理，这样能做到有效隔离，任务机、告警等问题不影响实时数据处理
+默认script下的server.xml为
+</code></pre><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">config</span> <span class="attr">local-mode</span>=<span class="string">"false"</span> <span class="attr">hdfs-machine</span>=<span class="string">"false"</span> <span class="attr">job-machine</span>=<span class="string">"true"</span> <span class="attr">alert-machine</span>=<span class="string">"false"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">storage</span>  <span class="attr">local-base-dir</span>=<span class="string">"/data/appdatas/cat/bucket/"</span> <span class="attr">max-hdfs-storage-time</span>=<span class="string">"15"</span> <span class="attr">local-report-storage-time</span>=<span class="string">"7"</span> <span class="attr">local-logivew-storage-time</span>=<span class="string">"7"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">hdfs</span> <span class="attr">id</span>=<span class="string">"logview"</span> <span class="attr">max-size</span>=<span class="string">"128M"</span> <span class="attr">server-uri</span>=<span class="string">"hdfs://10.1.77.86/user/cat"</span> <span class="attr">base-dir</span>=<span class="string">"logview"</span>/&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">hdfs</span> <span class="attr">id</span>=<span class="string">"dump"</span> <span class="attr">max-size</span>=<span class="string">"128M"</span> <span class="attr">server-uri</span>=<span class="string">"hdfs://10.1.77.86/user/cat"</span> <span class="attr">base-dir</span>=<span class="string">"dump"</span>/&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">hdfs</span> <span class="attr">id</span>=<span class="string">"remote"</span> <span class="attr">max-size</span>=<span class="string">"128M"</span> <span class="attr">server-uri</span>=<span class="string">"hdfs://10.1.77.86/user/cat"</span> <span class="attr">base-dir</span>=<span class="string">"remote"</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">storage</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">console</span> <span class="attr">default-domain</span>=<span class="string">"Cat"</span> <span class="attr">show-cat-domain</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">remote-servers</span>&gt;</span>127.0.0.1:8080<span class="tag">&lt;/<span class="name">remote-servers</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">console</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">config</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>配置说明：</p>
+<ul>
+<li>local-mode : 建议在开发环境以及生产环境时，都设置为false</li>
+<li>hdfs-machine : 定义是否启用HDFS存储方式，默认为 false</li>
+<li>job-machine : 定义当前服务是否为报告工作机（开启生成汇总报告和统计报告的任务，只需要一台服务机开启此功能），默认为 false</li>
+<li>alert-machine : 定义当前服务是否为报警机（开启各类报警监听，只需要一台服务机开启此功能），默认为 false；</li>
+<li>storage : 定义数据存储配置信息</li>
+<li>local-report-storage-time : 定义本地报告文件存放时长，单位为（天）</li>
+<li>local-logivew-storage-time : 定义本地日志文件存放时长，单位为（天）</li>
+<li>local-base-dir : 定义本地数据存储目录，建议直接使用/data/appdatas/cat/bucket目录</li>
+<li>hdfs : 定义HDFS配置信息</li>
+<li>server-uri : 定义HDFS服务地址</li>
+<li>console : 定义服务控制台信息</li>
+<li>remote-servers : 定义HTTP服务列表，（远程监听端同步更新服务端信息即取此值）</li>
+<li>ldap : 定义LDAP配置信息（这个可以忽略）</li>
+<li>ldapUrl : 定义LDAP服务地址（这个可以忽略）</li>
+</ul>
+<p>按照如上的说明，10.1.1.1 机器/data/appdatas/cat/serverm.xml配置，注意hdfs配置就随便下了一个，请忽略</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">config</span> <span class="attr">local-mode</span>=<span class="string">"false"</span> <span class="attr">hdfs-machine</span>=<span class="string">"false"</span> <span class="attr">job-machine</span>=<span class="string">"true"</span> <span class="attr">alert-machine</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">storage</span>  <span class="attr">local-base-dir</span>=<span class="string">"/data/appdatas/cat/bucket/"</span> <span class="attr">max-hdfs-storage-time</span>=<span class="string">"15"</span> <span class="attr">local-report-storage-time</span>=<span class="string">"7"</span> <span class="attr">local-logivew-storage-time</span>=<span class="string">"7"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">hdfs</span> <span class="attr">id</span>=<span class="string">"logview"</span> <span class="attr">max-size</span>=<span class="string">"128M"</span> <span class="attr">server-uri</span>=<span class="string">"hdfs://10.1.77.86/user/cat"</span> <span class="attr">base-dir</span>=<span class="string">"logview"</span>/&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">hdfs</span> <span class="attr">id</span>=<span class="string">"dump"</span> <span class="attr">max-size</span>=<span class="string">"128M"</span> <span class="attr">server-uri</span>=<span class="string">"hdfs://10.1.77.86/user/cat"</span> <span class="attr">base-dir</span>=<span class="string">"dump"</span>/&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">hdfs</span> <span class="attr">id</span>=<span class="string">"remote"</span> <span class="attr">max-size</span>=<span class="string">"128M"</span> <span class="attr">server-uri</span>=<span class="string">"hdfs://10.1.77.86/user/cat"</span> <span class="attr">base-dir</span>=<span class="string">"remote"</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">storage</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">console</span> <span class="attr">default-domain</span>=<span class="string">"Cat"</span> <span class="attr">show-cat-domain</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">remote-servers</span>&gt;</span>10.1.1.1:8080,10.1.1.2:8080,10.1.1.3:8080<span class="tag">&lt;/<span class="name">remote-servers</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">console</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">config</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>10.1.1.2，10.1.1.3 机器/data/appdatas/cat/serverm.xml配置如下，仅仅job-machine&amp;alert-machine修改为false</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">config</span> <span class="attr">local-mode</span>=<span class="string">"false"</span> <span class="attr">hdfs-machine</span>=<span class="string">"false"</span> <span class="attr">job-machine</span>=<span class="string">"false"</span> <span class="attr">alert-machine</span>=<span class="string">"false"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">storage</span>  <span class="attr">local-base-dir</span>=<span class="string">"/data/appdatas/cat/bucket/"</span> <span class="attr">max-hdfs-storage-time</span>=<span class="string">"15"</span> <span class="attr">local-report-storage-time</span>=<span class="string">"7"</span> <span class="attr">local-logivew-storage-time</span>=<span class="string">"7"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">hdfs</span> <span class="attr">id</span>=<span class="string">"logview"</span> <span class="attr">max-size</span>=<span class="string">"128M"</span> <span class="attr">server-uri</span>=<span class="string">"hdfs://10.1.77.86/user/cat"</span> <span class="attr">base-dir</span>=<span class="string">"logview"</span>/&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">hdfs</span> <span class="attr">id</span>=<span class="string">"dump"</span> <span class="attr">max-size</span>=<span class="string">"128M"</span> <span class="attr">server-uri</span>=<span class="string">"hdfs://10.1.77.86/user/cat"</span> <span class="attr">base-dir</span>=<span class="string">"dump"</span>/&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">hdfs</span> <span class="attr">id</span>=<span class="string">"remote"</span> <span class="attr">max-size</span>=<span class="string">"128M"</span> <span class="attr">server-uri</span>=<span class="string">"hdfs://10.1.77.86/user/cat"</span> <span class="attr">base-dir</span>=<span class="string">"remote"</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">storage</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">console</span> <span class="attr">default-domain</span>=<span class="string">"Cat"</span> <span class="attr">show-cat-domain</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">remote-servers</span>&gt;</span>10.1.1.1:8080,10.1.1.2:8080,10.1.1.3:8080<span class="tag">&lt;/<span class="name">remote-servers</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">console</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">config</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="war打包"><a href="#war打包" class="headerlink" title="war打包"></a>war打包</h3><p>​    1、在cat的源码目录，执行mvn clean install -DskipTests<br>​    2、如果发现cat的war打包不通过，CAT所需要依赖jar都部署在 <a href="http://unidal.org/nexus/" target="_blank" rel="noopener">http://unidal.org/nexus/</a><br>​    3、可以配置这个公有云的仓库地址到本地的settings路径，理论上不需要配置即可，可以参考cat的pom.xml配置</p>
+<p> 4、如果自行打包仍然问题，请使用下面链接进行下载<a href="http://unidal.org/nexus/service/local/repositories/releases/content/com/dianping/cat/cat-home/2.0.0/cat-home-2.0.0.war" target="_blank" rel="noopener">http://unidal.org/nexus/service/local/repositories/releases/content/com/dianping/cat/cat-home/2.0.0/cat-home-2.0.0.war</a></p>
+<p>​    5、官方的cat的master版本，重命名为cat.war进行部署，注意此war是用jdk8，服务端请使用jdk8版本<br>​    6、如下是个人本机电脑的测试，下载的jar来自于repo1.maven.org 以及 unidal.org</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">Downloading:</span> <span class="symbol">http:</span>/<span class="regexp">/repo1.maven.org/maven</span>2/org/codehaus/plexus/plexus-utils/<span class="number">3.0</span>.<span class="number">24</span>/plexus-utils-<span class="number">3.0</span>.<span class="number">24</span>.jar</span><br><span class="line"><span class="symbol">Downloaded:</span> <span class="symbol">http:</span>/<span class="regexp">/repo1.maven.org/maven</span>2/org/apache/commons/commons-email/<span class="number">1.1</span>/commons-email-<span class="number">1.1</span>.jar (<span class="number">30</span> KB at <span class="number">9.8</span> KB/sec)</span><br><span class="line"><span class="symbol">Downloaded:</span> <span class="symbol">http:</span>/<span class="regexp">/repo1.maven.org/maven</span>2/javax/servlet/jstl/<span class="number">1.2</span>/jstl-<span class="number">1.2</span>.jar (<span class="number">405</span> KB at <span class="number">107.7</span> KB/sec)</span><br><span class="line"><span class="symbol">Downloaded:</span> <span class="symbol">http:</span>/<span class="regexp">/repo1.maven.org/maven</span>2/com/google/code/javaparser/javaparser/<span class="number">1.0</span>.<span class="number">8</span>/javaparser-<span class="number">1.0</span>.<span class="number">8</span>.jar (<span class="number">235</span> KB at <span class="number">55.4</span> KB/sec)</span><br><span class="line"><span class="symbol">Downloaded:</span> <span class="symbol">http:</span>/<span class="regexp">/repo1.maven.org/maven</span>2/org/codehaus/plexus/plexus-utils/<span class="number">3.0</span>.<span class="number">24</span>/plexus-utils-<span class="number">3.0</span>.<span class="number">24</span>.jar (<span class="number">242</span> KB at <span class="number">46.9</span> KB/sec)</span><br><span class="line"><span class="symbol">Downloaded:</span> <span class="symbol">http:</span>/<span class="regexp">/repo1.maven.org/maven</span>2/org/freemarker/freemarker/<span class="number">2.3</span>.<span class="number">9</span>/freemarker-<span class="number">2.3</span>.<span class="number">9</span>.jar (<span class="number">789</span> KB at <span class="number">113.3</span> KB/sec)</span><br><span class="line"><span class="symbol">Downloading:</span> <span class="symbol">http:</span>/<span class="regexp">/unidal.org/nexus</span><span class="regexp">/content/repositories</span><span class="regexp">/releases/org</span><span class="regexp">/unidal/webres</span><span class="regexp">/WebResServer/</span><span class="number">1.2</span>.<span class="number">1</span>/WebResServer-<span class="number">1.2</span>.<span class="number">1</span>.jar</span><br><span class="line"><span class="symbol">Downloading:</span> <span class="symbol">http:</span>/<span class="regexp">/unidal.org/nexus</span><span class="regexp">/content/repositories</span><span class="regexp">/releases/org</span><span class="regexp">/unidal/webres</span><span class="regexp">/WebResTagLibrary/</span><span class="number">1.2</span>.<span class="number">1</span>/WebResTagLibrary-<span class="number">1.2</span>.<span class="number">1</span>.jar</span><br><span class="line"><span class="symbol">Downloading:</span> <span class="symbol">http:</span>/<span class="regexp">/unidal.org/nexus</span><span class="regexp">/content/repositories</span><span class="regexp">/releases/org</span><span class="regexp">/unidal/webres</span><span class="regexp">/WebResTag/</span><span class="number">1.2</span>.<span class="number">1</span>/WebResTag-<span class="number">1.2</span>.<span class="number">1</span>.jar</span><br><span class="line"><span class="symbol">Downloading:</span> <span class="symbol">http:</span>/<span class="regexp">/unidal.org/nexus</span><span class="regexp">/content/repositories</span><span class="regexp">/releases/org</span><span class="regexp">/unidal/webres</span><span class="regexp">/WebResRuntime/</span><span class="number">1.2</span>.<span class="number">1</span>/WebResRuntime-<span class="number">1.2</span>.<span class="number">1</span>.jar</span><br><span class="line"><span class="symbol">Downloading:</span> <span class="symbol">http:</span>/<span class="regexp">/unidal.org/nexus</span><span class="regexp">/content/repositories</span><span class="regexp">/releases/org</span><span class="regexp">/unidal/webres</span><span class="regexp">/WebResApi/</span><span class="number">1.2</span>.<span class="number">1</span>/WebResApi-<span class="number">1.2</span>.<span class="number">1</span>.jar</span><br><span class="line"><span class="symbol">Downloaded:</span> <span class="symbol">http:</span>/<span class="regexp">/unidal.org/nexus</span><span class="regexp">/content/repositories</span><span class="regexp">/releases/org</span><span class="regexp">/unidal/webres</span><span class="regexp">/WebResApi/</span><span class="number">1.2</span>.<span class="number">1</span>/WebResApi-<span class="number">1.2</span>.<span class="number">1</span>.jar (<span class="number">21</span> KB at <span class="number">82.7</span> KB/sec)</span><br><span class="line"><span class="symbol">Downloading:</span> <span class="symbol">http:</span>/<span class="regexp">/unidal.org/nexus</span><span class="regexp">/content/repositories</span><span class="regexp">/releases/org</span><span class="regexp">/unidal/webres</span><span class="regexp">/WebResBase/</span><span class="number">1.2</span>.<span class="number">1</span>/WebResBase-<span class="number">1.2</span>.<span class="number">1</span>.jar</span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">```</span><br><span class="line"><span class="selector-attr">[INFO]</span> <span class="selector-tag">parent</span> ............................................. <span class="selector-tag">SUCCESS</span> <span class="selector-attr">[ 40.478 s]</span></span><br><span class="line"><span class="selector-attr">[INFO]</span> <span class="selector-tag">cat-client</span> ......................................... <span class="selector-tag">SUCCESS</span> <span class="selector-attr">[03:47 min]</span></span><br><span class="line"><span class="selector-attr">[INFO]</span> <span class="selector-tag">cat-core</span> ........................................... <span class="selector-tag">SUCCESS</span> <span class="selector-attr">[ 31.740 s]</span></span><br><span class="line"><span class="selector-attr">[INFO]</span> <span class="selector-tag">cat-hadoop</span> ......................................... <span class="selector-tag">SUCCESS</span> <span class="selector-attr">[02:50 min]</span></span><br><span class="line"><span class="selector-attr">[INFO]</span> <span class="selector-tag">cat-consumer</span> ....................................... <span class="selector-tag">SUCCESS</span> <span class="selector-attr">[  3.197 s]</span></span><br><span class="line"><span class="selector-attr">[INFO]</span> <span class="selector-tag">cat-home</span> ........................................... <span class="selector-tag">SUCCESS</span> <span class="selector-attr">[ 58.964 s]</span></span><br><span class="line"><span class="selector-attr">[INFO]</span> <span class="selector-tag">------------------------------------------------------------------------</span></span><br><span class="line"><span class="selector-attr">[INFO]</span> <span class="selector-tag">BUILD</span> <span class="selector-tag">SUCCESS</span></span><br><span class="line">```</span><br></pre></td></tr></table></figure>
+<h3 id="war部署"><a href="#war部署" class="headerlink" title="war部署"></a>war部署</h3><p>​    1、将cat.war部署到10.1.1.1的tomcat的webapps下，启动tomcat，注意webapps下只允许放一个war，仅仅为cat.war<br>​    2、如果发现重启报错，里面有NPE等特殊情况，可以检查当前java进程，ps aux | grep java，可能存在之前的tomcat的进程没有关闭，又新启动了一个，导致出问题，建议kill -9 干掉所有的java进程<br>​    3、打开控制台的URL，<a href="http://10.1.1.1:8080/cat/s/config?op=routerConfigUpdate" target="_blank" rel="noopener">http://10.1.1.1:8080/cat/s/config?op=routerConfigUpdate</a><br>​    4、注意10.1.1.1这个IP需要替换为自己实际的IP链接，修改路由配置只能修改一次即可</p>
+<p>​    5、修改路由配置为如下，当为如下配置时，10.1.1.1 正常不起消费数据的作用，仅当10.1.1.2以及10.1.1.3都挂掉才会进行实时流量消费</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">"1.0"</span> encoding=<span class="string">"utf-8"</span>?&gt;</span><br><span class="line">&lt;router-config backup-server=<span class="string">"10.1.1.1"</span> backup-server-port=<span class="string">"2280"</span>&gt;</span><br><span class="line">   &lt;<span class="keyword">default</span>-server id=<span class="string">"10.1.1.2"</span> weight=<span class="string">"1.0"</span> port=<span class="string">"2280"</span> enable=<span class="string">"true"</span>/&gt;</span><br><span class="line">   &lt;<span class="keyword">default</span>-server id=<span class="string">"10.1.1.3"</span> weight=<span class="string">"1.0"</span> port=<span class="string">"2280"</span> enable=<span class="string">"true"</span>/&gt;</span><br><span class="line">&lt;/router-config&gt;</span><br></pre></td></tr></table></figure>
+<p>​    6、重启10.1.1.1的机器的tomcat<br>​    7、将cat.war部署到10.1.1.2，10.1.1.3这两台机器中，启动tomcat<br>​    8、cat集群部署完毕，如果有问题，欢迎在微信群咨询，如果文档有误差，欢迎指正以及提交pullrequest</p>
+<p>重启保证数据不丢</p>
+<p>​    请在tomcat重启之前调用当前tomcat的存储数据的链接 <a href="http://${ip}:8080/cat/r/home?op=checkpoint，重启之后数据会恢复。【注意重启时间在每小时的整点10-55分钟之间】" target="_blank" rel="noopener">http://${ip}:8080/cat/r/home?op=checkpoint，重启之后数据会恢复。【注意重启时间在每小时的整点10-55分钟之间】</a><br> 线上部署时候，建议把此链接调用存放于tomcat的stop脚本中，这样不需要每次手工调用</p>
+<h3 id="开发环境CAT的部署"><a href="#开发环境CAT的部署" class="headerlink" title="开发环境CAT的部署"></a>开发环境CAT的部署</h3><p>​    1、请按照如上部署/data/环境目录，数据库配置client.xml ,datasources.xml,server.xml这三个配置文件，注意server.xml里面的节点角色，job-machine&amp;alert-machine都可以配置为true<br>​    2、在cat目录中执行 mvn eclipse:eclipse，此步骤会生成一些代码文件，直接导入到工程会发现找不到类<br>​    3、将源码以普通项目到入eclipse中，注意不要以maven项目导入工程<br>​    4、运行com.dianping.cat.TestServer 这个类，即可启动cat服务器<br>​    5、这里和集群版本唯一区别就是服务端部署单节点，client.xml server.xml以及路由地址配置为单台即可</p>
+<h1 id="CAT客户端Demo"><a href="#CAT客户端Demo" class="headerlink" title="CAT客户端Demo"></a>CAT客户端Demo</h1><p>   <strong>cat客户端的配置：</strong></p>
+<p>​    cat客户端也需要配置 /data 目录，程序对于/data/目录具体读写权限可以参考上一节，</p>
+<p>​    然后通过maven引入cat客户端包，在pom.xml 加入：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.dianping.cat<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>cat-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.0.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.dianping.cat<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>cat-client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.0.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>​    引入之后：</p>
+<p><img src="https://img-blog.csdn.net/20180710112822532" alt="img"></p>
+<p>​    以上配置会通过maven从网上引入 cat-core和cat-client 包，如果无法配置引入，也可以手动引入 cat-client.jar 包。</p>
+<p>​    CAT默认会将/data/appdatas/cat 作为CAT Home目录，这个目录至关重要，CAT客户端配置文件 client.xml 是在这个目录内，当然，如果你是在 windows 下调试， 你也可以在src/main/resources/ 目录下新建 META-INF/cat 目录， 并将 client.xml 配置文件放入 src/main/resources/META-INF/cat 目录里，你可以为你的监控配置domain，即项目名，如下配置 <domain id="translate"> 。</domain></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">config</span> <span class="attr">mode</span>=<span class="string">"client"</span> <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema"</span> <span class="attr">xsi:noNamespaceSchemaLocation</span>=<span class="string">"config.xsd"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">domain</span> <span class="attr">id</span>=<span class="string">"translate"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servers</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- Local mode for development --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">server</span> <span class="attr">ip</span>=<span class="string">"127.0.0.1"</span> <span class="attr">port</span>=<span class="string">"2280"</span> <span class="attr">http-port</span>=<span class="string">"8080"</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- If under production environment, put actual server address as list. --&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- </span></span><br><span class="line"><span class="comment">            &lt;server ip="192.168.7.71" port="2280" /&gt; </span></span><br><span class="line"><span class="comment">            &lt;server ip="192.168.7.72" port="2280" /&gt; </span></span><br><span class="line"><span class="comment">        --&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">servers</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">config</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>第一个监控程序：</strong></p>
+<p>​    所有都配置好了，接下来我们来写第一个监控程序，监控都是由用户自己埋点，当然，在本书最后，我们将会讲解CAT监控如何与各个流行框架之间更好的融合，以帮助用户达到无侵入式的监控埋点，假设我们对用户提供了一个翻译服务，其中有个接口就是HelloWorld，在下面程序中，我们将以事务日志形式记录用户调用行为：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">helloWorld</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> </span>&#123;</span><br><span class="line">    MessageProducer cat = Cat.getProducer();</span><br><span class="line">    Transaction t = cat.newTransaction(<span class="string">"URL"</span>, <span class="string">"Translate/HelloWorld"</span>);  <span class="comment">//type=URL的事务记录: 你的接口/方法名称</span></span><br><span class="line">    <span class="keyword">try</span>&#123;</span><br><span class="line">        <span class="comment">//do your business</span></span><br><span class="line">        t.setStatus(Message.SUCCESS);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        Cat.getProducer().logError(e);</span><br><span class="line">        t.setStatus(e);</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        t.complete();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    好了，我们再去管理平台去看看报表信息把，Transaction事务报表中，type=URL的事务有3条，我们通常用URL类型的事务消息标志着接口服务的开始，展开之后，我们看到这个里面该项目提供的3个服务被调用了，其中就有我们的 Translate/HelloWorld：</p>
+<p><img src="https://img-blog.csdn.net/20180710115701626" alt="img"></p>
+<p><img src="https://img-blog.csdn.net/20180710115840344" alt="img"></p>
+<p>再点开某个接口的[::show::]进入详细统计，包括耗时分布、每分钟的数据、以及该服务集群下各个机器的统计情况，我们可以通过这个看出是不是某台机器出了问题：</p>
+<p><img src="https://img-blog.csdn.net/20180712105601499" alt="img"></p>
+<p>点击LogView进入最近一条事务的原始日志（problem报表才会记录全部的原始日志）：</p>
+<p><img src="https://img-blog.csdn.net/20180710120047134" alt="img"></p>
+<p>​    接下来，我们来看一个更复杂的案例，涉及服务的调用以及数据库、缓存的调用，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Translate</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> Map&lt;String, String&gt; maps = <span class="keyword">new</span> HashMap&lt;String, String&gt;();</span><br><span class="line">    <span class="keyword">public</span> Cat.Context context;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">"/translate/getWordMean"</span>, produces = <span class="string">"application/json"</span>)</span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="comment">//获取翻译释义</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">getWordMean</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> </span>&#123;</span><br><span class="line">        context = <span class="keyword">new</span> Cat.Context() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addProperty</span><span class="params">(String key, String value)</span> </span>&#123;</span><br><span class="line">                maps.put(key, value);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> String <span class="title">getProperty</span><span class="params">(String key)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> maps.get(key);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;; <span class="comment">//服务调用消息上下文</span></span><br><span class="line"></span><br><span class="line">        MessageProducer cat = Cat.getProducer();</span><br><span class="line">        Transaction t = cat.newTransaction(<span class="string">"URL"</span>, <span class="string">"translate/getWordMean"</span>);  <span class="comment">//你的接口/方法名称</span></span><br><span class="line">        cat.logEvent(<span class="string">"ClientInfo"</span>, <span class="string">"RemoteIp=127.0.0.1&amp;Referer=..."</span>);  <span class="comment">//记录远程调用端信息</span></span><br><span class="line">        cat.logEvent(<span class="string">"Payload"</span>, <span class="string">"HTTP/GET /translate/getWordMean?client=3&amp;clientVersion=0&amp;v=9.5&amp;uid=3214567...."</span>); <span class="comment">//调用端参数</span></span><br><span class="line">        <span class="comment">//用户校验</span></span><br><span class="line">        authCheck();</span><br><span class="line">        <span class="comment">//先从缓存Redis获取结果</span></span><br><span class="line">        Transaction cacheT = cat.newTransaction(<span class="string">"Cache.memcached.redis"</span>, <span class="string">"translate_result:get"</span>);</span><br><span class="line">        cat.logEvent(<span class="string">"Cache.memcached.redis.server"</span>, <span class="string">"127.0.0.1:6379"</span>);</span><br><span class="line">        <span class="comment">//do your cache operation</span></span><br><span class="line">        cacheT.setStatus(Message.SUCCESS);</span><br><span class="line">        cacheT.complete();</span><br><span class="line">        <span class="comment">//do your translate operation</span></span><br><span class="line">        <span class="comment">//记录远程语音服务调用</span></span><br><span class="line">        Transaction callT = cat.newTransaction(<span class="string">"Call"</span>, <span class="string">"voice:getVoice"</span>);</span><br><span class="line">        Cat.logEvent(<span class="string">"Call.server"</span>,<span class="string">"localhost"</span>);  <span class="comment">//远程服务地址</span></span><br><span class="line">        Cat.logEvent(<span class="string">"Call.app"</span>,<span class="string">"voice"</span>);   <span class="comment">//语音服务</span></span><br><span class="line">        Cat.logEvent(<span class="string">"Call.port"</span>,<span class="string">"8080"</span>);   <span class="comment">//语音服务端口</span></span><br><span class="line">        Cat.logRemoteCallClient(context); <span class="comment">//生成消息调用上下文，主要是几个messageId的创建。</span></span><br><span class="line"></span><br><span class="line">        voiceService(context); </span><br><span class="line">        callT.setStatus(Message.SUCCESS);</span><br><span class="line">        callT.complete();</span><br><span class="line">        OutputData result = <span class="keyword">new</span> OutputData();</span><br><span class="line">        result.setErrno(<span class="number">0</span>);</span><br><span class="line">        result.setErrmsg(<span class="string">"success"</span>);</span><br><span class="line">        result.setTranslateResult(<span class="string">"translate result ..."</span>);</span><br><span class="line"></span><br><span class="line">        t.setStatus(Message.SUCCESS);</span><br><span class="line">        t.complete();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">authCheck</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        MessageProducer cat = Cat.getProducer();</span><br><span class="line">        Transaction checkUser = cat.newTransaction(<span class="string">"Method"</span>, <span class="string">"checkAuth"</span>);</span><br><span class="line">        <span class="comment">//从数据库查询用户信息</span></span><br><span class="line">        Transaction sqlT = cat.newTransaction(<span class="string">"SQL"</span>, <span class="string">"Select"</span>);</span><br><span class="line"></span><br><span class="line">        cat.logEvent(<span class="string">"SQL.Database"</span>, <span class="string">"jdbc:mysql://127.0.0.1:3306/user"</span>);</span><br><span class="line">        cat.logEvent(<span class="string">"SQL.Method"</span>, <span class="string">"select"</span>);</span><br><span class="line">        cat.logEvent(<span class="string">"SQL.Statement"</span>, <span class="string">"SELECT"</span>, Message.SUCCESS, <span class="string">"select * from user_info"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//to do your SQL query</span></span><br><span class="line">        sqlT.setStatus(Message.SUCCESS);</span><br><span class="line">        sqlT.complete();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//to do your auth check</span></span><br><span class="line">        checkUser.setStatus(Message.SUCCESS);</span><br><span class="line">        checkUser.complete();</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//线程模拟语音服务</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">voiceService</span><span class="params">(<span class="keyword">final</span> Cat.Context context)</span> </span>&#123;</span><br><span class="line">        Thread thread = <span class="keyword">new</span> Thread() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="comment">//服务器埋点，Domain为 voice 提供语音服务</span></span><br><span class="line">                Cat.getManager().getThreadLocalMessageTree().setDomain(<span class="string">"voice"</span>);</span><br><span class="line">                MessageProducer cat = Cat.getProducer();</span><br><span class="line">                Transaction voiceService = Cat.newTransaction(<span class="string">"URL"</span>, <span class="string">"voice/getVoice"</span>); <span class="comment">//你的接口/方法名称</span></span><br><span class="line">                cat.logEvent(<span class="string">"ClientInfo"</span>, <span class="string">"RemoteIp=127.0.0.1&amp;Referer=..."</span>);  <span class="comment">//记录远程调用端信息</span></span><br><span class="line">                cat.logEvent(<span class="string">"Payload"</span>, <span class="string">"HTTP/GET /voice/getVoice?client=3&amp;clientVersion=0&amp;v=9.5&amp;uid=3214567...."</span>); <span class="comment">//调用端参数</span></span><br><span class="line"></span><br><span class="line">                <span class="comment">//记录服务信息</span></span><br><span class="line">                Transaction child = Cat.newTransaction(<span class="string">"Service"</span>, <span class="string">"voice:getVoice"</span>);</span><br><span class="line">                Cat.logEvent(<span class="string">"Service.client"</span>, <span class="string">"localhost"</span>); <span class="comment">//客户端地址</span></span><br><span class="line">                Cat.logEvent(<span class="string">"Service.app"</span>, <span class="string">"translate"</span>); <span class="comment">//客户端domain</span></span><br><span class="line">                Cat.logRemoteCallServer(context); <span class="comment">//记录消息上下文</span></span><br><span class="line">                <span class="comment">//to do your business</span></span><br><span class="line">                child.setStatus(Message.SUCCESS);</span><br><span class="line">                child.complete();</span><br><span class="line">                voiceService.setStatus(Message.SUCCESS);</span><br><span class="line">                voiceService.complete();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        thread.start();</span><br><span class="line">        <span class="comment">// wait for it to complete</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            thread.join();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            <span class="comment">// ignore it</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    这是我们一个对外提供的翻译服务，getWordMean为服务控制器入口，我们将原始消息展开如下，整个服务处理耗时571ms，一进来我们会记录URL类型事务，以及调用参数，然后记录用户校验函数，在函数内部，有查询用户信息的数据库操作，也会被记录下，查询耗时150ms，接下来我们会先从缓存获取结果， 缓存查询耗时 59ms，随后我们翻译内容，翻译之后我们会调用语音服务提供的发音接口，voice/getVoice，发音接口调用一共耗时 361 ms。</p>
+<p><img src="https://img-blog.csdn.net/20180710170905183" alt="img"></p>
+<p><a href="https://blog.csdn.net/caohao0591/article/details/80207771" target="_blank" rel="noopener">下一篇：   CAT跨语言服务链监控（二） CAT服务端初始化</a></p>
 
                     
                         
@@ -912,7 +1048,7 @@ xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
                     
                     
                         <p>
-                            <a href="/2017/08/16/python-time-complexity/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2019/02/16/深入详解美团点评CAT跨语言服务监控（一） CAT简介与部署/#post-footer" class="postShorten-excerpt_link link">
                                 评论和共享
                             </a>
                         </p>
@@ -934,7 +1070,7 @@ xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
             </a>
           </li>
         
-        <li class="pagination-number">第 1 页 共 2 页</li>
+        <li class="pagination-number">第 1 页 共 3 页</li>
     </ul>
 </div>
 
@@ -964,7 +1100,7 @@ xxx.domain2.domain1.com -&gt; domain2.domain1.com/?id=xxx
             <i class="fa fa-times"></i>
         </div>
         
-            <img id="about-card-picture" src="/assets/images/uu.png" alt="作者的图片">
+            <img id="about-card-picture" src="/assets/images/dx.png" alt="作者的图片">
         
             <h4 id="about-card-name">Xiangjy</h4>
         

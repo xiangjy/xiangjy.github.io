@@ -1,0 +1,700 @@
+
+<!DOCTYPE html>
+<html lang="zh-cn">
+    
+<head>
+    <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="generator" content="Xiangjy&#39;s Blog">
+    <title> - Xiangjy&#39;s Blog</title>
+    <meta name="author" content="Xiangjy">
+    
+    
+        <link rel="icon" href="http://localhost:4000/assets/images/dx.png">
+    
+    
+        <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
+    
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"],"image":"dx.png"},"articleBody":"深入详解美团点评CAT跨语言服务监控（一） CAT简介与部署置顶 2018年07月02日 12:50:45 曹号 阅读数：4676\n下一篇： CAT跨语言服务链监控（二） CAT服务端初始化\n前言： CAT是一个实时和接近全量的监控系统，它侧重于对Java应用的监控，除了与点评RPC组件融合的很好之外，他将会能与Spring、MyBatis、Dubbo 等框架以及Log4j 等结合，支持PHP、C++、Go等多语言应用，基本接入了美团点评上海侧所有核心应用。目前在中间件（MVC、RPC、数据库、缓存等）框架中得到广泛应用，为美团点评各业务线提供系统的性能指标、健康状况、监控告警等，在微服务监控领域也是非常有用的一套组件。支撑这美团每天450亿的消息，50TB的数据监控，应用于 7000+应用服务器，2000+的业务，单台机器能15W qps，15台CAT物理集群，有着极高的性能，同时CAT支持丰富的报表，架构拥有灵活的扩展性，用户可以定制自己的监控、报表需求，本文将就CAT的部署、架构源码以及多语言支持等方面展开剖析。CAT在携程、陆金所、猎聘网、找钢网、平安银行等多家互联网公司生产环境应用。\n目录：\n（一） CAT简介与部署\n​    介绍​    背景介绍​    Cat系统的特性​    消息树​    CAT服务端部署​    CAT客户端Demo\n（二） CAT服务端初始化    Cat模块    Cat-servlet初始化    plexus - IOC容器    模块的加载 - 模型模式    cat-home的setup    TcpSocketReceiver— netty reactor 模式的应用    消息的解码（三） CAT客户端原理    cat客户端部分核心类    消息的组织 - 消息树    客户端的初始化    消息生产 – 入栈    Context 线程本地变量    Transaction事务的开启    其他类型消息组合    消息的完成-出栈    消息的发送-队列化    消息的序列化    MessageId的设计（四） 服务端消息分发    分发架构    分析管理器的初始化    消费者与周期管理器的初始化    什么是周期？    周期任务-任务队列    消息分发    周期策略（五） 配置与数据库操作    CAT配置    代码自动生成    数据库操作    数据库连接管理（六） 消息分析器与报表(一)    消息分析器的构建    TopAnalyzer    EventAnalyzer - 事件发生次数分析    MetricAnalyzer - 业务分析    ProblemAnalyzer -异常分析    TransactionAnalyzer - 事务分析（七）消息分析器与报表(二)    CrossAnalyzer-调用链分析    StorageAnalyzer  –数据库/缓存分析    StateAnalyzer – CAT状态分析    HeartbeatAnalyzer  – 心跳分析    DumpAnalyzer – 原始消息LogView存储    自定义分析器与报表（八） 报表持久化    周期结束    分析器的结束 – 报表持久化    报表预处理    报表的文件存储 – 重入锁    报表的数据库存储    定时任务（九） 管理平台MVC框架    Servlet容器与请求生命周期    页面路由初始化    请求处理流程（十）与JAVA框架的集成    与Spring MVC集成    与Spring Boot 集成    与Spring Cloud 集成    与dubbo集成    与MyBatis集成    与Log4j集成（十一） 其他语言支持    PHP语言    C++语言    LUA语言    Go语言    Python语言    Node.js语言    Android埋点\n​     Object  C – IOS 埋点\n （十二） 报警与监控提醒\n​    短信通知\n​    邮件通知\n（十三） CAT与实时计算    hadoop模块\n​    spark实时计算模块\n介绍        大众点评CAT系统原型和理念来源于eBay的CAL的系统，CAT系统第一代设计者吴其敏在eBay工作长达十几年，对CAL系统有深刻的理解。CAT不仅增强了CAL系统核心模型，还添加了更丰富的报表。自2014年开源以来，CAT在携程、陆金所、猎聘网、找钢网等多家互联网公司生产环境应用。\n​    CAT是一个实时和接近全量的监控系统，它侧重于对Java应用的监控，除了与点评RPC组件融合的很好之外，他将会能与Spring、MyBatis、Dubbo 等框架以及Log4j 等结合，不久将会支持PHP、C++、Go等多语言应用，基本接入了美团点评上海侧所有核心应用。目前在中间件（MVC、RPC、数据库、缓存等）框架中得到广泛应用，为美团点评各业务线提供系统的性能指标、健康状况、监控告警等，在微服务监控领域也是非常有用的一套组件。\n​    在详细了解CAT的整体设计细节之后，我们可以在CAT基础之上轻松扩展我们自己的监控和数据收集模块。\n​    CAT项目的开源地址： https://github.com/dianping/cat\n背景介绍​    CAT整个产品研发是从2011年底开始的，当时正是大众点评App Net迁移Java的核心起步阶段。当初大众点评App已经有核心的基础中间件、RPC组件Pigeon、统一配置组件lion。整体Java迁移已经在服务化的路上。随着服务化的深入，整体Java在线上部署规模逐渐变多，同时，暴露的问题也越来越多。典型的问题有：\n\n大量报错，特别是核心服务，需要花很久时间才能定位。\n异常日志都需要线上权限登陆线上机器排查，排错时间长。\n有些简单的错误定位都非常困难（一次将线上的库配置到了Beta，花了整个通宵排错）。\n很多不了了之的问题都怀疑是网络问题（从现在看，内网真的很少出问题）。\n\n​    虽然那时候也有一些简单的监控工具（比如Zabbix，自己研发的Hawk系统等），可能单个工具在某方面的功能还不错，但整体服务化水平参差不齐、扩展能力相对较弱，监控工具间不能互通互联，使得查找问题根源基本都需要在多个系统之间切换，有时候真的是靠“人品”才能找出根源。适逢吴其敏从eBay加入大众点评成为首席架构师，eBay的CAL系统在内部非常成功，就在这样天时地利与人和的情况下，我们开始研发了大众点评App第一代监控系统——CAT。\nCat系统的特性\n实时处理：信息的价值会随时间锐减，尤其是事故处理过程中。\n全量数据：最开始的设计目标就是全量采集，全量的好处有很多。\n高可用：所有应用都倒下了，需要监控还站着，并告诉工程师发生了什么，做到故障还原和问题定位。\n故障容忍：CAT本身故障不应该影响业务正常运转，CAT挂了，应用不该受影响，只是监控能力暂时减弱。\n高吞吐：要想还原真相，需要全方位地监控和度量，必须要有超强的处理吞吐能力。\n可扩展：支持分布式、跨IDC部署，横向扩展的监控系统。\n\n不保证可靠：允许消息丢失，这是一个很重要的trade-off，目前CAT服务端可以做到4个9的可靠性，可靠系统和不可靠性系统的设计差别非常大。\n\n\nCAT支持的监控消息类型包括：\n\nTransaction 适合记录跨越系统边界的程序访问行为,比如远程调用，数据库调用，也适合执行时间较长的业务逻辑监控，Transaction用来记录一段代码的执行时间和次数。\nEvent 用来记录一件事发生的次数，比如记录系统异常，它和transaction相比缺少了时间的统计，开销比transaction要小。\nHeartbeat 表示程序内定期产生的统计信息, 如CPU%, MEM%, 连接池状态, 系统负载等。\nMetric 用于记录业务指标、指标可能包含对一个指标记录次数、记录平均值、记录总和，业务指标最低统计粒度为1分钟。\nTrace 用于记录基本的trace信息，类似于log4j的info信息，这些信息仅用于查看一些相关信息\n\n消息树​    CAT监控系统将每次URL、Service的请求内部执行情况都封装为一个完整的消息树、消息树可能包括Transaction、Event、Heartbeat、Metric和Trace信息，各个消息树之间，通过 rootMessageId以及parentMessageId串联起来，形成整个调用链条。\n\n完整的消息树：\n\n可视化的消息树：\n\n分布式消息树【一台机器调用另外一台机器】：\n\nCAT服务端部署CAT安装环境：\n\n\nLinux 2.6以及之上（2.6内核才可以支持epoll），线上服务端部署请使用Linux环境，Mac以及Windows环境可以作为开发环境，美团点评内部CentOS 6.5\nJava 6，7，8，服务端推荐是用jdk7的版本，客户端jdk6、7、8都支持\nMaven 3.3.3\nMySQL 5.6，5.7，更高版本MySQL都不建议使用，不清楚兼容性\nJ2EE容器建议使用tomcat，建议版本7.0.70\nHadoop环境可选，一般建议规模较小的公司直接使用磁盘模式，可以申请CAT服务端，500GB磁盘或者更大磁盘，这个磁盘挂载在/data/目录上\n\n\n\n目前我司线上环境：\n​    Distributor ID: CentOS​    Description: CentOS release 6.5 (Final)​    Release: 6.5​    Codename: Final​    Server version: Apache Tomcat/8.0.30​    Server built:   Dec 1 2015 22:30:46 UTC​    Server number:  8.0.30.0​    OS Name:        Linux​    OS Version:     2.6.32-431.el6.x86_64​    Architecture:   amd64​    JVM Version:    1.8.0_111-b14​    JVM Vendor:     Oracle Corporation​    Maven 3.3.3​    Mysql 5.6​    Tomcat  7.0.70  建议使用此版本\n我的开发环境：\n​    操作系统： Windows 7​    IDE： Intelij IDEA​    JDK版本：1.8​    Mysql： 5.6​    Maven： 3.3.3​    Server version：Apache Tomcat/8.0.30\n安装CAT集群大致步骤\n​    初始化Mysql数据库，一套CAT集群部署一个数据库，初始化脚本在script下的Cat.sql​    准备三台CAT服务器，IP比如为10.1.1.1，10.1.1.2，10.1.1.3，下面的例子会以这个IP为例子​    初始化/data/目录，配置几个配置文件/data/appdatas/cat/*.xml 几个配置文件，具体下面有详细说明​    打包cat.war 放入tomcat容器\n​    修改一个路由配置，重启tomcat\nTomcat启动参数调整，修改 catalina.sh文件【服务端】\n​    需要每台CAT集群10.1.1.1，10.1.1.2，10.1.1.3都进行部署​    建议使用cms gc策略​    建议cat的使用堆大小至少10G以上，开发环境启动2G堆启动即可\n1CATALINA_OPTS=\"$CATALINA_OPTS -server -Djava.awt.headless=true -Xms25G -Xmx25G -XX:PermSize=256m -XX:MaxPermSize=256m -XX:NewSize=10144m -XX:MaxNewSize=10144m -XX:SurvivorRatio=10 -XX:+UseParNewGC -XX:ParallelGCThreads=4 -XX:MaxTenuringThreshold=13 -XX:+UseConcMarkSweepGC -XX:+DisableExplicitGC -XX:+UseCMSInitiatingOccupancyOnly -XX:+ScavengeBeforeFullGC -XX:+UseCMSCompactAtFullCollection -XX:+CMSParallelRemarkEnabled -XX:CMSFullGCsBeforeCompaction=9 -XX:CMSInitiatingOccupancyFraction=60 -XX:+CMSClassUnloadingEnabled -XX:SoftRefLRUPolicyMSPerMB=0 -XX:-ReduceInitialCardMarks -XX:+CMSPermGenSweepingEnabled -XX:CMSInitiatingPermOccupancyFraction=70 -XX:+ExplicitGCInvokesConcurrent -Djava.nio.channels.spi.SelectorProvider=sun.nio.ch.EPollSelectorProvider -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Djava.util.logging.config.file=\"%CATALINA_HOME%\\conf\\logging.properties\" -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+PrintGCApplicationConcurrentTime -XX:+PrintHeapAtGC -Xloggc:/data/applogs/heap_trace.txt -XX:-HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/data/applogs/HeapDumpOnOutOfMemoryError -Djava.util.Arrays.useLegacyMergeSort=true\"\n​    修改中文乱码 tomcat conf 目录下 server.xml：\n123&lt;Connector port=\"8080\" protocol=\"HTTP/1.1\"           URIEncoding=\"utf-8\"    connectionTimeout=\"20000\"           redirectPort=\"8443\" /&gt;  增加  URIEncoding=\"utf-8\"\n程序对于/data/目录具体读写权限【包括客户端&amp;服务端】\n注意无论是CAT客户端和服务端都要求/data/目录能进行读写操作，如果/data/目录不能写，建议使用linux的软链接链接到一个固定可写的目录，软链接的基本命令请自行搜索google\n此目录会存一些CAT必要的配置文件，运行时候的缓存文件，建议不要修改，如果想改，请自行研究好源码里面的东西，在酌情修改，此目录不支持进行配置化\nmkdir /data\nchmod 777 /data/ -R\n如果是Windows开发环境则是对程序运行盘下的/data/appdatas/cat和/data/applogs/cat有读写权限,如果cat服务运行在e盘的tomcat中，则需要对e:/data/appdatas/cat和e:/data/applogs/cat有读写权限\n如果windows实在不知道哪个盘，就所有盘都建好，最后看哪个盘多文件，就知道哪个了，当然你也可以通过配置系统环境变量CAT_HOME来指定服务器日志存储的路径，不过好像数据库连接xml信息等好像不太好自己配置，最好还是采用系统默认的 /data 目录。\n\n配置/data/appdatas/cat/client.xml【包括客户端&amp;服务端】\n此配置文件的作用是所有的客户端都需要一个地址指向CAT的服务端，比如CAT服务端有三个IP，10.1.1.1，10.1.1.2，10.1.1.3，2280是默认的CAT服务端接受数据的端口，不允许修改，http-port是Tomcat启动的端口，默认是8080，建议使用默认端口。\n此文件可以通过运维统一进行部署和维护，比如使用puppert等运维工具。\n不同环境这份文件不一样，比如区分prod环境以及test环境，在美团点评内部一共是2套环境的CAT，一份是生产环境，一份是测试环境\n\n12345678&lt;?xml version=\"1.0\" encoding=\"utf-8\"?&gt;    &lt;config mode=\"client\"&gt;        &lt;servers&gt;                &lt;server ip=\"10.1.1.1\" port=\"2280\" http-port=\"8080\"/&gt;                &lt;server ip=\"10.1.1.2\" port=\"2280\" http-port=\"8080\"/&gt;                &lt;server ip=\"10.1.1.3\" port=\"2280\" http-port=\"8080\"/&gt;        &lt;/servers&gt;    &lt;/config&gt;\n安装CAT的数据库\n数据库的脚本文件 script/Cat.sql\nMySQL的一个系统参数：max_allowed_packet，其默认值为1048576(1M)，修改为1000M，修改完需要重启mysql\n注意：一套独立的CAT集群只需要一个数据库（之前碰到过个别同学在每台cat的服务端节点都安装了一个数据库）\n\n配置/data/appdatas/cat/datasources.xml【服务端配置】需要每台CAT集群10.1.1.1，10.1.1.2，10.1.1.3都进行部署\n注意：此xml仅仅为模板，请根据自己实际的情况替换jdbc.url,jdbc.user,jdbc.password的实际值。 app数据库和cat数据配置为一样，app库不起作用，为了运行时候代码不报错。\n1234567891011121314151617181920212223242526272829&lt;?xml version=\"1.0\" encoding=\"utf-8\"?&gt;&lt;data-sources&gt;\t&lt;data-source id=\"cat\"&gt;\t\t&lt;maximum-pool-size&gt;3&lt;/maximum-pool-size&gt;\t\t&lt;connection-timeout&gt;1s&lt;/connection-timeout&gt;\t\t&lt;idle-timeout&gt;10m&lt;/idle-timeout&gt;\t\t&lt;statement-cache-size&gt;1000&lt;/statement-cache-size&gt;\t\t&lt;properties&gt;\t\t\t&lt;driver&gt;com.mysql.jdbc.Driver&lt;/driver&gt;\t\t\t&lt;url&gt;&lt;![CDATA[$&#123;jdbc.url&#125;]]&gt;&lt;/url&gt;\t\t\t&lt;user&gt;$&#123;jdbc.user&#125;&lt;/user&gt;\t\t\t&lt;password&gt;$&#123;jdbc.password&#125;&lt;/password&gt;\t\t\t&lt;connectionProperties&gt;&lt;![CDATA[useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true&amp;socketTimeout=120000]]&gt;&lt;/connectionProperties&gt;\t\t&lt;/properties&gt;\t&lt;/data-source&gt;\t&lt;data-source id=\"app\"&gt;\t\t&lt;maximum-pool-size&gt;3&lt;/maximum-pool-size&gt;\t\t&lt;connection-timeout&gt;1s&lt;/connection-timeout&gt;\t\t&lt;idle-timeout&gt;10m&lt;/idle-timeout&gt;\t\t&lt;statement-cache-size&gt;1000&lt;/statement-cache-size&gt;\t\t&lt;properties&gt;\t\t\t&lt;driver&gt;com.mysql.jdbc.Driver&lt;/driver&gt;\t\t\t&lt;url&gt;&lt;![CDATA[$&#123;jdbc.url&#125;]]&gt;&lt;/url&gt;\t\t\t&lt;user&gt;$&#123;jdbc.user&#125;&lt;/user&gt;\t\t\t&lt;password&gt;$&#123;jdbc.password&#125;&lt;/password&gt;\t\t\t&lt;connectionProperties&gt;&lt;![CDATA[useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true&amp;socketTimeout=120000]]&gt;&lt;/connectionProperties&gt;\t\t&lt;/properties&gt;\t&lt;/data-source&gt;&lt;/data-sources&gt;\n配置/data/appdatas/cat/server.xml【服务端配置】    需要每台CAT集群10.1.1.1，10.1.1.2，10.1.1.3都进行部署    CAT节点一共有四个职责\n​    控制台 - 提供给业务人员进行数据查看【默认所有的cat节点都可以作为控制台，不可配置】​    消费机 - 实时接收业务数据，实时处理，提供实时分析报表【默认所有的cat节点都可以作为消费机，不可配置】​    告警端 - 启动告警线程，进行规则匹配，发送告警（目前仅支持单点部署）【可以配置】​    任务机 - 做一些离线的任务，合并天、周、月等报表 【可以配置】​    线上做多集群部署，比如说10.1.1.1，10.1.1.2，10.1.1.3这三台机器\n建议选取一台10.1.1.1 负责角色有控制台、告警端、任务机，建议配置域名访问CAT，就配置一台机器10.1.1.1一台机器挂在域名下面\n10.1.1.2，10.1.1.3 负责消费机处理，这样能做到有效隔离，任务机、告警等问题不影响实时数据处理\n默认script下的server.xml为\n1234567891011&lt;?xml version=\"1.0\" encoding=\"utf-8\"?&gt;&lt;config local-mode=\"false\" hdfs-machine=\"false\" job-machine=\"true\" alert-machine=\"false\"&gt;\t&lt;storage  local-base-dir=\"/data/appdatas/cat/bucket/\" max-hdfs-storage-time=\"15\" local-report-storage-time=\"7\" local-logivew-storage-time=\"7\"&gt;\t\t&lt;hdfs id=\"logview\" max-size=\"128M\" server-uri=\"hdfs://10.1.77.86/user/cat\" base-dir=\"logview\"/&gt;\t\t&lt;hdfs id=\"dump\" max-size=\"128M\" server-uri=\"hdfs://10.1.77.86/user/cat\" base-dir=\"dump\"/&gt;\t\t&lt;hdfs id=\"remote\" max-size=\"128M\" server-uri=\"hdfs://10.1.77.86/user/cat\" base-dir=\"remote\"/&gt;\t&lt;/storage&gt;\t&lt;console default-domain=\"Cat\" show-cat-domain=\"true\"&gt;\t\t&lt;remote-servers&gt;127.0.0.1:8080&lt;/remote-servers&gt;\t&lt;/console&gt;&lt;/config&gt;\n配置说明：\n\nlocal-mode : 建议在开发环境以及生产环境时，都设置为false\nhdfs-machine : 定义是否启用HDFS存储方式，默认为 false\njob-machine : 定义当前服务是否为报告工作机（开启生成汇总报告和统计报告的任务，只需要一台服务机开启此功能），默认为 false\nalert-machine : 定义当前服务是否为报警机（开启各类报警监听，只需要一台服务机开启此功能），默认为 false；\nstorage : 定义数据存储配置信息\nlocal-report-storage-time : 定义本地报告文件存放时长，单位为（天）\nlocal-logivew-storage-time : 定义本地日志文件存放时长，单位为（天）\nlocal-base-dir : 定义本地数据存储目录，建议直接使用/data/appdatas/cat/bucket目录\nhdfs : 定义HDFS配置信息\nserver-uri : 定义HDFS服务地址\nconsole : 定义服务控制台信息\nremote-servers : 定义HTTP服务列表，（远程监听端同步更新服务端信息即取此值）\nldap : 定义LDAP配置信息（这个可以忽略）\nldapUrl : 定义LDAP服务地址（这个可以忽略）\n\n按照如上的说明，10.1.1.1 机器/data/appdatas/cat/serverm.xml配置，注意hdfs配置就随便下了一个，请忽略\n1234567891011&lt;?xml version=\"1.0\" encoding=\"utf-8\"?&gt;&lt;config local-mode=\"false\" hdfs-machine=\"false\" job-machine=\"true\" alert-machine=\"true\"&gt;\t&lt;storage  local-base-dir=\"/data/appdatas/cat/bucket/\" max-hdfs-storage-time=\"15\" local-report-storage-time=\"7\" local-logivew-storage-time=\"7\"&gt;\t&lt;hdfs id=\"logview\" max-size=\"128M\" server-uri=\"hdfs://10.1.77.86/user/cat\" base-dir=\"logview\"/&gt;\t\t&lt;hdfs id=\"dump\" max-size=\"128M\" server-uri=\"hdfs://10.1.77.86/user/cat\" base-dir=\"dump\"/&gt;\t\t&lt;hdfs id=\"remote\" max-size=\"128M\" server-uri=\"hdfs://10.1.77.86/user/cat\" base-dir=\"remote\"/&gt;\t&lt;/storage&gt;\t&lt;console default-domain=\"Cat\" show-cat-domain=\"true\"&gt;\t\t&lt;remote-servers&gt;10.1.1.1:8080,10.1.1.2:8080,10.1.1.3:8080&lt;/remote-servers&gt;\t&lt;/console&gt;&lt;/config&gt;\n10.1.1.2，10.1.1.3 机器/data/appdatas/cat/serverm.xml配置如下，仅仅job-machine&amp;alert-machine修改为false\n1234567891011&lt;?xml version=\"1.0\" encoding=\"utf-8\"?&gt;&lt;config local-mode=\"false\" hdfs-machine=\"false\" job-machine=\"false\" alert-machine=\"false\"&gt;\t&lt;storage  local-base-dir=\"/data/appdatas/cat/bucket/\" max-hdfs-storage-time=\"15\" local-report-storage-time=\"7\" local-logivew-storage-time=\"7\"&gt;\t&lt;hdfs id=\"logview\" max-size=\"128M\" server-uri=\"hdfs://10.1.77.86/user/cat\" base-dir=\"logview\"/&gt;\t\t&lt;hdfs id=\"dump\" max-size=\"128M\" server-uri=\"hdfs://10.1.77.86/user/cat\" base-dir=\"dump\"/&gt;\t\t&lt;hdfs id=\"remote\" max-size=\"128M\" server-uri=\"hdfs://10.1.77.86/user/cat\" base-dir=\"remote\"/&gt;\t&lt;/storage&gt;\t&lt;console default-domain=\"Cat\" show-cat-domain=\"true\"&gt;\t\t&lt;remote-servers&gt;10.1.1.1:8080,10.1.1.2:8080,10.1.1.3:8080&lt;/remote-servers&gt;\t&lt;/console&gt;&lt;/config&gt;\nwar打包​    1、在cat的源码目录，执行mvn clean install -DskipTests​    2、如果发现cat的war打包不通过，CAT所需要依赖jar都部署在 http://unidal.org/nexus/​    3、可以配置这个公有云的仓库地址到本地的settings路径，理论上不需要配置即可，可以参考cat的pom.xml配置\n 4、如果自行打包仍然问题，请使用下面链接进行下载http://unidal.org/nexus/service/local/repositories/releases/content/com/dianping/cat/cat-home/2.0.0/cat-home-2.0.0.war\n​    5、官方的cat的master版本，重命名为cat.war进行部署，注意此war是用jdk8，服务端请使用jdk8版本​    6、如下是个人本机电脑的测试，下载的jar来自于repo1.maven.org 以及 unidal.org\n12345678910111213Downloading: http://repo1.maven.org/maven2/org/codehaus/plexus/plexus-utils/3.0.24/plexus-utils-3.0.24.jarDownloaded: http://repo1.maven.org/maven2/org/apache/commons/commons-email/1.1/commons-email-1.1.jar (30 KB at 9.8 KB/sec)Downloaded: http://repo1.maven.org/maven2/javax/servlet/jstl/1.2/jstl-1.2.jar (405 KB at 107.7 KB/sec)Downloaded: http://repo1.maven.org/maven2/com/google/code/javaparser/javaparser/1.0.8/javaparser-1.0.8.jar (235 KB at 55.4 KB/sec)Downloaded: http://repo1.maven.org/maven2/org/codehaus/plexus/plexus-utils/3.0.24/plexus-utils-3.0.24.jar (242 KB at 46.9 KB/sec)Downloaded: http://repo1.maven.org/maven2/org/freemarker/freemarker/2.3.9/freemarker-2.3.9.jar (789 KB at 113.3 KB/sec)Downloading: http://unidal.org/nexus/content/repositories/releases/org/unidal/webres/WebResServer/1.2.1/WebResServer-1.2.1.jarDownloading: http://unidal.org/nexus/content/repositories/releases/org/unidal/webres/WebResTagLibrary/1.2.1/WebResTagLibrary-1.2.1.jarDownloading: http://unidal.org/nexus/content/repositories/releases/org/unidal/webres/WebResTag/1.2.1/WebResTag-1.2.1.jarDownloading: http://unidal.org/nexus/content/repositories/releases/org/unidal/webres/WebResRuntime/1.2.1/WebResRuntime-1.2.1.jarDownloading: http://unidal.org/nexus/content/repositories/releases/org/unidal/webres/WebResApi/1.2.1/WebResApi-1.2.1.jarDownloaded: http://unidal.org/nexus/content/repositories/releases/org/unidal/webres/WebResApi/1.2.1/WebResApi-1.2.1.jar (21 KB at 82.7 KB/sec)Downloading: http://unidal.org/nexus/content/repositories/releases/org/unidal/webres/WebResBase/1.2.1/WebResBase-1.2.1.jar\n12345678910```[INFO] parent ............................................. SUCCESS [ 40.478 s][INFO] cat-client ......................................... SUCCESS [03:47 min][INFO] cat-core ........................................... SUCCESS [ 31.740 s][INFO] cat-hadoop ......................................... SUCCESS [02:50 min][INFO] cat-consumer ....................................... SUCCESS [  3.197 s][INFO] cat-home ........................................... SUCCESS [ 58.964 s][INFO] ------------------------------------------------------------------------[INFO] BUILD SUCCESS```\nwar部署​    1、将cat.war部署到10.1.1.1的tomcat的webapps下，启动tomcat，注意webapps下只允许放一个war，仅仅为cat.war​    2、如果发现重启报错，里面有NPE等特殊情况，可以检查当前java进程，ps aux | grep java，可能存在之前的tomcat的进程没有关闭，又新启动了一个，导致出问题，建议kill -9 干掉所有的java进程​    3、打开控制台的URL，http://10.1.1.1:8080/cat/s/config?op=routerConfigUpdate​    4、注意10.1.1.1这个IP需要替换为自己实际的IP链接，修改路由配置只能修改一次即可\n​    5、修改路由配置为如下，当为如下配置时，10.1.1.1 正常不起消费数据的作用，仅当10.1.1.2以及10.1.1.3都挂掉才会进行实时流量消费\n12345&lt;?xml version=\"1.0\" encoding=\"utf-8\"?&gt;&lt;router-config backup-server=\"10.1.1.1\" backup-server-port=\"2280\"&gt;   &lt;default-server id=\"10.1.1.2\" weight=\"1.0\" port=\"2280\" enable=\"true\"/&gt;   &lt;default-server id=\"10.1.1.3\" weight=\"1.0\" port=\"2280\" enable=\"true\"/&gt;&lt;/router-config&gt;\n​    6、重启10.1.1.1的机器的tomcat​    7、将cat.war部署到10.1.1.2，10.1.1.3这两台机器中，启动tomcat​    8、cat集群部署完毕，如果有问题，欢迎在微信群咨询，如果文档有误差，欢迎指正以及提交pullrequest\n重启保证数据不丢\n​    请在tomcat重启之前调用当前tomcat的存储数据的链接 http://${ip}:8080/cat/r/home?op=checkpoint，重启之后数据会恢复。【注意重启时间在每小时的整点10-55分钟之间】 线上部署时候，建议把此链接调用存放于tomcat的stop脚本中，这样不需要每次手工调用\n开发环境CAT的部署​    1、请按照如上部署/data/环境目录，数据库配置client.xml ,datasources.xml,server.xml这三个配置文件，注意server.xml里面的节点角色，job-machine&amp;alert-machine都可以配置为true​    2、在cat目录中执行 mvn eclipse:eclipse，此步骤会生成一些代码文件，直接导入到工程会发现找不到类​    3、将源码以普通项目到入eclipse中，注意不要以maven项目导入工程​    4、运行com.dianping.cat.TestServer 这个类，即可启动cat服务器​    5、这里和集群版本唯一区别就是服务端部署单节点，client.xml server.xml以及路由地址配置为单台即可\nCAT客户端Demo   cat客户端的配置：\n​    cat客户端也需要配置 /data 目录，程序对于/data/目录具体读写权限可以参考上一节，\n​    然后通过maven引入cat客户端包，在pom.xml 加入：\n12345678910&lt;dependency&gt;  &lt;groupId&gt;com.dianping.cat&lt;/groupId&gt;  &lt;artifactId&gt;cat-core&lt;/artifactId&gt;  &lt;version&gt;2.0.0&lt;/version&gt;&lt;/dependency&gt;&lt;dependency&gt;  &lt;groupId&gt;com.dianping.cat&lt;/groupId&gt;  &lt;artifactId&gt;cat-client&lt;/artifactId&gt;  &lt;version&gt;2.0.0&lt;/version&gt;&lt;/dependency&gt;\n​    引入之后：\n\n​    以上配置会通过maven从网上引入 cat-core和cat-client 包，如果无法配置引入，也可以手动引入 cat-client.jar 包。\n​    CAT默认会将/data/appdatas/cat 作为CAT Home目录，这个目录至关重要，CAT客户端配置文件 client.xml 是在这个目录内，当然，如果你是在 windows 下调试， 你也可以在src/main/resources/ 目录下新建 META-INF/cat 目录， 并将 client.xml 配置文件放入 src/main/resources/META-INF/cat 目录里，你可以为你的监控配置domain，即项目名，如下配置  。\n12345678910111213&lt;?xml version=\"1.0\" encoding=\"utf-8\"?&gt;&lt;config mode=\"client\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema\" xsi:noNamespaceSchemaLocation=\"config.xsd\"&gt;    &lt;domain id=\"translate\"/&gt;    &lt;servers&gt;        &lt;!-- Local mode for development --&gt;        &lt;server ip=\"127.0.0.1\" port=\"2280\" http-port=\"8080\" /&gt;        &lt;!-- If under production environment, put actual server address as list. --&gt;        &lt;!--             &lt;server ip=\"192.168.7.71\" port=\"2280\" /&gt;             &lt;server ip=\"192.168.7.72\" port=\"2280\" /&gt;         --&gt;    &lt;/servers&gt;&lt;/config&gt;\n第一个监控程序：\n​    所有都配置好了，接下来我们来写第一个监控程序，监控都是由用户自己埋点，当然，在本书最后，我们将会讲解CAT监控如何与各个流行框架之间更好的融合，以帮助用户达到无侵入式的监控埋点，假设我们对用户提供了一个翻译服务，其中有个接口就是HelloWorld，在下面程序中，我们将以事务日志形式记录用户调用行为：\n1234567891011121314public Object helloWorld(HttpServletRequest request, HttpServletResponse response) &#123;    MessageProducer cat = Cat.getProducer();    Transaction t = cat.newTransaction(\"URL\", \"Translate/HelloWorld\");  //type=URL的事务记录: 你的接口/方法名称    try&#123;        //do your business        t.setStatus(Message.SUCCESS);    &#125; catch (Exception e) &#123;        Cat.getProducer().logError(e);        t.setStatus(e);    &#125; finally &#123;        t.complete();    &#125;    return null;&#125;\n​    好了，我们再去管理平台去看看报表信息把，Transaction事务报表中，type=URL的事务有3条，我们通常用URL类型的事务消息标志着接口服务的开始，展开之后，我们看到这个里面该项目提供的3个服务被调用了，其中就有我们的 Translate/HelloWorld：\n\n\n再点开某个接口的[::show::]进入详细统计，包括耗时分布、每分钟的数据、以及该服务集群下各个机器的统计情况，我们可以通过这个看出是不是某台机器出了问题：\n\n点击LogView进入最近一条事务的原始日志（problem报表才会记录全部的原始日志）：\n\n​    接下来，我们来看一个更复杂的案例，涉及服务的调用以及数据库、缓存的调用，如下：\n123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172737475767778798081828384858687888990919293949596979899100101102103104105106107108@Controllerpublic class Translate &#123;    public Map&lt;String, String&gt; maps = new HashMap&lt;String, String&gt;();    public Cat.Context context;    @RequestMapping(value = \"/translate/getWordMean\", produces = \"application/json\")    @ResponseBody    //获取翻译释义    public Object getWordMean(HttpServletRequest request, HttpServletResponse response) &#123;        context = new Cat.Context() &#123;            @Override            public void addProperty(String key, String value) &#123;                maps.put(key, value);            &#125;            @Override            public String getProperty(String key) &#123;                return maps.get(key);            &#125;        &#125;; //服务调用消息上下文        MessageProducer cat = Cat.getProducer();        Transaction t = cat.newTransaction(\"URL\", \"translate/getWordMean\");  //你的接口/方法名称        cat.logEvent(\"ClientInfo\", \"RemoteIp=127.0.0.1&amp;Referer=...\");  //记录远程调用端信息        cat.logEvent(\"Payload\", \"HTTP/GET /translate/getWordMean?client=3&amp;clientVersion=0&amp;v=9.5&amp;uid=3214567....\"); //调用端参数        //用户校验        authCheck();        //先从缓存Redis获取结果        Transaction cacheT = cat.newTransaction(\"Cache.memcached.redis\", \"translate_result:get\");        cat.logEvent(\"Cache.memcached.redis.server\", \"127.0.0.1:6379\");        //do your cache operation        cacheT.setStatus(Message.SUCCESS);        cacheT.complete();        //do your translate operation        //记录远程语音服务调用        Transaction callT = cat.newTransaction(\"Call\", \"voice:getVoice\");        Cat.logEvent(\"Call.server\",\"localhost\");  //远程服务地址        Cat.logEvent(\"Call.app\",\"voice\");   //语音服务        Cat.logEvent(\"Call.port\",\"8080\");   //语音服务端口        Cat.logRemoteCallClient(context); //生成消息调用上下文，主要是几个messageId的创建。        voiceService(context);         callT.setStatus(Message.SUCCESS);        callT.complete();        OutputData result = new OutputData();        result.setErrno(0);        result.setErrmsg(\"success\");        result.setTranslateResult(\"translate result ...\");        t.setStatus(Message.SUCCESS);        t.complete();        return result;    &#125;    public boolean authCheck() &#123;        MessageProducer cat = Cat.getProducer();        Transaction checkUser = cat.newTransaction(\"Method\", \"checkAuth\");        //从数据库查询用户信息        Transaction sqlT = cat.newTransaction(\"SQL\", \"Select\");        cat.logEvent(\"SQL.Database\", \"jdbc:mysql://127.0.0.1:3306/user\");        cat.logEvent(\"SQL.Method\", \"select\");        cat.logEvent(\"SQL.Statement\", \"SELECT\", Message.SUCCESS, \"select * from user_info\");        //to do your SQL query        sqlT.setStatus(Message.SUCCESS);        sqlT.complete();        //to do your auth check        checkUser.setStatus(Message.SUCCESS);        checkUser.complete();        return true;    &#125;    //线程模拟语音服务    protected void voiceService(final Cat.Context context) &#123;        Thread thread = new Thread() &#123;            @Override            public void run() &#123;                //服务器埋点，Domain为 voice 提供语音服务                Cat.getManager().getThreadLocalMessageTree().setDomain(\"voice\");                MessageProducer cat = Cat.getProducer();                Transaction voiceService = Cat.newTransaction(\"URL\", \"voice/getVoice\"); //你的接口/方法名称                cat.logEvent(\"ClientInfo\", \"RemoteIp=127.0.0.1&amp;Referer=...\");  //记录远程调用端信息                cat.logEvent(\"Payload\", \"HTTP/GET /voice/getVoice?client=3&amp;clientVersion=0&amp;v=9.5&amp;uid=3214567....\"); //调用端参数                //记录服务信息                Transaction child = Cat.newTransaction(\"Service\", \"voice:getVoice\");                Cat.logEvent(\"Service.client\", \"localhost\"); //客户端地址                Cat.logEvent(\"Service.app\", \"translate\"); //客户端domain                Cat.logRemoteCallServer(context); //记录消息上下文                //to do your business                child.setStatus(Message.SUCCESS);                child.complete();                voiceService.setStatus(Message.SUCCESS);                voiceService.complete();            &#125;        &#125;;        thread.start();        // wait for it to complete        try &#123;            thread.join();        &#125; catch (InterruptedException e) &#123;            // ignore it        &#125;    &#125;&#125;\n​    这是我们一个对外提供的翻译服务，getWordMean为服务控制器入口，我们将原始消息展开如下，整个服务处理耗时571ms，一进来我们会记录URL类型事务，以及调用参数，然后记录用户校验函数，在函数内部，有查询用户信息的数据库操作，也会被记录下，查询耗时150ms，接下来我们会先从缓存获取结果， 缓存查询耗时 59ms，随后我们翻译内容，翻译之后我们会调用语音服务提供的发音接口，voice/getVoice，发音接口调用一共耗时 361 ms。\n\n下一篇：   CAT跨语言服务链监控（二） CAT服务端初始化\n","dateCreated":"2019-02-16T23:11:03+08:00","dateModified":"2019-02-16T23:39:19+08:00","datePublished":"2019-02-16T23:11:03+08:00","description":"","headline":"","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2019/02/16/深入详解美团点评CAT跨语言服务监控（一） CAT简介与部署/"},"publisher":{"@type":"Organization","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"],"image":"dx.png","logo":{"@type":"ImageObject","url":"dx.png"}},"url":"http://localhost:4000/2019/02/16/深入详解美团点评CAT跨语言服务监控（一） CAT简介与部署/"}</script>
+    <meta name="description" content="深入详解美团点评CAT跨语言服务监控（一） CAT简介与部署置顶 2018年07月02日 12:50:45 曹号 阅读数：4676 下一篇： CAT跨语言服务链监控（二） CAT服务端初始化 前言： CAT是一个实时和接近全量的监控系统，它侧重于对Java应用的监控，除了与点评RPC组件融合的很好之外，他将会能与Spring、MyBatis、Dubbo 等框架以及Log4j 等结合，支持PHP、C">
+<meta property="og:type" content="blog">
+<meta property="og:title" content="Xiangjy&#39;s Blog">
+<meta property="og:url" content="http://localhost:4000/2019/02/16/深入详解美团点评CAT跨语言服务监控（一） CAT简介与部署/index.html">
+<meta property="og:site_name" content="Xiangjy&#39;s Blog">
+<meta property="og:description" content="深入详解美团点评CAT跨语言服务监控（一） CAT简介与部署置顶 2018年07月02日 12:50:45 曹号 阅读数：4676 下一篇： CAT跨语言服务链监控（二） CAT服务端初始化 前言： CAT是一个实时和接近全量的监控系统，它侧重于对Java应用的监控，除了与点评RPC组件融合的很好之外，他将会能与Spring、MyBatis、Dubbo 等框架以及Log4j 等结合，支持PHP、C">
+<meta property="og:locale" content="zh-cn">
+<meta property="og:image" content="https://img-blog.csdn.net/20180710092446596">
+<meta property="og:image" content="https://img-blog.csdn.net/20180710092835555">
+<meta property="og:image" content="https://img-blog.csdn.net/20180710092946795">
+<meta property="og:image" content="https://img-blog.csdn.net/20180710093106548">
+<meta property="og:image" content="https://img-blog.csdn.net/20180710112822532">
+<meta property="og:image" content="https://img-blog.csdn.net/20180710115701626">
+<meta property="og:image" content="https://img-blog.csdn.net/20180710115840344">
+<meta property="og:image" content="https://img-blog.csdn.net/20180712105601499">
+<meta property="og:image" content="https://img-blog.csdn.net/20180710120047134">
+<meta property="og:image" content="https://img-blog.csdn.net/20180710170905183">
+<meta property="og:updated_time" content="2019-02-16T15:39:19.251Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Xiangjy&#39;s Blog">
+<meta name="twitter:description" content="深入详解美团点评CAT跨语言服务监控（一） CAT简介与部署置顶 2018年07月02日 12:50:45 曹号 阅读数：4676 下一篇： CAT跨语言服务链监控（二） CAT服务端初始化 前言： CAT是一个实时和接近全量的监控系统，它侧重于对Java应用的监控，除了与点评RPC组件融合的很好之外，他将会能与Spring、MyBatis、Dubbo 等框架以及Log4j 等结合，支持PHP、C">
+<meta name="twitter:image" content="https://img-blog.csdn.net/20180710092446596">
+    
+    
+        
+    
+    
+        <meta property="og:image" content="http://localhost:4000/assets/images/dx.png"/>
+    
+    
+    
+    
+    <!--STYLES-->
+    <link rel="stylesheet" href="/assets/css/style-c4ozcsklz4kht2pebhp44xorvyverh23toayhn7i6ubrpyedak24hv1v0hyd.min.css">
+    <!--STYLES END--><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+    
+
+    
+</head>
+
+    <body>
+        <!-- hexo-inject:begin --><!-- hexo-inject:end --><div id="blog">
+            <!-- Define author's picture -->
+
+
+    
+        
+            
+        
+    
+
+<header id="header" data-behavior="5">
+    <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
+    <div class="header-title">
+        <a class="header-title-link" href="/ ">Xiangjy&#39;s Blog</a>
+    </div>
+    
+        
+            <a class="header-right-picture " href="#about">
+        
+        
+            <img class="header-picture" src="/assets/images/dx.png" alt="作者的图片">
+        
+        </a>
+    
+</header>
+
+            <!-- Define author's picture -->
+
+
+
+        
+    
+
+<nav id="sidebar" data-behavior="5">
+    <div class="sidebar-container">
+        
+            <div class="sidebar-profile">
+                <a href="/#about">
+                    <img class="sidebar-profile-picture" src="/assets/images/dx.png" alt="作者的图片">
+                </a>
+                <h4 class="sidebar-profile-name">Xiangjy</h4>
+                
+                    <h5 class="sidebar-profile-bio"><p>author.bio</p>
+</h5>
+                
+            </div>
+        
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="/ " title="首页">
+                    
+                        <i class="sidebar-button-icon fa fa-home" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">首页</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="/all-categories" title="分类">
+                    
+                        <i class="sidebar-button-icon fa fa-bookmark" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">分类</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="/all-tags" title="标签">
+                    
+                        <i class="sidebar-button-icon fa fa-tags" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">标签</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="/all-archives" title="归档">
+                    
+                        <i class="sidebar-button-icon fa fa-archive" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">归档</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link open-algolia-search" href="#search" title="搜索">
+                    
+                        <i class="sidebar-button-icon fa fa-search" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">搜索</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="#about" title="关于">
+                    
+                        <i class="sidebar-button-icon fa fa-question" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">关于</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="https://github.com/" target="_blank" rel="noopener" title="GitHub">
+                    
+                        <i class="sidebar-button-icon fab fa-github" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">GitHub</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="http://stackoverflow.com/users" target="_blank" rel="noopener" title="Stack Overflow">
+                    
+                        <i class="sidebar-button-icon fab fa-stack-overflow" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Stack Overflow</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="https://twitter.com/" target="_blank" rel="noopener" title="Twitter">
+                    
+                        <i class="sidebar-button-icon fab fa-twitter" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Twitter</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="https://facebook.com/" target="_blank" rel="noopener" title="Facebook">
+                    
+                        <i class="sidebar-button-icon fab fa-facebook" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Facebook</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="https://plus.google.com/" target="_blank" rel="noopener" title="Google Plus">
+                    
+                        <i class="sidebar-button-icon fab fa-google-plus" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">Google Plus</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="https://www.linkedin.com/profile/" target="_blank" rel="noopener" title="LinkedIn">
+                    
+                        <i class="sidebar-button-icon fab fa-linkedin" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">LinkedIn</span>
+                    </a>
+            </li>
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="/mailto" title="邮箱">
+                    
+                        <i class="sidebar-button-icon fa fa-envelope" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">邮箱</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+            <ul class="sidebar-buttons">
+            
+                <li class="sidebar-button">
+                    
+                        <a class="sidebar-button-link " href="/atom.xml" title="RSS">
+                    
+                        <i class="sidebar-button-icon fa fa-rss" aria-hidden="true"></i>
+                        <span class="sidebar-button-desc">RSS</span>
+                    </a>
+            </li>
+            
+        </ul>
+        
+    </div>
+</nav>
+
+            
+            <div id="main" data-behavior="5"
+                 class="
+                        hasCoverMetaIn
+                        ">
+                
+<article class="post">
+    
+    
+        <div class="post-header main-content-wrap text-left">
+    
+        <h1 class="post-title">
+            (无标题)
+        </h1>
+    
+    
+        <div class="post-meta">
+    <time datetime="2019-02-16T23:11:03+08:00">
+	
+		    2月 16, 2019
+    	
+    </time>
+    
+</div>
+
+    
+</div>
+
+    
+    <div class="post-content markdown">
+        <div class="main-content-wrap">
+            <h1 id="深入详解美团点评CAT跨语言服务监控（一）-CAT简介与部署"><a href="#深入详解美团点评CAT跨语言服务监控（一）-CAT简介与部署" class="headerlink" title="深入详解美团点评CAT跨语言服务监控（一） CAT简介与部署"></a>深入详解美团点评CAT跨语言服务监控（一） CAT简介与部署</h1><p>置顶 2018年07月02日 12:50:45 <a href="https://me.csdn.net/caohao0591" target="_blank" rel="noopener">曹号</a> 阅读数：4676</p>
+<p><a href="https://blog.csdn.net/caohao0591/article/details/80207771" target="_blank" rel="noopener">下一篇： CAT跨语言服务链监控（二） CAT服务端初始化</a></p>
+<p>前言： CAT是一个实时和接近全量的监控系统，它侧重于对Java应用的监控，除了与点评RPC组件融合的很好之外，他将会能与Spring、MyBatis、Dubbo 等框架以及Log4j 等结合，支持PHP、C++、Go等多语言应用，基本接入了美团点评上海侧所有核心应用。目前在中间件（MVC、RPC、数据库、缓存等）框架中得到广泛应用，为美团点评各业务线提供系统的性能指标、健康状况、监控告警等，在微服务监控领域也是非常有用的一套组件。支撑这美团每天450亿的消息，50TB的数据监控，应用于 7000+应用服务器，2000+的业务，单台机器能15W qps，15台CAT物理集群，有着极高的性能，同时CAT支持丰富的报表，架构拥有灵活的扩展性，用户可以定制自己的监控、报表需求，本文将就CAT的部署、架构源码以及多语言支持等方面展开剖析。CAT在携程、陆金所、猎聘网、找钢网、<a href="https://www.baidu.com/s?wd=%E5%B9%B3%E5%AE%89%E9%93%B6%E8%A1%8C&amp;tn=24004469_oem_dg&amp;rsv_dl=gh_pl_sl_csd" target="_blank" rel="noopener">平安银行</a>等多家互联网公司生产环境应用。</p>
+<p>目录：</p>
+<p><a href="https://blog.csdn.net/caohao0591/article/details/80693289" target="_blank" rel="noopener">（一） CAT简介与部署</a></p>
+<p>​    介绍<br>​    背景介绍<br>​    Cat系统的特性<br>​    消息树<br>​    CAT服务端部署<br>​    CAT客户端Demo</p>
+<p><a href="https://blog.csdn.net/caohao0591/article/details/80207771" target="_blank" rel="noopener">（二） CAT服务端初始化</a><br>    Cat模块<br>    Cat-servlet初始化<br>    plexus - IOC容器<br>    模块的加载 - 模型模式<br>    cat-home的setup<br>    TcpSocketReceiver— netty reactor 模式的应用<br>    消息的解码<br><a href="https://blog.csdn.net/caohao0591/article/details/80207806" target="_blank" rel="noopener">（三） CAT客户端原理</a><br>    cat客户端部分核心类<br>    消息的组织 - 消息树<br>    客户端的初始化<br>    消息生产 – 入栈<br>    Context 线程本地变量<br>    Transaction事务的开启<br>    其他类型消息组合<br>    消息的完成-出栈<br>    消息的发送-队列化<br>    消息的序列化<br>    MessageId的设计<br><a href="https://blog.csdn.net/caohao0591/article/details/80200769" target="_blank" rel="noopener">（四） 服务端消息分发</a><br>    分发架构<br>    分析管理器的初始化<br>    消费者与周期管理器的初始化<br>    什么是周期？<br>    周期任务-任务队列<br>    消息分发<br>    周期策略<br><a href="https://blog.csdn.net/caohao0591/article/details/80293833" target="_blank" rel="noopener">（五） 配置与数据库操作</a><br>    CAT配置<br>    代码自动生成<br>    数据库操作<br>    数据库连接管理<br><a href="https://blog.csdn.net/caohao0591/article/details/80231519" target="_blank" rel="noopener">（六） 消息分析器与报表(一)</a><br>    消息分析器的构建<br>    TopAnalyzer<br>    EventAnalyzer - 事件发生次数分析<br>    MetricAnalyzer - 业务分析<br>    ProblemAnalyzer -异常分析<br>    TransactionAnalyzer - 事务分析<br><a href="https://blog.csdn.net/caohao0591/article/details/80448847" target="_blank" rel="noopener">（七）消息分析器与报表(二)</a><br>    CrossAnalyzer-调用链分析<br>    StorageAnalyzer  –数据库/缓存分析<br>    StateAnalyzer – CAT状态分析<br>    HeartbeatAnalyzer  – 心跳分析<br>    DumpAnalyzer – 原始消息LogView存储<br>    自定义分析器与报表<br><a href="https://blog.csdn.net/caohao0591/article/details/80558779" target="_blank" rel="noopener">（八） 报表持久化</a><br>    周期结束<br>    分析器的结束 – 报表持久化<br>    报表预处理<br>    报表的文件存储 – 重入锁<br>    报表的数据库存储<br>    定时任务<br><a href="https://blog.csdn.net/caohao0591/article/details/80691252" target="_blank" rel="noopener">（九） 管理平台MVC框架</a><br>    Servlet容器与请求生命周期<br>    页面路由初始化<br>    请求处理流程<br>（十）与JAVA框架的集成<br>    与Spring MVC集成<br>    与Spring Boot 集成<br>    与Spring Cloud 集成<br>    与dubbo集成<br>    与MyBatis集成<br>    与Log4j集成<br>（十一） 其他语言支持<br>    PHP语言<br>    C++语言<br>    LUA语言<br>    Go语言<br>    Python语言<br>    Node.js语言<br>    Android埋点</p>
+<p>​     Object  C – IOS 埋点</p>
+<p> （十二） 报警与监控提醒</p>
+<p>​    短信通知</p>
+<p>​    邮件通知</p>
+<p>（十三） CAT与实时计算<br>    hadoop模块</p>
+<p>​    spark实时计算模块</p>
+<h1 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h1><p><a href="https://www.oschina.net/p/cat-dianping" target="_blank" rel="noopener">        大众点评CAT</a>系统原型和理念来源于eBay的CAL的系统，CAT系统第一代设计者吴其敏在eBay工作长达十几年，对CAL系统有深刻的理解。CAT不仅增强了CAL系统核心模型，还添加了更丰富的报表。自2014年开源以来，CAT在携程、陆金所、猎聘网、找钢网等多家互联网公司生产环境应用。</p>
+<p>​    CAT是一个实时和接近全量的监控系统，它侧重于对Java应用的监控，除了与点评RPC组件融合的很好之外，他将会能与Spring、MyBatis、Dubbo 等框架以及Log4j 等结合，不久将会支持PHP、C++、Go等多语言应用，基本接入了美团点评上海侧所有核心应用。目前在中间件（MVC、RPC、数据库、缓存等）框架中得到广泛应用，为美团点评各业务线提供系统的性能指标、健康状况、监控告警等，在微服务监控领域也是非常有用的一套组件。</p>
+<p>​    在详细了解CAT的整体设计细节之后，我们可以在CAT基础之上轻松扩展我们自己的监控和数据收集模块。</p>
+<p>​    CAT项目的开源地址： <a href="https://github.com/dianping/cat" target="_blank" rel="noopener">https://github.com/dianping/cat</a></p>
+<h1 id="背景介绍"><a href="#背景介绍" class="headerlink" title="背景介绍"></a><strong>背景介绍</strong></h1><p>​    CAT整个产品研发是从2011年底开始的，当时正是大众点评App Net迁移Java的核心起步阶段。当初大众点评App已经有核心的基础中间件、RPC组件Pigeon、统一配置组件lion。整体Java迁移已经在服务化的路上。随着服务化的深入，整体Java在线上部署规模逐渐变多，同时，暴露的问题也越来越多。典型的问题有：</p>
+<ul>
+<li>大量报错，特别是核心服务，需要花很久时间才能定位。</li>
+<li>异常日志都需要线上权限登陆线上机器排查，排错时间长。</li>
+<li>有些简单的错误定位都非常困难（一次将线上的库配置到了Beta，花了整个通宵排错）。</li>
+<li>很多<a href="https://www.baidu.com/s?wd=%E4%B8%8D%E4%BA%86%E4%BA%86%E4%B9%8B&amp;tn=24004469_oem_dg&amp;rsv_dl=gh_pl_sl_csd" target="_blank" rel="noopener">不了了之</a>的问题都怀疑是网络问题（从现在看，内网真的很少出问题）。</li>
+</ul>
+<p>​    虽然那时候也有一些简单的监控工具（比如Zabbix，自己研发的Hawk系统等），可能单个工具在某方面的功能还不错，但整体服务化水平<a href="https://www.baidu.com/s?wd=%E5%8F%82%E5%B7%AE%E4%B8%8D%E9%BD%90&amp;tn=24004469_oem_dg&amp;rsv_dl=gh_pl_sl_csd" target="_blank" rel="noopener">参差不齐</a>、扩展能力相对较弱，监控工具间不能互通互联，使得查找问题根源基本都需要在多个系统之间切换，有时候真的是靠“人品”才能找出根源。适逢吴其敏从eBay加入大众点评成为首席架构师，eBay的CAL系统在内部非常成功，就在这样天时地利与人和的情况下，我们开始研发了大众点评App第一代监控系统——CAT。</p>
+<h1 id="Cat系统的特性"><a href="#Cat系统的特性" class="headerlink" title="Cat系统的特性"></a>Cat系统的特性</h1><ul>
+<li>实时处理：信息的价值会随时间锐减，尤其是事故处理过程中。</li>
+<li>全量数据：最开始的设计目标就是全量采集，全量的好处有很多。</li>
+<li>高可用：所有应用都倒下了，需要监控还站着，并告诉工程师发生了什么，做到故障还原和问题定位。</li>
+<li>故障容忍：CAT本身故障不应该影响业务正常运转，CAT挂了，应用不该受影响，只是监控能力暂时减弱。</li>
+<li>高吞吐：要想还原真相，需要全方位地监控和度量，必须要有超强的处理吞吐能力。</li>
+<li><p>可扩展：支持分布式、跨IDC部署，横向扩展的监控系统。</p>
+</li>
+<li><p>不保证可靠：允许消息丢失，这是一个很重要的trade-off，目前CAT服务端可以做到4个9的可靠性，可靠系统和不可靠性系统的设计差别非常大。</p>
+</li>
+</ul>
+<p>CAT支持的监控消息类型包括：</p>
+<ul>
+<li>Transaction 适合记录跨越系统边界的程序访问行为,比如远程调用，数据库调用，也适合执行时间较长的业务逻辑监控，Transaction用来记录一段代码的执行时间和次数。</li>
+<li>Event 用来记录一件事发生的次数，比如记录系统异常，它和transaction相比缺少了时间的统计，开销比transaction要小。</li>
+<li>Heartbeat 表示程序内定期产生的统计信息, 如CPU%, MEM%, 连接池状态, 系统负载等。</li>
+<li>Metric 用于记录业务指标、指标可能包含对一个指标记录次数、记录平均值、记录总和，业务指标最低统计粒度为1分钟。</li>
+<li>Trace 用于记录基本的trace信息，类似于log4j的info信息，这些信息仅用于查看一些相关信息</li>
+</ul>
+<h1 id="消息树"><a href="#消息树" class="headerlink" title="消息树"></a>消息树</h1><p>​    CAT监控系统将每次URL、Service的请求内部执行情况都封装为一个完整的消息树、消息树可能包括Transaction、Event、Heartbeat、Metric和Trace信息，各个消息树之间，通过 rootMessageId以及parentMessageId串联起来，形成整个调用链条。</p>
+<p><img src="https://img-blog.csdn.net/20180710092446596" alt="img"></p>
+<p><strong>完整的消息树：</strong></p>
+<p><img src="https://img-blog.csdn.net/20180710092835555" alt="img"></p>
+<p><strong>可视化的消息树：</strong></p>
+<p><img src="https://img-blog.csdn.net/20180710092946795" alt="img"></p>
+<p><strong>分布式消息树【一台机器调用另外一台机器】：</strong></p>
+<p><img src="https://img-blog.csdn.net/20180710093106548" alt="img"></p>
+<h1 id="CAT服务端部署"><a href="#CAT服务端部署" class="headerlink" title="CAT服务端部署"></a>CAT服务端部署</h1><p><strong>CAT安装环境：</strong></p>
+<ul>
+<li><ul>
+<li>Linux 2.6以及之上（2.6内核才可以支持epoll），线上服务端部署请使用Linux环境，Mac以及Windows环境可以作为开发环境，美团点评内部CentOS 6.5</li>
+<li>Java 6，7，8，服务端推荐是用jdk7的版本，客户端jdk6、7、8都支持</li>
+<li>Maven 3.3.3</li>
+<li>MySQL 5.6，5.7，更高版本MySQL都不建议使用，不清楚兼容性</li>
+<li>J2EE容器建议使用tomcat，建议版本7.0.70</li>
+<li>Hadoop环境可选，一般建议规模较小的公司直接使用磁盘模式，可以申请CAT服务端，500GB磁盘或者更大磁盘，这个磁盘挂载在/data/目录上</li>
+</ul>
+</li>
+</ul>
+<p><strong>目前我司线上环境：</strong></p>
+<p>​    Distributor ID: CentOS<br>​    Description: CentOS release 6.5 (Final)<br>​    Release: 6.5<br>​    Codename: Final<br>​    Server version: Apache Tomcat/8.0.30<br>​    Server built:   Dec 1 2015 22:30:46 UTC<br>​    Server number:  8.0.30.0<br>​    OS Name:        Linux<br>​    OS Version:     2.6.32-431.el6.x86_64<br>​    Architecture:   amd64<br>​    JVM Version:    1.8.0_111-b14<br>​    JVM Vendor:     Oracle Corporation<br>​    Maven 3.3.3<br>​    Mysql 5.6<br>​    Tomcat  7.0.70  建议使用此版本</p>
+<p>我的开发环境：</p>
+<p>​    操作系统： Windows 7<br>​    IDE： Intelij IDEA<br>​    JDK版本：1.8<br>​    Mysql： 5.6<br>​    Maven： 3.3.3<br>​    Server version：Apache Tomcat/8.0.30</p>
+<p><strong>安装CAT集群大致步骤</strong></p>
+<p>​    初始化Mysql数据库，一套CAT集群部署一个数据库，初始化脚本在script下的Cat.sql<br>​    准备三台CAT服务器，IP比如为10.1.1.1，10.1.1.2，10.1.1.3，下面的例子会以这个IP为例子<br>​    初始化/data/目录，配置几个配置文件/data/appdatas/cat/*.xml 几个配置文件，具体下面有详细说明<br>​    打包cat.war 放入tomcat容器</p>
+<p>​    修改一个路由配置，重启tomcat</p>
+<p><strong>Tomcat启动参数调整，修改 catalina.sh文件【服务端】</strong></p>
+<p>​    需要每台CAT集群10.1.1.1，10.1.1.2，10.1.1.3都进行部署<br>​    建议使用cms gc策略<br>​    建议cat的使用堆大小至少10G以上，开发环境启动2G堆启动即可</p>
+<figure class="highlight perl"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">CATALINA_OPTS=<span class="string">"$CATALINA_OPTS -server -Djava.awt.headless=true -Xms25G -Xmx25G -XX:PermSize=256m -XX:MaxPermSize=256m -XX:NewSize=10144m -XX:MaxNewSize=10144m -XX:SurvivorRatio=10 -XX:+UseParNewGC -XX:ParallelGCThreads=4 -XX:MaxTenuringThreshold=13 -XX:+UseConcMarkSweepGC -XX:+DisableExplicitGC -XX:+UseCMSInitiatingOccupancyOnly -XX:+ScavengeBeforeFullGC -XX:+UseCMSCompactAtFullCollection -XX:+CMSParallelRemarkEnabled -XX:CMSFullGCsBeforeCompaction=9 -XX:CMSInitiatingOccupancyFraction=60 -XX:+CMSClassUnloadingEnabled -XX:SoftRefLRUPolicyMSPerMB=0 -XX:-ReduceInitialCardMarks -XX:+CMSPermGenSweepingEnabled -XX:CMSInitiatingPermOccupancyFraction=70 -XX:+ExplicitGCInvokesConcurrent -Djava.nio.channels.spi.SelectorProvider=sun.nio.ch.EPollSelectorProvider -Djava.util.logging.manager=org.apache.juli.ClassLoaderLogManager -Djava.util.logging.config.file="</span>%CATALINA_HOME%\conf\logging.properties<span class="string">" -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+PrintGCApplicationConcurrentTime -XX:+PrintHeapAtGC -Xloggc:/data/applogs/heap_trace.txt -XX:-HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/data/applogs/HeapDumpOnOutOfMemoryError -Djava.util.Arrays.useLegacyMergeSort=true"</span></span><br></pre></td></tr></table></figure>
+<p>​    修改中文乱码 tomcat conf 目录下 server.xml：</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Connector</span> <span class="attr">port</span>=<span class="string">"8080"</span> <span class="attr">protocol</span>=<span class="string">"HTTP/1.1"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">URIEncoding</span>=<span class="string">"utf-8"</span>    <span class="attr">connectionTimeout</span>=<span class="string">"20000"</span></span></span><br><span class="line"><span class="tag">           <span class="attr">redirectPort</span>=<span class="string">"8443"</span> /&gt;</span>  增加  URIEncoding="utf-8"</span><br></pre></td></tr></table></figure>
+<h3 id="程序对于-data-目录具体读写权限【包括客户端-amp-服务端】"><a href="#程序对于-data-目录具体读写权限【包括客户端-amp-服务端】" class="headerlink" title="程序对于/data/目录具体读写权限【包括客户端&amp;服务端】"></a>程序对于/data/目录具体读写权限【包括客户端&amp;服务端】</h3><ul>
+<li>注意无论是CAT客户端和服务端都要求/data/目录能进行读写操作，如果/data/目录不能写，建议使用linux的软链接链接到一个固定可写的目录，软链接的基本命令请自行搜索google</li>
+<li>此目录会存一些CAT必要的配置文件，运行时候的缓存文件，建议不要修改，如果想改，请自行研究好源码里面的东西，在酌情修改，此目录不支持进行配置化</li>
+<li>mkdir /data</li>
+<li>chmod 777 /data/ -R</li>
+<li>如果是Windows开发环境则是对程序运行盘下的/data/appdatas/cat和/data/applogs/cat有读写权限,如果cat服务运行在e盘的tomcat中，则需要对e:/data/appdatas/cat和e:/data/applogs/cat有读写权限</li>
+<li>如果windows实在不知道哪个盘，就所有盘都建好，最后看哪个盘多文件，就知道哪个了，当然你也可以通过配置系统环境变量CAT_HOME来指定服务器日志存储的路径，不过好像数据库连接xml信息等好像不太好自己配置，最好还是采用系统默认的 /data 目录。</li>
+</ul>
+<h3 id="配置-data-appdatas-cat-client-xml【包括客户端-amp-服务端】"><a href="#配置-data-appdatas-cat-client-xml【包括客户端-amp-服务端】" class="headerlink" title="配置/data/appdatas/cat/client.xml【包括客户端&amp;服务端】"></a>配置/data/appdatas/cat/client.xml【包括客户端&amp;服务端】</h3><ul>
+<li>此配置文件的作用是所有的客户端都需要一个地址指向CAT的服务端，比如CAT服务端有三个IP，10.1.1.1，10.1.1.2，10.1.1.3，2280是默认的CAT服务端接受数据的端口，不允许修改，http-port是Tomcat启动的端口，默认是8080，建议使用默认端口。</li>
+<li>此文件可以通过运维统一进行部署和维护，比如使用puppert等运维工具。</li>
+<li>不同环境这份文件不一样，比如区分prod环境以及test环境，在美团点评内部一共是2套环境的CAT，一份是生产环境，一份是测试环境</li>
+</ul>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span><br><span class="line">    <span class="tag">&lt;<span class="name">config</span> <span class="attr">mode</span>=<span class="string">"client"</span>&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">servers</span>&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">server</span> <span class="attr">ip</span>=<span class="string">"10.1.1.1"</span> <span class="attr">port</span>=<span class="string">"2280"</span> <span class="attr">http-port</span>=<span class="string">"8080"</span>/&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">server</span> <span class="attr">ip</span>=<span class="string">"10.1.1.2"</span> <span class="attr">port</span>=<span class="string">"2280"</span> <span class="attr">http-port</span>=<span class="string">"8080"</span>/&gt;</span></span><br><span class="line">                <span class="tag">&lt;<span class="name">server</span> <span class="attr">ip</span>=<span class="string">"10.1.1.3"</span> <span class="attr">port</span>=<span class="string">"2280"</span> <span class="attr">http-port</span>=<span class="string">"8080"</span>/&gt;</span></span><br><span class="line">        <span class="tag">&lt;/<span class="name">servers</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">config</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="安装CAT的数据库"><a href="#安装CAT的数据库" class="headerlink" title="安装CAT的数据库"></a>安装CAT的数据库</h3><ul>
+<li>数据库的脚本文件 script/Cat.sql</li>
+<li>MySQL的一个系统参数：max_allowed_packet，其默认值为1048576(1M)，修改为1000M，修改完需要重启mysql</li>
+<li>注意：一套独立的CAT集群只需要一个数据库（之前碰到过个别同学在每台cat的服务端节点都安装了一个数据库）</li>
+</ul>
+<h3 id="配置-data-appdatas-cat-datasources-xml【服务端配置】"><a href="#配置-data-appdatas-cat-datasources-xml【服务端配置】" class="headerlink" title="配置/data/appdatas/cat/datasources.xml【服务端配置】"></a>配置/data/appdatas/cat/datasources.xml【服务端配置】</h3><p>需要每台CAT集群10.1.1.1，10.1.1.2，10.1.1.3都进行部署</p>
+<p>注意：此xml仅仅为模板，请根据自己实际的情况替换jdbc.url,jdbc.user,jdbc.password的实际值。 app数据库和cat数据配置为一样，app库不起作用，为了运行时候代码不报错。</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">data-sources</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">data-source</span> <span class="attr">id</span>=<span class="string">"cat"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">maximum-pool-size</span>&gt;</span>3<span class="tag">&lt;/<span class="name">maximum-pool-size</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">connection-timeout</span>&gt;</span>1s<span class="tag">&lt;/<span class="name">connection-timeout</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">idle-timeout</span>&gt;</span>10m<span class="tag">&lt;/<span class="name">idle-timeout</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">statement-cache-size</span>&gt;</span>1000<span class="tag">&lt;/<span class="name">statement-cache-size</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">properties</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">driver</span>&gt;</span>com.mysql.jdbc.Driver<span class="tag">&lt;/<span class="name">driver</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">url</span>&gt;</span>&lt;![CDATA[$&#123;jdbc.url&#125;]]&gt;<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">user</span>&gt;</span>$&#123;jdbc.user&#125;<span class="tag">&lt;/<span class="name">user</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">password</span>&gt;</span>$&#123;jdbc.password&#125;<span class="tag">&lt;/<span class="name">password</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">connectionProperties</span>&gt;</span>&lt;![CDATA[useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true&amp;socketTimeout=120000]]&gt;<span class="tag">&lt;/<span class="name">connectionProperties</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">data-source</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">data-source</span> <span class="attr">id</span>=<span class="string">"app"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">maximum-pool-size</span>&gt;</span>3<span class="tag">&lt;/<span class="name">maximum-pool-size</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">connection-timeout</span>&gt;</span>1s<span class="tag">&lt;/<span class="name">connection-timeout</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">idle-timeout</span>&gt;</span>10m<span class="tag">&lt;/<span class="name">idle-timeout</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">statement-cache-size</span>&gt;</span>1000<span class="tag">&lt;/<span class="name">statement-cache-size</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">properties</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">driver</span>&gt;</span>com.mysql.jdbc.Driver<span class="tag">&lt;/<span class="name">driver</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">url</span>&gt;</span>&lt;![CDATA[$&#123;jdbc.url&#125;]]&gt;<span class="tag">&lt;/<span class="name">url</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">user</span>&gt;</span>$&#123;jdbc.user&#125;<span class="tag">&lt;/<span class="name">user</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">password</span>&gt;</span>$&#123;jdbc.password&#125;<span class="tag">&lt;/<span class="name">password</span>&gt;</span></span><br><span class="line">			<span class="tag">&lt;<span class="name">connectionProperties</span>&gt;</span>&lt;![CDATA[useUnicode=true&amp;characterEncoding=UTF-8&amp;autoReconnect=true&amp;socketTimeout=120000]]&gt;<span class="tag">&lt;/<span class="name">connectionProperties</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;/<span class="name">properties</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">data-source</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">data-sources</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>配置/data/appdatas/cat/server.xml【服务端配置】</strong><br>    需要每台CAT集群10.1.1.1，10.1.1.2，10.1.1.3都进行部署<br>    CAT节点一共有四个职责</p>
+<p>​    控制台 - 提供给业务人员进行数据查看【默认所有的cat节点都可以作为控制台，不可配置】<br>​    消费机 - 实时接收业务数据，实时处理，提供实时分析报表【默认所有的cat节点都可以作为消费机，不可配置】<br>​    告警端 - 启动告警线程，进行规则匹配，发送告警（目前仅支持单点部署）【可以配置】<br>​    任务机 - 做一些离线的任务，合并天、周、月等报表 【可以配置】<br>​    线上做多集群部署，比如说10.1.1.1，10.1.1.2，10.1.1.3这三台机器</p>
+<pre><code>建议选取一台10.1.1.1 负责角色有控制台、告警端、任务机，建议配置域名访问CAT，就配置一台机器10.1.1.1一台机器挂在域名下面
+10.1.1.2，10.1.1.3 负责消费机处理，这样能做到有效隔离，任务机、告警等问题不影响实时数据处理
+默认script下的server.xml为
+</code></pre><figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">config</span> <span class="attr">local-mode</span>=<span class="string">"false"</span> <span class="attr">hdfs-machine</span>=<span class="string">"false"</span> <span class="attr">job-machine</span>=<span class="string">"true"</span> <span class="attr">alert-machine</span>=<span class="string">"false"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">storage</span>  <span class="attr">local-base-dir</span>=<span class="string">"/data/appdatas/cat/bucket/"</span> <span class="attr">max-hdfs-storage-time</span>=<span class="string">"15"</span> <span class="attr">local-report-storage-time</span>=<span class="string">"7"</span> <span class="attr">local-logivew-storage-time</span>=<span class="string">"7"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">hdfs</span> <span class="attr">id</span>=<span class="string">"logview"</span> <span class="attr">max-size</span>=<span class="string">"128M"</span> <span class="attr">server-uri</span>=<span class="string">"hdfs://10.1.77.86/user/cat"</span> <span class="attr">base-dir</span>=<span class="string">"logview"</span>/&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">hdfs</span> <span class="attr">id</span>=<span class="string">"dump"</span> <span class="attr">max-size</span>=<span class="string">"128M"</span> <span class="attr">server-uri</span>=<span class="string">"hdfs://10.1.77.86/user/cat"</span> <span class="attr">base-dir</span>=<span class="string">"dump"</span>/&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">hdfs</span> <span class="attr">id</span>=<span class="string">"remote"</span> <span class="attr">max-size</span>=<span class="string">"128M"</span> <span class="attr">server-uri</span>=<span class="string">"hdfs://10.1.77.86/user/cat"</span> <span class="attr">base-dir</span>=<span class="string">"remote"</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">storage</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">console</span> <span class="attr">default-domain</span>=<span class="string">"Cat"</span> <span class="attr">show-cat-domain</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">remote-servers</span>&gt;</span>127.0.0.1:8080<span class="tag">&lt;/<span class="name">remote-servers</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">console</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">config</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>配置说明：</p>
+<ul>
+<li>local-mode : 建议在开发环境以及生产环境时，都设置为false</li>
+<li>hdfs-machine : 定义是否启用HDFS存储方式，默认为 false</li>
+<li>job-machine : 定义当前服务是否为报告工作机（开启生成汇总报告和统计报告的任务，只需要一台服务机开启此功能），默认为 false</li>
+<li>alert-machine : 定义当前服务是否为报警机（开启各类报警监听，只需要一台服务机开启此功能），默认为 false；</li>
+<li>storage : 定义数据存储配置信息</li>
+<li>local-report-storage-time : 定义本地报告文件存放时长，单位为（天）</li>
+<li>local-logivew-storage-time : 定义本地日志文件存放时长，单位为（天）</li>
+<li>local-base-dir : 定义本地数据存储目录，建议直接使用/data/appdatas/cat/bucket目录</li>
+<li>hdfs : 定义HDFS配置信息</li>
+<li>server-uri : 定义HDFS服务地址</li>
+<li>console : 定义服务控制台信息</li>
+<li>remote-servers : 定义HTTP服务列表，（远程监听端同步更新服务端信息即取此值）</li>
+<li>ldap : 定义LDAP配置信息（这个可以忽略）</li>
+<li>ldapUrl : 定义LDAP服务地址（这个可以忽略）</li>
+</ul>
+<p>按照如上的说明，10.1.1.1 机器/data/appdatas/cat/serverm.xml配置，注意hdfs配置就随便下了一个，请忽略</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">config</span> <span class="attr">local-mode</span>=<span class="string">"false"</span> <span class="attr">hdfs-machine</span>=<span class="string">"false"</span> <span class="attr">job-machine</span>=<span class="string">"true"</span> <span class="attr">alert-machine</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">storage</span>  <span class="attr">local-base-dir</span>=<span class="string">"/data/appdatas/cat/bucket/"</span> <span class="attr">max-hdfs-storage-time</span>=<span class="string">"15"</span> <span class="attr">local-report-storage-time</span>=<span class="string">"7"</span> <span class="attr">local-logivew-storage-time</span>=<span class="string">"7"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">hdfs</span> <span class="attr">id</span>=<span class="string">"logview"</span> <span class="attr">max-size</span>=<span class="string">"128M"</span> <span class="attr">server-uri</span>=<span class="string">"hdfs://10.1.77.86/user/cat"</span> <span class="attr">base-dir</span>=<span class="string">"logview"</span>/&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">hdfs</span> <span class="attr">id</span>=<span class="string">"dump"</span> <span class="attr">max-size</span>=<span class="string">"128M"</span> <span class="attr">server-uri</span>=<span class="string">"hdfs://10.1.77.86/user/cat"</span> <span class="attr">base-dir</span>=<span class="string">"dump"</span>/&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">hdfs</span> <span class="attr">id</span>=<span class="string">"remote"</span> <span class="attr">max-size</span>=<span class="string">"128M"</span> <span class="attr">server-uri</span>=<span class="string">"hdfs://10.1.77.86/user/cat"</span> <span class="attr">base-dir</span>=<span class="string">"remote"</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">storage</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">console</span> <span class="attr">default-domain</span>=<span class="string">"Cat"</span> <span class="attr">show-cat-domain</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">remote-servers</span>&gt;</span>10.1.1.1:8080,10.1.1.2:8080,10.1.1.3:8080<span class="tag">&lt;/<span class="name">remote-servers</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">console</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">config</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>10.1.1.2，10.1.1.3 机器/data/appdatas/cat/serverm.xml配置如下，仅仅job-machine&amp;alert-machine修改为false</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">config</span> <span class="attr">local-mode</span>=<span class="string">"false"</span> <span class="attr">hdfs-machine</span>=<span class="string">"false"</span> <span class="attr">job-machine</span>=<span class="string">"false"</span> <span class="attr">alert-machine</span>=<span class="string">"false"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">storage</span>  <span class="attr">local-base-dir</span>=<span class="string">"/data/appdatas/cat/bucket/"</span> <span class="attr">max-hdfs-storage-time</span>=<span class="string">"15"</span> <span class="attr">local-report-storage-time</span>=<span class="string">"7"</span> <span class="attr">local-logivew-storage-time</span>=<span class="string">"7"</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">hdfs</span> <span class="attr">id</span>=<span class="string">"logview"</span> <span class="attr">max-size</span>=<span class="string">"128M"</span> <span class="attr">server-uri</span>=<span class="string">"hdfs://10.1.77.86/user/cat"</span> <span class="attr">base-dir</span>=<span class="string">"logview"</span>/&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">hdfs</span> <span class="attr">id</span>=<span class="string">"dump"</span> <span class="attr">max-size</span>=<span class="string">"128M"</span> <span class="attr">server-uri</span>=<span class="string">"hdfs://10.1.77.86/user/cat"</span> <span class="attr">base-dir</span>=<span class="string">"dump"</span>/&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">hdfs</span> <span class="attr">id</span>=<span class="string">"remote"</span> <span class="attr">max-size</span>=<span class="string">"128M"</span> <span class="attr">server-uri</span>=<span class="string">"hdfs://10.1.77.86/user/cat"</span> <span class="attr">base-dir</span>=<span class="string">"remote"</span>/&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">storage</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;<span class="name">console</span> <span class="attr">default-domain</span>=<span class="string">"Cat"</span> <span class="attr">show-cat-domain</span>=<span class="string">"true"</span>&gt;</span></span><br><span class="line">		<span class="tag">&lt;<span class="name">remote-servers</span>&gt;</span>10.1.1.1:8080,10.1.1.2:8080,10.1.1.3:8080<span class="tag">&lt;/<span class="name">remote-servers</span>&gt;</span></span><br><span class="line">	<span class="tag">&lt;/<span class="name">console</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">config</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<h3 id="war打包"><a href="#war打包" class="headerlink" title="war打包"></a>war打包</h3><p>​    1、在cat的源码目录，执行mvn clean install -DskipTests<br>​    2、如果发现cat的war打包不通过，CAT所需要依赖jar都部署在 <a href="http://unidal.org/nexus/" target="_blank" rel="noopener">http://unidal.org/nexus/</a><br>​    3、可以配置这个公有云的仓库地址到本地的settings路径，理论上不需要配置即可，可以参考cat的pom.xml配置</p>
+<p> 4、如果自行打包仍然问题，请使用下面链接进行下载<a href="http://unidal.org/nexus/service/local/repositories/releases/content/com/dianping/cat/cat-home/2.0.0/cat-home-2.0.0.war" target="_blank" rel="noopener">http://unidal.org/nexus/service/local/repositories/releases/content/com/dianping/cat/cat-home/2.0.0/cat-home-2.0.0.war</a></p>
+<p>​    5、官方的cat的master版本，重命名为cat.war进行部署，注意此war是用jdk8，服务端请使用jdk8版本<br>​    6、如下是个人本机电脑的测试，下载的jar来自于repo1.maven.org 以及 unidal.org</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="symbol">Downloading:</span> <span class="symbol">http:</span>/<span class="regexp">/repo1.maven.org/maven</span>2/org/codehaus/plexus/plexus-utils/<span class="number">3.0</span>.<span class="number">24</span>/plexus-utils-<span class="number">3.0</span>.<span class="number">24</span>.jar</span><br><span class="line"><span class="symbol">Downloaded:</span> <span class="symbol">http:</span>/<span class="regexp">/repo1.maven.org/maven</span>2/org/apache/commons/commons-email/<span class="number">1.1</span>/commons-email-<span class="number">1.1</span>.jar (<span class="number">30</span> KB at <span class="number">9.8</span> KB/sec)</span><br><span class="line"><span class="symbol">Downloaded:</span> <span class="symbol">http:</span>/<span class="regexp">/repo1.maven.org/maven</span>2/javax/servlet/jstl/<span class="number">1.2</span>/jstl-<span class="number">1.2</span>.jar (<span class="number">405</span> KB at <span class="number">107.7</span> KB/sec)</span><br><span class="line"><span class="symbol">Downloaded:</span> <span class="symbol">http:</span>/<span class="regexp">/repo1.maven.org/maven</span>2/com/google/code/javaparser/javaparser/<span class="number">1.0</span>.<span class="number">8</span>/javaparser-<span class="number">1.0</span>.<span class="number">8</span>.jar (<span class="number">235</span> KB at <span class="number">55.4</span> KB/sec)</span><br><span class="line"><span class="symbol">Downloaded:</span> <span class="symbol">http:</span>/<span class="regexp">/repo1.maven.org/maven</span>2/org/codehaus/plexus/plexus-utils/<span class="number">3.0</span>.<span class="number">24</span>/plexus-utils-<span class="number">3.0</span>.<span class="number">24</span>.jar (<span class="number">242</span> KB at <span class="number">46.9</span> KB/sec)</span><br><span class="line"><span class="symbol">Downloaded:</span> <span class="symbol">http:</span>/<span class="regexp">/repo1.maven.org/maven</span>2/org/freemarker/freemarker/<span class="number">2.3</span>.<span class="number">9</span>/freemarker-<span class="number">2.3</span>.<span class="number">9</span>.jar (<span class="number">789</span> KB at <span class="number">113.3</span> KB/sec)</span><br><span class="line"><span class="symbol">Downloading:</span> <span class="symbol">http:</span>/<span class="regexp">/unidal.org/nexus</span><span class="regexp">/content/repositories</span><span class="regexp">/releases/org</span><span class="regexp">/unidal/webres</span><span class="regexp">/WebResServer/</span><span class="number">1.2</span>.<span class="number">1</span>/WebResServer-<span class="number">1.2</span>.<span class="number">1</span>.jar</span><br><span class="line"><span class="symbol">Downloading:</span> <span class="symbol">http:</span>/<span class="regexp">/unidal.org/nexus</span><span class="regexp">/content/repositories</span><span class="regexp">/releases/org</span><span class="regexp">/unidal/webres</span><span class="regexp">/WebResTagLibrary/</span><span class="number">1.2</span>.<span class="number">1</span>/WebResTagLibrary-<span class="number">1.2</span>.<span class="number">1</span>.jar</span><br><span class="line"><span class="symbol">Downloading:</span> <span class="symbol">http:</span>/<span class="regexp">/unidal.org/nexus</span><span class="regexp">/content/repositories</span><span class="regexp">/releases/org</span><span class="regexp">/unidal/webres</span><span class="regexp">/WebResTag/</span><span class="number">1.2</span>.<span class="number">1</span>/WebResTag-<span class="number">1.2</span>.<span class="number">1</span>.jar</span><br><span class="line"><span class="symbol">Downloading:</span> <span class="symbol">http:</span>/<span class="regexp">/unidal.org/nexus</span><span class="regexp">/content/repositories</span><span class="regexp">/releases/org</span><span class="regexp">/unidal/webres</span><span class="regexp">/WebResRuntime/</span><span class="number">1.2</span>.<span class="number">1</span>/WebResRuntime-<span class="number">1.2</span>.<span class="number">1</span>.jar</span><br><span class="line"><span class="symbol">Downloading:</span> <span class="symbol">http:</span>/<span class="regexp">/unidal.org/nexus</span><span class="regexp">/content/repositories</span><span class="regexp">/releases/org</span><span class="regexp">/unidal/webres</span><span class="regexp">/WebResApi/</span><span class="number">1.2</span>.<span class="number">1</span>/WebResApi-<span class="number">1.2</span>.<span class="number">1</span>.jar</span><br><span class="line"><span class="symbol">Downloaded:</span> <span class="symbol">http:</span>/<span class="regexp">/unidal.org/nexus</span><span class="regexp">/content/repositories</span><span class="regexp">/releases/org</span><span class="regexp">/unidal/webres</span><span class="regexp">/WebResApi/</span><span class="number">1.2</span>.<span class="number">1</span>/WebResApi-<span class="number">1.2</span>.<span class="number">1</span>.jar (<span class="number">21</span> KB at <span class="number">82.7</span> KB/sec)</span><br><span class="line"><span class="symbol">Downloading:</span> <span class="symbol">http:</span>/<span class="regexp">/unidal.org/nexus</span><span class="regexp">/content/repositories</span><span class="regexp">/releases/org</span><span class="regexp">/unidal/webres</span><span class="regexp">/WebResBase/</span><span class="number">1.2</span>.<span class="number">1</span>/WebResBase-<span class="number">1.2</span>.<span class="number">1</span>.jar</span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">```</span><br><span class="line"><span class="selector-attr">[INFO]</span> <span class="selector-tag">parent</span> ............................................. <span class="selector-tag">SUCCESS</span> <span class="selector-attr">[ 40.478 s]</span></span><br><span class="line"><span class="selector-attr">[INFO]</span> <span class="selector-tag">cat-client</span> ......................................... <span class="selector-tag">SUCCESS</span> <span class="selector-attr">[03:47 min]</span></span><br><span class="line"><span class="selector-attr">[INFO]</span> <span class="selector-tag">cat-core</span> ........................................... <span class="selector-tag">SUCCESS</span> <span class="selector-attr">[ 31.740 s]</span></span><br><span class="line"><span class="selector-attr">[INFO]</span> <span class="selector-tag">cat-hadoop</span> ......................................... <span class="selector-tag">SUCCESS</span> <span class="selector-attr">[02:50 min]</span></span><br><span class="line"><span class="selector-attr">[INFO]</span> <span class="selector-tag">cat-consumer</span> ....................................... <span class="selector-tag">SUCCESS</span> <span class="selector-attr">[  3.197 s]</span></span><br><span class="line"><span class="selector-attr">[INFO]</span> <span class="selector-tag">cat-home</span> ........................................... <span class="selector-tag">SUCCESS</span> <span class="selector-attr">[ 58.964 s]</span></span><br><span class="line"><span class="selector-attr">[INFO]</span> <span class="selector-tag">------------------------------------------------------------------------</span></span><br><span class="line"><span class="selector-attr">[INFO]</span> <span class="selector-tag">BUILD</span> <span class="selector-tag">SUCCESS</span></span><br><span class="line">```</span><br></pre></td></tr></table></figure>
+<h3 id="war部署"><a href="#war部署" class="headerlink" title="war部署"></a>war部署</h3><p>​    1、将cat.war部署到10.1.1.1的tomcat的webapps下，启动tomcat，注意webapps下只允许放一个war，仅仅为cat.war<br>​    2、如果发现重启报错，里面有NPE等特殊情况，可以检查当前java进程，ps aux | grep java，可能存在之前的tomcat的进程没有关闭，又新启动了一个，导致出问题，建议kill -9 干掉所有的java进程<br>​    3、打开控制台的URL，<a href="http://10.1.1.1:8080/cat/s/config?op=routerConfigUpdate" target="_blank" rel="noopener">http://10.1.1.1:8080/cat/s/config?op=routerConfigUpdate</a><br>​    4、注意10.1.1.1这个IP需要替换为自己实际的IP链接，修改路由配置只能修改一次即可</p>
+<p>​    5、修改路由配置为如下，当为如下配置时，10.1.1.1 正常不起消费数据的作用，仅当10.1.1.2以及10.1.1.3都挂掉才会进行实时流量消费</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version=<span class="string">"1.0"</span> encoding=<span class="string">"utf-8"</span>?&gt;</span><br><span class="line">&lt;router-config backup-server=<span class="string">"10.1.1.1"</span> backup-server-port=<span class="string">"2280"</span>&gt;</span><br><span class="line">   &lt;<span class="keyword">default</span>-server id=<span class="string">"10.1.1.2"</span> weight=<span class="string">"1.0"</span> port=<span class="string">"2280"</span> enable=<span class="string">"true"</span>/&gt;</span><br><span class="line">   &lt;<span class="keyword">default</span>-server id=<span class="string">"10.1.1.3"</span> weight=<span class="string">"1.0"</span> port=<span class="string">"2280"</span> enable=<span class="string">"true"</span>/&gt;</span><br><span class="line">&lt;/router-config&gt;</span><br></pre></td></tr></table></figure>
+<p>​    6、重启10.1.1.1的机器的tomcat<br>​    7、将cat.war部署到10.1.1.2，10.1.1.3这两台机器中，启动tomcat<br>​    8、cat集群部署完毕，如果有问题，欢迎在微信群咨询，如果文档有误差，欢迎指正以及提交pullrequest</p>
+<p>重启保证数据不丢</p>
+<p>​    请在tomcat重启之前调用当前tomcat的存储数据的链接 <a href="http://${ip}:8080/cat/r/home?op=checkpoint，重启之后数据会恢复。【注意重启时间在每小时的整点10-55分钟之间】" target="_blank" rel="noopener">http://${ip}:8080/cat/r/home?op=checkpoint，重启之后数据会恢复。【注意重启时间在每小时的整点10-55分钟之间】</a><br> 线上部署时候，建议把此链接调用存放于tomcat的stop脚本中，这样不需要每次手工调用</p>
+<h3 id="开发环境CAT的部署"><a href="#开发环境CAT的部署" class="headerlink" title="开发环境CAT的部署"></a>开发环境CAT的部署</h3><p>​    1、请按照如上部署/data/环境目录，数据库配置client.xml ,datasources.xml,server.xml这三个配置文件，注意server.xml里面的节点角色，job-machine&amp;alert-machine都可以配置为true<br>​    2、在cat目录中执行 mvn eclipse:eclipse，此步骤会生成一些代码文件，直接导入到工程会发现找不到类<br>​    3、将源码以普通项目到入eclipse中，注意不要以maven项目导入工程<br>​    4、运行com.dianping.cat.TestServer 这个类，即可启动cat服务器<br>​    5、这里和集群版本唯一区别就是服务端部署单节点，client.xml server.xml以及路由地址配置为单台即可</p>
+<h1 id="CAT客户端Demo"><a href="#CAT客户端Demo" class="headerlink" title="CAT客户端Demo"></a>CAT客户端Demo</h1><p>   <strong>cat客户端的配置：</strong></p>
+<p>​    cat客户端也需要配置 /data 目录，程序对于/data/目录具体读写权限可以参考上一节，</p>
+<p>​    然后通过maven引入cat客户端包，在pom.xml 加入：</p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.dianping.cat<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>cat-core<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.0.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;<span class="name">dependency</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">groupId</span>&gt;</span>com.dianping.cat<span class="tag">&lt;/<span class="name">groupId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">artifactId</span>&gt;</span>cat-client<span class="tag">&lt;/<span class="name">artifactId</span>&gt;</span></span><br><span class="line">  <span class="tag">&lt;<span class="name">version</span>&gt;</span>2.0.0<span class="tag">&lt;/<span class="name">version</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">dependency</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p>​    引入之后：</p>
+<p><img src="https://img-blog.csdn.net/20180710112822532" alt="img"></p>
+<p>​    以上配置会通过maven从网上引入 cat-core和cat-client 包，如果无法配置引入，也可以手动引入 cat-client.jar 包。</p>
+<p>​    CAT默认会将/data/appdatas/cat 作为CAT Home目录，这个目录至关重要，CAT客户端配置文件 client.xml 是在这个目录内，当然，如果你是在 windows 下调试， 你也可以在src/main/resources/ 目录下新建 META-INF/cat 目录， 并将 client.xml 配置文件放入 src/main/resources/META-INF/cat 目录里，你可以为你的监控配置domain，即项目名，如下配置 <domain id="translate"> 。</domain></p>
+<figure class="highlight html"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&lt;?xml version="1.0" encoding="utf-8"?&gt;</span><br><span class="line"><span class="tag">&lt;<span class="name">config</span> <span class="attr">mode</span>=<span class="string">"client"</span> <span class="attr">xmlns:xsi</span>=<span class="string">"http://www.w3.org/2001/XMLSchema"</span> <span class="attr">xsi:noNamespaceSchemaLocation</span>=<span class="string">"config.xsd"</span>&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">domain</span> <span class="attr">id</span>=<span class="string">"translate"</span>/&gt;</span></span><br><span class="line">    <span class="tag">&lt;<span class="name">servers</span>&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- Local mode for development --&gt;</span></span><br><span class="line">        <span class="tag">&lt;<span class="name">server</span> <span class="attr">ip</span>=<span class="string">"127.0.0.1"</span> <span class="attr">port</span>=<span class="string">"2280"</span> <span class="attr">http-port</span>=<span class="string">"8080"</span> /&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- If under production environment, put actual server address as list. --&gt;</span></span><br><span class="line">        <span class="comment">&lt;!-- </span></span><br><span class="line"><span class="comment">            &lt;server ip="192.168.7.71" port="2280" /&gt; </span></span><br><span class="line"><span class="comment">            &lt;server ip="192.168.7.72" port="2280" /&gt; </span></span><br><span class="line"><span class="comment">        --&gt;</span></span><br><span class="line">    <span class="tag">&lt;/<span class="name">servers</span>&gt;</span></span><br><span class="line"><span class="tag">&lt;/<span class="name">config</span>&gt;</span></span><br></pre></td></tr></table></figure>
+<p><strong>第一个监控程序：</strong></p>
+<p>​    所有都配置好了，接下来我们来写第一个监控程序，监控都是由用户自己埋点，当然，在本书最后，我们将会讲解CAT监控如何与各个流行框架之间更好的融合，以帮助用户达到无侵入式的监控埋点，假设我们对用户提供了一个翻译服务，其中有个接口就是HelloWorld，在下面程序中，我们将以事务日志形式记录用户调用行为：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">public</span> Object <span class="title">helloWorld</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> </span>&#123;</span><br><span class="line">    MessageProducer cat = Cat.getProducer();</span><br><span class="line">    Transaction t = cat.newTransaction(<span class="string">"URL"</span>, <span class="string">"Translate/HelloWorld"</span>);  <span class="comment">//type=URL的事务记录: 你的接口/方法名称</span></span><br><span class="line">    <span class="keyword">try</span>&#123;</span><br><span class="line">        <span class="comment">//do your business</span></span><br><span class="line">        t.setStatus(Message.SUCCESS);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">        Cat.getProducer().logError(e);</span><br><span class="line">        t.setStatus(e);</span><br><span class="line">    &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">        t.complete();</span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="keyword">null</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    好了，我们再去管理平台去看看报表信息把，Transaction事务报表中，type=URL的事务有3条，我们通常用URL类型的事务消息标志着接口服务的开始，展开之后，我们看到这个里面该项目提供的3个服务被调用了，其中就有我们的 Translate/HelloWorld：</p>
+<p><img src="https://img-blog.csdn.net/20180710115701626" alt="img"></p>
+<p><img src="https://img-blog.csdn.net/20180710115840344" alt="img"></p>
+<p>再点开某个接口的[::show::]进入详细统计，包括耗时分布、每分钟的数据、以及该服务集群下各个机器的统计情况，我们可以通过这个看出是不是某台机器出了问题：</p>
+<p><img src="https://img-blog.csdn.net/20180712105601499" alt="img"></p>
+<p>点击LogView进入最近一条事务的原始日志（problem报表才会记录全部的原始日志）：</p>
+<p><img src="https://img-blog.csdn.net/20180710120047134" alt="img"></p>
+<p>​    接下来，我们来看一个更复杂的案例，涉及服务的调用以及数据库、缓存的调用，如下：</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Controller</span></span><br><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">Translate</span> </span>&#123;</span><br><span class="line">    <span class="keyword">public</span> Map&lt;String, String&gt; maps = <span class="keyword">new</span> HashMap&lt;String, String&gt;();</span><br><span class="line">    <span class="keyword">public</span> Cat.Context context;</span><br><span class="line"></span><br><span class="line">    <span class="meta">@RequestMapping</span>(value = <span class="string">"/translate/getWordMean"</span>, produces = <span class="string">"application/json"</span>)</span><br><span class="line">    <span class="meta">@ResponseBody</span></span><br><span class="line">    <span class="comment">//获取翻译释义</span></span><br><span class="line">    <span class="function"><span class="keyword">public</span> Object <span class="title">getWordMean</span><span class="params">(HttpServletRequest request, HttpServletResponse response)</span> </span>&#123;</span><br><span class="line">        context = <span class="keyword">new</span> Cat.Context() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">addProperty</span><span class="params">(String key, String value)</span> </span>&#123;</span><br><span class="line">                maps.put(key, value);</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> String <span class="title">getProperty</span><span class="params">(String key)</span> </span>&#123;</span><br><span class="line">                <span class="keyword">return</span> maps.get(key);</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;; <span class="comment">//服务调用消息上下文</span></span><br><span class="line"></span><br><span class="line">        MessageProducer cat = Cat.getProducer();</span><br><span class="line">        Transaction t = cat.newTransaction(<span class="string">"URL"</span>, <span class="string">"translate/getWordMean"</span>);  <span class="comment">//你的接口/方法名称</span></span><br><span class="line">        cat.logEvent(<span class="string">"ClientInfo"</span>, <span class="string">"RemoteIp=127.0.0.1&amp;Referer=..."</span>);  <span class="comment">//记录远程调用端信息</span></span><br><span class="line">        cat.logEvent(<span class="string">"Payload"</span>, <span class="string">"HTTP/GET /translate/getWordMean?client=3&amp;clientVersion=0&amp;v=9.5&amp;uid=3214567...."</span>); <span class="comment">//调用端参数</span></span><br><span class="line">        <span class="comment">//用户校验</span></span><br><span class="line">        authCheck();</span><br><span class="line">        <span class="comment">//先从缓存Redis获取结果</span></span><br><span class="line">        Transaction cacheT = cat.newTransaction(<span class="string">"Cache.memcached.redis"</span>, <span class="string">"translate_result:get"</span>);</span><br><span class="line">        cat.logEvent(<span class="string">"Cache.memcached.redis.server"</span>, <span class="string">"127.0.0.1:6379"</span>);</span><br><span class="line">        <span class="comment">//do your cache operation</span></span><br><span class="line">        cacheT.setStatus(Message.SUCCESS);</span><br><span class="line">        cacheT.complete();</span><br><span class="line">        <span class="comment">//do your translate operation</span></span><br><span class="line">        <span class="comment">//记录远程语音服务调用</span></span><br><span class="line">        Transaction callT = cat.newTransaction(<span class="string">"Call"</span>, <span class="string">"voice:getVoice"</span>);</span><br><span class="line">        Cat.logEvent(<span class="string">"Call.server"</span>,<span class="string">"localhost"</span>);  <span class="comment">//远程服务地址</span></span><br><span class="line">        Cat.logEvent(<span class="string">"Call.app"</span>,<span class="string">"voice"</span>);   <span class="comment">//语音服务</span></span><br><span class="line">        Cat.logEvent(<span class="string">"Call.port"</span>,<span class="string">"8080"</span>);   <span class="comment">//语音服务端口</span></span><br><span class="line">        Cat.logRemoteCallClient(context); <span class="comment">//生成消息调用上下文，主要是几个messageId的创建。</span></span><br><span class="line"></span><br><span class="line">        voiceService(context); </span><br><span class="line">        callT.setStatus(Message.SUCCESS);</span><br><span class="line">        callT.complete();</span><br><span class="line">        OutputData result = <span class="keyword">new</span> OutputData();</span><br><span class="line">        result.setErrno(<span class="number">0</span>);</span><br><span class="line">        result.setErrmsg(<span class="string">"success"</span>);</span><br><span class="line">        result.setTranslateResult(<span class="string">"translate result ..."</span>);</span><br><span class="line"></span><br><span class="line">        t.setStatus(Message.SUCCESS);</span><br><span class="line">        t.complete();</span><br><span class="line"></span><br><span class="line">        <span class="keyword">return</span> result;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">boolean</span> <span class="title">authCheck</span><span class="params">()</span> </span>&#123;</span><br><span class="line">        MessageProducer cat = Cat.getProducer();</span><br><span class="line">        Transaction checkUser = cat.newTransaction(<span class="string">"Method"</span>, <span class="string">"checkAuth"</span>);</span><br><span class="line">        <span class="comment">//从数据库查询用户信息</span></span><br><span class="line">        Transaction sqlT = cat.newTransaction(<span class="string">"SQL"</span>, <span class="string">"Select"</span>);</span><br><span class="line"></span><br><span class="line">        cat.logEvent(<span class="string">"SQL.Database"</span>, <span class="string">"jdbc:mysql://127.0.0.1:3306/user"</span>);</span><br><span class="line">        cat.logEvent(<span class="string">"SQL.Method"</span>, <span class="string">"select"</span>);</span><br><span class="line">        cat.logEvent(<span class="string">"SQL.Statement"</span>, <span class="string">"SELECT"</span>, Message.SUCCESS, <span class="string">"select * from user_info"</span>);</span><br><span class="line"></span><br><span class="line">        <span class="comment">//to do your SQL query</span></span><br><span class="line">        sqlT.setStatus(Message.SUCCESS);</span><br><span class="line">        sqlT.complete();</span><br><span class="line"></span><br><span class="line">        <span class="comment">//to do your auth check</span></span><br><span class="line">        checkUser.setStatus(Message.SUCCESS);</span><br><span class="line">        checkUser.complete();</span><br><span class="line">        <span class="keyword">return</span> <span class="keyword">true</span>;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">//线程模拟语音服务</span></span><br><span class="line">    <span class="function"><span class="keyword">protected</span> <span class="keyword">void</span> <span class="title">voiceService</span><span class="params">(<span class="keyword">final</span> Cat.Context context)</span> </span>&#123;</span><br><span class="line">        Thread thread = <span class="keyword">new</span> Thread() &#123;</span><br><span class="line">            <span class="meta">@Override</span></span><br><span class="line">            <span class="function"><span class="keyword">public</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> </span>&#123;</span><br><span class="line">                <span class="comment">//服务器埋点，Domain为 voice 提供语音服务</span></span><br><span class="line">                Cat.getManager().getThreadLocalMessageTree().setDomain(<span class="string">"voice"</span>);</span><br><span class="line">                MessageProducer cat = Cat.getProducer();</span><br><span class="line">                Transaction voiceService = Cat.newTransaction(<span class="string">"URL"</span>, <span class="string">"voice/getVoice"</span>); <span class="comment">//你的接口/方法名称</span></span><br><span class="line">                cat.logEvent(<span class="string">"ClientInfo"</span>, <span class="string">"RemoteIp=127.0.0.1&amp;Referer=..."</span>);  <span class="comment">//记录远程调用端信息</span></span><br><span class="line">                cat.logEvent(<span class="string">"Payload"</span>, <span class="string">"HTTP/GET /voice/getVoice?client=3&amp;clientVersion=0&amp;v=9.5&amp;uid=3214567...."</span>); <span class="comment">//调用端参数</span></span><br><span class="line"></span><br><span class="line">                <span class="comment">//记录服务信息</span></span><br><span class="line">                Transaction child = Cat.newTransaction(<span class="string">"Service"</span>, <span class="string">"voice:getVoice"</span>);</span><br><span class="line">                Cat.logEvent(<span class="string">"Service.client"</span>, <span class="string">"localhost"</span>); <span class="comment">//客户端地址</span></span><br><span class="line">                Cat.logEvent(<span class="string">"Service.app"</span>, <span class="string">"translate"</span>); <span class="comment">//客户端domain</span></span><br><span class="line">                Cat.logRemoteCallServer(context); <span class="comment">//记录消息上下文</span></span><br><span class="line">                <span class="comment">//to do your business</span></span><br><span class="line">                child.setStatus(Message.SUCCESS);</span><br><span class="line">                child.complete();</span><br><span class="line">                voiceService.setStatus(Message.SUCCESS);</span><br><span class="line">                voiceService.complete();</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;;</span><br><span class="line">        thread.start();</span><br><span class="line">        <span class="comment">// wait for it to complete</span></span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            thread.join();</span><br><span class="line">        &#125; <span class="keyword">catch</span> (InterruptedException e) &#123;</span><br><span class="line">            <span class="comment">// ignore it</span></span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>​    这是我们一个对外提供的翻译服务，getWordMean为服务控制器入口，我们将原始消息展开如下，整个服务处理耗时571ms，一进来我们会记录URL类型事务，以及调用参数，然后记录用户校验函数，在函数内部，有查询用户信息的数据库操作，也会被记录下，查询耗时150ms，接下来我们会先从缓存获取结果， 缓存查询耗时 59ms，随后我们翻译内容，翻译之后我们会调用语音服务提供的发音接口，voice/getVoice，发音接口调用一共耗时 361 ms。</p>
+<p><img src="https://img-blog.csdn.net/20180710170905183" alt="img"></p>
+<p><a href="https://blog.csdn.net/caohao0591/article/details/80207771" target="_blank" rel="noopener">下一篇：   CAT跨语言服务链监控（二） CAT服务端初始化</a></p>
+
+            
+
+        </div>
+    </div>
+    <div id="post-footer" class="post-footer main-content-wrap">
+        
+        
+            <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/02/19/Redis字符串/" data-tooltip="(无标题)" aria-label="上一篇: (无标题)">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/02/12/Vue/" data-tooltip="(无标题)" aria-label="下一篇: (无标题)">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Diesen Beitrag teilen">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/2019/02/16/深入详解美团点评CAT跨语言服务监控（一） CAT简介与部署/" title="分享到 Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://localhost:4000/2019/02/16/深入详解美团点评CAT跨语言服务监控（一） CAT简介与部署/" title="分享到 Twitter">
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://localhost:4000/2019/02/16/深入详解美团点评CAT跨语言服务监控（一） CAT简介与部署/" title="分享到 Google+">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+        
+        
+            
+        
+    </div>
+</article>
+
+
+
+                <footer id="footer" class="main-content-wrap">
+    <span class="copyrights">
+        Copyrights &copy; 2019 Xiangjy. All Rights Reserved.
+    </span>
+</footer>
+
+            </div>
+            
+                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
+                    <div class="post-actions-wrap">
+    <nav>
+        <ul class="post-actions post-action-nav">
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/02/19/Redis字符串/" data-tooltip="(无标题)" aria-label="上一篇: (无标题)">
+                
+                    <i class="fa fa-angle-left" aria-hidden="true"></i>
+                    <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
+                </a>
+            </li>
+            <li class="post-action">
+                
+                    
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/02/12/Vue/" data-tooltip="(无标题)" aria-label="下一篇: (无标题)">
+                
+                    <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
+                    <i class="fa fa-angle-right" aria-hidden="true"></i>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <ul class="post-actions post-action-share">
+        <li class="post-action hide-lg hide-md hide-sm">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Diesen Beitrag teilen">
+                <i class="fa fa-share-alt" aria-hidden="true"></i>
+            </a>
+        </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/2019/02/16/深入详解美团点评CAT跨语言服务监控（一） CAT简介与部署/" title="分享到 Facebook">
+                    <i class="fab fa-facebook" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://localhost:4000/2019/02/16/深入详解美团点评CAT跨语言服务监控（一） CAT简介与部署/" title="分享到 Twitter">
+                    <i class="fab fa-twitter" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+            
+            
+            <li class="post-action hide-xs">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://localhost:4000/2019/02/16/深入详解美团点评CAT跨语言服务监控（一） CAT简介与部署/" title="分享到 Google+">
+                    <i class="fab fa-google-plus" aria-hidden="true"></i>
+                </a>
+            </li>
+        
+        
+            
+        
+        <li class="post-action">
+            
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
+            
+                <i class="fa fa-list" aria-hidden="true"></i>
+            </a>
+        </li>
+    </ul>
+</div>
+
+
+                </div>
+                
+    <div id="share-options-bar" class="share-options-bar" data-behavior="5">
+        <i id="btn-close-shareoptions" class="fa fa-times"></i>
+        <ul class="share-options">
+            
+                
+                
+                <li class="share-option">
+                    <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/2019/02/16/深入详解美团点评CAT跨语言服务监控（一） CAT简介与部署/">
+                        <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http://localhost:4000/2019/02/16/深入详解美团点评CAT跨语言服务监控（一） CAT简介与部署/">
+                        <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
+                    </a>
+                </li>
+            
+                
+                
+                <li class="share-option">
+                    <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http://localhost:4000/2019/02/16/深入详解美团点评CAT跨语言服务监控（一） CAT简介与部署/">
+                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>分享到 Google+</span>
+                    </a>
+                </li>
+            
+        </ul>
+    </div>
+
+
+            
+        </div>
+        
+
+
+    
+        
+    
+
+<div id="about">
+    <div id="about-card">
+        <div id="about-btn-close">
+            <i class="fa fa-times"></i>
+        </div>
+        
+            <img id="about-card-picture" src="/assets/images/dx.png" alt="作者的图片">
+        
+            <h4 id="about-card-name">Xiangjy</h4>
+        
+            <div id="about-card-bio"><p>author.bio</p>
+</div>
+        
+        
+            <div id="about-card-job">
+                <i class="fa fa-briefcase"></i>
+                <br>
+                <p>author.job</p>
+
+            </div>
+        
+        
+    </div>
+</div>
+
+        
+        
+<div id="cover" style="background-image:url('/assets/images/cover.jpg');"></div>
+        <!--SCRIPTS-->
+<script src="/assets/js/script-dbd16rvloemmuxdzniplmnxxvwoz24eya9wol0b7vvmlokgqsjivmb8dnscy.min.js"></script>
+<!--SCRIPTS END--><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({"tex2jax":{"inlineMath":[["$","$"],["\\(","\\)"]],"skipTags":["script","noscript","style","textarea","pre","code"],"processEscapes":true},"TeX":{"equationNumbers":{"autoNumber":"AMS"}}});
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+
+    
+
+
+
+    </body>
+</html>
