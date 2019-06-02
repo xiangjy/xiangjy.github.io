@@ -6,7 +6,7 @@
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Xiangjy&#39;s Blog">
-    <title> - Xiangjy&#39;s Blog</title>
+    <title>标签: 爬虫 - Xiangjy&#39;s Blog</title>
     <meta name="author" content="Xiangjy">
     
     
@@ -15,18 +15,14 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"],"image":"dx.png"},"articleBody":"抖音数据抓取\n参考链接\nhttps://idig8.com/2019/04/08/dockershizhanpianpythondedocker-douyinwebduanshujuzhuaqu19/\n\n模拟手机请求数据\n设置user-agent\n“User-Agent”,”Mozilla/5.0 (Linux;U;Android 2.3;en-us;Nexus One Build/FRF91)AppleWebKit/999+(KHTML, like Gecko)Version/4.0 Mobile Safari/999.9”\n设置方法：\n1、\n12345678910111213# -*- coding:utf-8 -*-from urllib2 import Request, urlopendef fetchurl(url):    req = Request(url)    req.add_header(\"User-Agent\", \"Mozilla/5.0 (Linux;U;Android 2.3;en-us;Nexus One Build/FRF91)AppleWebKit/999+(KHTML, like Gecko)Version/4.0 Mobile Safari/999.9\")    f = urlopen(req)    return f.read()if __name__ == \"__main__\":    url = \"https://www.iesdouyin.com/share/video/6686379726505774349/?region=CN&amp;mid=6686395143635077901&amp;u_code=hldm8blf&amp;titleType=title\"    print fetchurl(url)\n2、\n1234567891011121314# -*- coding:utf-8 -*-import requestsdef fetchurl(url):    header = &#123;        'user-agent': 'Mozilla/5.0 (Linux;U;Android 2.3;en-us;Nexus One Build/FRF91)AppleWebKit/999+(KHTML, like Gecko)Version/4.0 Mobile Safari/999.9'    &#125;    response = requests.get(url=url, headers=header)    return response.textif __name__ == \"__main__\":    url = 'https://www.douyin.com/share/user/76055758243'    print fetchurl(url)\n\n抖音做了反爬，数字变成icon font，进行替换。\n123456789101112regex_list = [        &#123;'name':[' &amp;#xe603; ',' &amp;#xe60d; ',' &amp;#xe616; '],'value':0&#125;,        &#123;'name':[' &amp;#xe602; ',' &amp;#xe60e; ',' &amp;#xe618; '],'value':1&#125;,        &#123;'name':[' &amp;#xe605; ',' &amp;#xe610; ',' &amp;#xe617; '],'value':2&#125;,        &#123;'name':[' &amp;#xe604; ',' &amp;#xe611; ',' &amp;#xe61a; '],'value':3&#125;,        &#123;'name':[' &amp;#xe606; ',' &amp;#xe60c; ',' &amp;#xe619; '],'value':4&#125;,        &#123;'name':[' &amp;#xe607; ',' &amp;#xe60f; ',' &amp;#xe61b; '],'value':5&#125;,        &#123;'name':[' &amp;#xe608; ',' &amp;#xe612; ',' &amp;#xe61f; '],'value':6&#125;,        &#123;'name':[' &amp;#xe60a; ',' &amp;#xe613; ',' &amp;#xe61c; '],'value':7&#125;,        &#123;'name':[' &amp;#xe60b; ',' &amp;#xe614; ',' &amp;#xe61d; '],'value':8&#125;,        &#123;'name':[' &amp;#xe609; ',' &amp;#xe615; ',' &amp;#xe61e; '],'value':9&#125;,    ]\n\n获取信息的节点xpath\n\n1234567891011121314151617181920212223242526# 昵称//div[@class='personal-card']/div[@class='info1']//p[@class='nickname']/text()#抖音ID//div[@class='personal-card']/div[@class='info1']//p[@class='nickname']/text()#工作//div[@class='personal-card']/div[@class='info2']/div[@class='verify-info']/span[@class='info']/text()#描述//div[@class='personal-card']/div[@class='info2']/p[@class='signature']/text()#地址 已去掉//div[@class='personal-card']/div[@class='info2']/p[@class='extra-info']/span[1]/text()#星座 已去掉//div[@class='personal-card']/div[@class='info2']/p[@class='extra-info']/span[2]/text()#关注数//div[@class='personal-card']/div[@class='info2']/p[@class='follow-info']//span[@class='focus block']//i[@class='icon iconfont follow-num']/text()#粉丝数//div[@class='personal-card']/div[@class='info2']/p[@class='follow-info']//span[@class='follower block']//i[@class='icon iconfont follow-num']/text()#赞数//div[@class='personal-card']/div[@class='info2']/p[@class='follow-info']//span[@class='follower block']/span[@class='num']/text()\n\n获取一个人的信息\n123456789101112131415161718192021222324252627282930313233343536373839404142434445464748495051525354555657585960616263646566676869707172# -*- coding:utf-8 -*-import reimport requestsfrom lxml import etreedef handle_decode(input_data):    search_douyin_str = re.compile(r'抖音ID：')    # 匹配icon font    regex_list = [        &#123;'name': [' &amp;#xe603; ', ' &amp;#xe60d; ', ' &amp;#xe616; '], 'value': 0&#125;,        &#123;'name': [' &amp;#xe602; ', ' &amp;#xe60e; ', ' &amp;#xe618; '], 'value': 1&#125;,        &#123;'name': [' &amp;#xe605; ', ' &amp;#xe610; ', ' &amp;#xe617; '], 'value': 2&#125;,        &#123;'name': [' &amp;#xe604; ', ' &amp;#xe611; ', ' &amp;#xe61a; '], 'value': 3&#125;,        &#123;'name': [' &amp;#xe606; ', ' &amp;#xe60c; ', ' &amp;#xe619; '], 'value': 4&#125;,        &#123;'name': [' &amp;#xe607; ', ' &amp;#xe60f; ', ' &amp;#xe61b; '], 'value': 5&#125;,        &#123;'name': [' &amp;#xe608; ', ' &amp;#xe612; ', ' &amp;#xe61f; '], 'value': 6&#125;,        &#123;'name': [' &amp;#xe60a; ', ' &amp;#xe613; ', ' &amp;#xe61c; '], 'value': 7&#125;,        &#123;'name': [' &amp;#xe60b; ', ' &amp;#xe614; ', ' &amp;#xe61d; '], 'value': 8&#125;,        &#123;'name': [' &amp;#xe609; ', ' &amp;#xe615; ', ' &amp;#xe61e; '], 'value': 9&#125;,    ]    for i1 in regex_list:        for i2 in i1['name']:            input_data = re.sub(i2, str(i1['value']), input_data)    html = etree.HTML(input_data)    douyin_info = &#123;&#125;    # 获取昵称    douyin_info['nick_name'] = html.xpath(\"//div[@class='personal-card']/div[@class='info1']//p[@class='nickname']/text()\")[0]    # 获取抖音ID    douyin_id = ''.join(html.xpath(\"//div[@class='personal-card']/div[@class='info1']/p[@class='shortid']/i/text()\"))    douyin_info['douyin_id'] = re.sub(search_douyin_str, '', html.xpath(\"//div[@class='personal-card']/div[@class='info1']//p[@class='nickname']/text()\")[0]).strip() + douyin_id    # 职位类型    try:        douyin_info['job'] = html.xpath(\"//div[@class='personal-card']/div[@class='info2']/div[@class='verify-info']/span[@class='info']/text()\")[0].strip()    except:        pass    # 描述    douyin_info['describe'] = html.xpath(\"//div[@class='personal-card']/div[@class='info2']/p[@class='signature']/text()\")[0].replace('\\n', ',')    # 关注    douyin_info['follow_count'] = html.xpath(\"//div[@class='personal-card']/div[@class='info2']/p[@class='follow-info']//span[@class='focus block']//i[@class='icon iconfont follow-num']/text()\")[0].strip()    # 粉丝    fans_value = ''.join(html.xpath(\"//div[@class='personal-card']/div[@class='info2']/p[@class='follow-info']//span[@class='follower block']//i[@class='icon iconfont follow-num']/text()\"))    unit = html.xpath(\"//div[@class='personal-card']/div[@class='info2']/p[@class='follow-info']//span[@class='follower block']/span[@class='num']/text()\")    if unit[-1].strip() == 'w':        douyin_info['fans'] = str(float(fans_value) / 10) + 'w'    else:        douyin_info['fans'] = fans_value    # 点赞    like = ''.join(html.xpath(\"//div[@class='personal-card']/div[@class='info2']/p[@class='follow-info']//span[@class='liked-num block']//i[@class='icon iconfont follow-num']/text()\"))    unit = html.xpath(\"//div[@class='personal-card']/div[@class='info2']/p[@class='follow-info']//span[@class='liked-num block']/span[@class='num']/text()\")    if unit[-1].strip() == 'w':        douyin_info['like'] = str(float(like) / 10) + 'w'    else:        douyin_info['like'] = like    return douyin_infodef handle_douyin_info(url):    header = &#123;        'user-agent': 'Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/68.0.3440.75 Safari/537.36'    &#125;    response = requests.get(url=url, headers=header)    return handle_decode(response.text, url)if __name__ == '__main__':    url = 'https://www.douyin.com/share/user/76055758243'    print handle_douyin_info(url)\n\n获取一个视频\n1234567891011121314151617181920212223242526272829303132333435363738394041424344454647484950515253545556575859606162# -*- coding:utf-8 -*-import reimport requestsfrom lxml import etreedef handle_decode(input_data, url):    search_douyin_str = re.compile(r'抖音ID：')    # 匹配icon font    regex_list = [        &#123;'name':[' &amp;#xe603; ',' &amp;#xe60d; ',' &amp;#xe616; '],'value':0&#125;,        &#123;'name':[' &amp;#xe602; ',' &amp;#xe60e; ',' &amp;#xe618; '],'value':1&#125;,        &#123;'name':[' &amp;#xe605; ',' &amp;#xe610; ',' &amp;#xe617; '],'value':2&#125;,        &#123;'name':[' &amp;#xe604; ',' &amp;#xe611; ',' &amp;#xe61a; '],'value':3&#125;,        &#123;'name':[' &amp;#xe606; ',' &amp;#xe60c; ',' &amp;#xe619; '],'value':4&#125;,        &#123;'name':[' &amp;#xe607; ',' &amp;#xe60f; ',' &amp;#xe61b; '],'value':5&#125;,        &#123;'name':[' &amp;#xe608; ',' &amp;#xe612; ',' &amp;#xe61f; '],'value':6&#125;,        &#123;'name':[' &amp;#xe60a; ',' &amp;#xe613; ',' &amp;#xe61c; '],'value':7&#125;,        &#123;'name':[' &amp;#xe60b; ',' &amp;#xe614; ',' &amp;#xe61d; '],'value':8&#125;,        &#123;'name':[' &amp;#xe609; ',' &amp;#xe615; ',' &amp;#xe61e; '],'value':9&#125;,    ]    for i1 in regex_list:        for i2 in i1['name']:            input_data = re.sub(i2,str(i1['value']),input_data)    html = etree.HTML(input_data)    douyin_info = &#123;&#125;    douyin_info['nick_name'] = html.xpath(\"//p[@class='user-info-name']/text()\")[0]    douyin_id = ''.join(html.xpath(\"//p[@class='user-info-id']/i/text()\"))    douyin_info['douyin_id'] = re.sub(search_douyin_str,'',html.xpath(\"//p[@class='user-info-name']/text()\")[0]).strip() + douyin_id    douyin_info['describe'] = html.xpath(\"//div[@class='user-title']/text()\")[0].replace('\\n',',')    like = ''.join(html.xpath(\"//div[@data-item='like']/p[@class='count']//i[@class='icon iconfont ']/text()\"))    unit = html.xpath(\"//div[@data-item='like']/p[@class='count']/text()\")    if unit[-1].strip() == 'w':        douyin_info['like'] = str(float(like)/10)+'w'    else:        douyin_info['like'] = like    comment = ''.join(html.xpath(\"//div[@data-item='comment']//i[@class='icon iconfont ']/text()\"))    unit = html.xpath(\"//div[@data-item='comment']/p[@class='count']/text()\")    if unit[-1].strip() == 'w':        douyin_info['comment'] = str((float(comment)/10))+'w'    else:        douyin_info['comment'] = comment    return douyin_infodef handle_douyin_info(url):    header = &#123;        'User-Agent':'Mozilla/5.0 (Linux;U;Android 2.3;en-us;Nexus One Build/FRF91)AppleWebKit/999+(KHTML, like Gecko)Version/4.0 Mobile Safari/999.9'    &#125;    response = requests.get(url=url, headers=header)    return handle_decode(response.text, url)if __name__ == '__main__':    url = 'https://www.iesdouyin.com/share/video/6681141729246186760/?mid=6659642087115328259'    print handle_douyin_info(url)\n\n\n","dateCreated":"2019-05-06T11:09:49+08:00","dateModified":"2019-05-07T10:10:31+08:00","datePublished":"2019-05-06T11:09:49+08:00","description":"","headline":"","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2019/05/06/抖音数据抓取/"},"publisher":{"@type":"Organization","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"],"image":"dx.png","logo":{"@type":"ImageObject","url":"dx.png"}},"url":"http://localhost:4000/2019/05/06/抖音数据抓取/"}</script>
-    <meta name="description" content="抖音数据抓取 参考链接 https://idig8.com/2019/04/08/dockershizhanpianpythondedocker-douyinwebduanshujuzhuaqu19/  模拟手机请求数据 设置user-agent “User-Agent”,”Mozilla/5.0 (Linux;U;Android 2.3;en-us;Nexus One Build/FRF91)A">
-<meta property="og:type" content="blog">
+    <script type="application/ld+json">{}</script>
+    <meta property="og:type" content="blog">
 <meta property="og:title" content="Xiangjy&#39;s Blog">
-<meta property="og:url" content="http://localhost:4000/2019/05/06/抖音数据抓取/index.html">
+<meta property="og:url" content="http://localhost:4000/tags/爬虫/index.html">
 <meta property="og:site_name" content="Xiangjy&#39;s Blog">
-<meta property="og:description" content="抖音数据抓取 参考链接 https://idig8.com/2019/04/08/dockershizhanpianpythondedocker-douyinwebduanshujuzhuaqu19/  模拟手机请求数据 设置user-agent “User-Agent”,”Mozilla/5.0 (Linux;U;Android 2.3;en-us;Nexus One Build/FRF91)A">
 <meta property="og:locale" content="zh-cn">
-<meta property="og:updated_time" content="2019-05-07T02:10:31.154Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Xiangjy&#39;s Blog">
-<meta name="twitter:description" content="抖音数据抓取 参考链接 https://idig8.com/2019/04/08/dockershizhanpianpythondedocker-douyinwebduanshujuzhuaqu19/  模拟手机请求数据 设置user-agent “User-Agent”,”Mozilla/5.0 (Linux;U;Android 2.3;en-us;Nexus One Build/FRF91)A">
     
     
         
@@ -56,7 +52,7 @@
         
     
 
-<header id="header" data-behavior="5">
+<header id="header" data-behavior="2">
     <i id="btn-open-sidebar" class="fa fa-lg fa-bars"></i>
     <div class="header-title">
         <a class="header-title-link" href="/ ">Xiangjy&#39;s Blog</a>
@@ -79,7 +75,7 @@
         
     
 
-<nav id="sidebar" data-behavior="5">
+<nav id="sidebar" data-behavior="2">
     <div class="sidebar-container">
         
             <div class="sidebar-profile">
@@ -236,37 +232,38 @@
 </nav>
 
             
-            <div id="main" data-behavior="5"
+            <div id="main" data-behavior="2"
                  class="
                         hasCoverMetaIn
                         ">
                 
-<article class="post">
+    <section class="postShorten-group main-content-wrap">
     
     
-        <div class="post-header main-content-wrap text-left">
-    
-        <h1 class="post-title">
-            (无标题)
-        </h1>
-    
-    
-        <div class="post-meta">
-    <time datetime="2019-05-06T11:09:49+08:00">
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2017/08/21/抖音数据抓取/">
+                            抖音数据抓取
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2017-08-21T18:41:40+08:00">
 	
-		    5月 06, 2019
+		    8月 21, 2017
     	
     </time>
     
 </div>
 
-    
-</div>
-
-    
-    <div class="post-content markdown">
-        <div class="main-content-wrap">
-            <h1 id="抖音数据抓取"><a href="#抖音数据抓取" class="headerlink" title="抖音数据抓取"></a>抖音数据抓取</h1><ul>
+            </div>
+            
+                <div class="postShorten-content">
+                    <h1 id="抖音数据抓取"><a href="#抖音数据抓取" class="headerlink" title="抖音数据抓取"></a>抖音数据抓取</h1><ul>
 <li><p>参考链接</p>
 <p><a href="https://idig8.com/2019/04/08/dockershizhanpianpythondedocker-douyinwebduanshujuzhuaqu19/" target="_blank" rel="noopener">https://idig8.com/2019/04/08/dockershizhanpianpythondedocker-douyinwebduanshujuzhuaqu19/</a></p>
 </li>
@@ -294,87 +291,32 @@
 </li>
 </ul>
 
-            
-
-        </div>
-    </div>
-    <div id="post-footer" class="post-footer main-content-wrap">
-        
-        
-            <div class="post-actions-wrap">
-    <nav>
-        <ul class="post-actions post-action-nav">
-            <li class="post-action">
-                
-                    <a class="post-action-btn btn btn--disabled">
-                
-                    <i class="fa fa-angle-left" aria-hidden="true"></i>
-                    <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
-                </a>
-            </li>
-            <li class="post-action">
-                
                     
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/05/05/了解软件架构：Serverless架构、微服务架构、分布式架构、单体架构/" data-tooltip="(无标题)" aria-label="下一篇: (无标题)">
-                
-                    <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
-                    <i class="fa fa-angle-right" aria-hidden="true"></i>
-                </a>
-            </li>
-        </ul>
-    </nav>
-    <ul class="post-actions post-action-share">
-        <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Diesen Beitrag teilen">
-                <i class="fa fa-share-alt" aria-hidden="true"></i>
-            </a>
-        </li>
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2017/08/21/抖音数据抓取/#post-footer" class="postShorten-excerpt_link link">
+                                评论和共享
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
         
-            
-            
-            <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/2019/05/06/抖音数据抓取/" title="分享到 Facebook">
-                    <i class="fab fa-facebook" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://localhost:4000/2019/05/06/抖音数据抓取/" title="分享到 Twitter">
-                    <i class="fab fa-twitter" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://localhost:4000/2019/05/06/抖音数据抓取/" title="分享到 Google+">
-                    <i class="fab fa-google-plus" aria-hidden="true"></i>
-                </a>
-            </li>
+    </article>
+    
+    <div class="pagination-bar">
+    <ul class="pagination">
         
         
-            
-        
-        <li class="post-action">
-            
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
-            
-                <i class="fa fa-list" aria-hidden="true"></i>
-            </a>
-        </li>
+        <li class="pagination-number">第 1 页 共 1 页</li>
     </ul>
 </div>
 
-
-        
-        
-            
-        
-    </div>
-</article>
-
+</section>
 
 
                 <footer id="footer" class="main-content-wrap">
@@ -384,109 +326,6 @@
 </footer>
 
             </div>
-            
-                <div id="bottom-bar" class="post-bottom-bar" data-behavior="5">
-                    <div class="post-actions-wrap">
-    <nav>
-        <ul class="post-actions post-action-nav">
-            <li class="post-action">
-                
-                    <a class="post-action-btn btn btn--disabled">
-                
-                    <i class="fa fa-angle-left" aria-hidden="true"></i>
-                    <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
-                </a>
-            </li>
-            <li class="post-action">
-                
-                    
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/05/05/了解软件架构：Serverless架构、微服务架构、分布式架构、单体架构/" data-tooltip="(无标题)" aria-label="下一篇: (无标题)">
-                
-                    <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
-                    <i class="fa fa-angle-right" aria-hidden="true"></i>
-                </a>
-            </li>
-        </ul>
-    </nav>
-    <ul class="post-actions post-action-share">
-        <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Diesen Beitrag teilen">
-                <i class="fa fa-share-alt" aria-hidden="true"></i>
-            </a>
-        </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/2019/05/06/抖音数据抓取/" title="分享到 Facebook">
-                    <i class="fab fa-facebook" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://localhost:4000/2019/05/06/抖音数据抓取/" title="分享到 Twitter">
-                    <i class="fab fa-twitter" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-            
-            
-            <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://localhost:4000/2019/05/06/抖音数据抓取/" title="分享到 Google+">
-                    <i class="fab fa-google-plus" aria-hidden="true"></i>
-                </a>
-            </li>
-        
-        
-            
-        
-        <li class="post-action">
-            
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
-            
-                <i class="fa fa-list" aria-hidden="true"></i>
-            </a>
-        </li>
-    </ul>
-</div>
-
-
-                </div>
-                
-    <div id="share-options-bar" class="share-options-bar" data-behavior="5">
-        <i id="btn-close-shareoptions" class="fa fa-times"></i>
-        <ul class="share-options">
-            
-                
-                
-                <li class="share-option">
-                    <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/2019/05/06/抖音数据抓取/">
-                        <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
-                    </a>
-                </li>
-            
-                
-                
-                <li class="share-option">
-                    <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http://localhost:4000/2019/05/06/抖音数据抓取/">
-                        <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
-                    </a>
-                </li>
-            
-                
-                
-                <li class="share-option">
-                    <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http://localhost:4000/2019/05/06/抖音数据抓取/">
-                        <i class="fab fa-google-plus" aria-hidden="true"></i><span>分享到 Google+</span>
-                    </a>
-                </li>
-            
-        </ul>
-    </div>
-
-
             
         </div>
         
@@ -527,8 +366,6 @@
         <!--SCRIPTS-->
 <script src="/assets/js/script-dbd16rvloemmuxdzniplmnxxvwoz24eya9wol0b7vvmlokgqsjivmb8dnscy.min.js"></script>
 <!--SCRIPTS END--><!-- hexo-inject:begin --><!-- hexo-inject:end -->
-
-    
 
 
 
