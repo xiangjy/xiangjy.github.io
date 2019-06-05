@@ -379,11 +379,11 @@
 <li>远程调用时，要能够像本地调用一样方便，让调用者感知不到远程调用的逻辑。</li>
 </ul>
 <p>还是以计算器Calculator为例，如果实现类CalculatorImpl是放在本地的，那么直接调用即可：</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/7143349-69563e8ebc25c77c.png?imageMogr2/auto-orient/" alt="img"></p>
+<p><img src="https://file.mmdry.com/image/jpg/rpc1.png" alt="img"></p>
 <p>现在系统变成分布式了，CalculatorImpl和调用方不在同一个地址空间，那么就必须要进行远程过程调用：</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/7143349-d5f7290907ce3cca.png?imageMogr2/auto-orient/" alt="img"></p>
+<p><img src="https://file.mmdry.com/image/jpg/rpc2.png" alt="img"></p>
 <p>那么如何实现远程过程调用，也就是RPC呢，一个完整的RPC流程，可以用下面这张图来描述：</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/7143349-a9db3c3c85194c6e.png?imageMogr2/auto-orient/" alt="img"></p>
+<p><img src="https://file.mmdry.com/image/jpg/rpc3.png" alt="img"></p>
 <p>其中左边的Client，对应的就是前面的Service A，而右边的Server，对应的则是Service B。<br>下面一步一步详细解释一下。</p>
 <ol>
 <li>Service A的应用层代码中，调用了Calculator的一个实现类的add方法，希望执行一个加法运算；</li>
