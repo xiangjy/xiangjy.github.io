@@ -15,7 +15,7 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"],"image":"dx.png"},"articleBody":"MySQL###安装mysql\nCentOS默认不支持mysql\nyum remove mariadb-servercd /var/lib &amp;&amp; rm -rfv mysqlyum install mariadb-server\n###添加远程访问用户\n12CREATE USER 'new_root'@'%' IDENTIFIED BY '***';  GRANT ALL PRIVILEGES ON *.* TO 'new_root'@'%' IDENTIFIED BY '***' WITH GRANT OPTION MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0;","dateCreated":"2019-04-08T10:45:33+08:00","dateModified":"2019-06-02T23:29:30+08:00","datePublished":"2019-04-08T10:45:33+08:00","description":"","headline":"","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2019/04/08/MySQL/"},"publisher":{"@type":"Organization","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"],"image":"dx.png","logo":{"@type":"ImageObject","url":"dx.png"}},"url":"http://localhost:4000/2019/04/08/MySQL/"}</script>
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"],"image":"dx.png"},"articleBody":"MySQL###安装mysql\nCentOS默认不支持mysql\nyum remove mariadb-servercd /var/lib &amp;&amp; rm -rfv mysqlyum install mariadb-server\n###添加远程访问用户\n12CREATE USER 'new_root'@'%' IDENTIFIED BY '***';  GRANT ALL PRIVILEGES ON *.* TO 'new_root'@'%' IDENTIFIED BY '***' WITH GRANT OPTION MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0;\n","dateCreated":"2019-04-08T10:45:33+08:00","dateModified":"2019-06-05T10:31:46+08:00","datePublished":"2019-04-08T10:45:33+08:00","description":"","headline":"","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2019/04/08/MySQL/"},"publisher":{"@type":"Organization","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"],"image":"dx.png","logo":{"@type":"ImageObject","url":"dx.png"}},"url":"http://localhost:4000/2019/04/08/MySQL/"}</script>
     <meta name="description" content="MySQL###安装mysql CentOS默认不支持mysql yum remove mariadb-servercd /var/lib &amp;amp;&amp;amp; rm -rfv mysqlyum install mariadb-server ###添加远程访问用户 12CREATE USER &apos;new_root&apos;@&apos;%&apos; IDENTIFIED BY &apos;***&apos;;  GRANT ALL PRIVIL">
 <meta property="og:type" content="blog">
 <meta property="og:title" content="Xiangjy&#39;s Blog">
@@ -23,7 +23,7 @@
 <meta property="og:site_name" content="Xiangjy&#39;s Blog">
 <meta property="og:description" content="MySQL###安装mysql CentOS默认不支持mysql yum remove mariadb-servercd /var/lib &amp;amp;&amp;amp; rm -rfv mysqlyum install mariadb-server ###添加远程访问用户 12CREATE USER &apos;new_root&apos;@&apos;%&apos; IDENTIFIED BY &apos;***&apos;;  GRANT ALL PRIVIL">
 <meta property="og:locale" content="zh-cn">
-<meta property="og:updated_time" content="2019-06-02T15:29:30.101Z">
+<meta property="og:updated_time" content="2019-06-05T02:31:46.416Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Xiangjy&#39;s Blog">
 <meta name="twitter:description" content="MySQL###安装mysql CentOS默认不支持mysql yum remove mariadb-servercd /var/lib &amp;amp;&amp;amp; rm -rfv mysqlyum install mariadb-server ###添加远程访问用户 12CREATE USER &apos;new_root&apos;@&apos;%&apos; IDENTIFIED BY &apos;***&apos;;  GRANT ALL PRIVIL">
@@ -271,6 +271,7 @@
 <p>yum remove mariadb-server<br>cd /var/lib &amp;&amp; rm -rfv mysql<br>yum install mariadb-server</p>
 <p>###添加远程访问用户</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">USER</span> <span class="string">'new_root'</span>@<span class="string">'%'</span> <span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'***'</span>;</span><br><span class="line">  <span class="keyword">GRANT</span> ALL <span class="keyword">PRIVILEGES</span> <span class="keyword">ON</span> *.* <span class="keyword">TO</span> <span class="string">'new_root'</span>@<span class="string">'%'</span> <span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'***'</span> <span class="keyword">WITH</span> <span class="keyword">GRANT</span> <span class="keyword">OPTION</span> MAX_QUERIES_PER_HOUR <span class="number">0</span> MAX_CONNECTIONS_PER_HOUR <span class="number">0</span> MAX_UPDATES_PER_HOUR <span class="number">0</span> MAX_USER_CONNECTIONS <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+
             
 
         </div>
@@ -303,7 +304,7 @@
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Diesen Beitrag teilen">
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
         </li>
@@ -337,7 +338,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>
@@ -389,7 +390,7 @@
     </nav>
     <ul class="post-actions post-action-share">
         <li class="post-action hide-lg hide-md hide-sm">
-            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Share this post">
+            <a class="post-action-btn btn btn--default btn-open-shareoptions" href="#btn-open-shareoptions" aria-label="Diesen Beitrag teilen">
                 <i class="fa fa-share-alt" aria-hidden="true"></i>
             </a>
         </li>
@@ -423,7 +424,7 @@
         
         <li class="post-action">
             
-                <a class="post-action-btn btn btn--default" href="#" aria-label="Back to top">
+                <a class="post-action-btn btn btn--default" href="#" aria-label="Nach oben">
             
                 <i class="fa fa-list" aria-hidden="true"></i>
             </a>

@@ -6,7 +6,7 @@
     <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="generator" content="Xiangjy&#39;s Blog">
-    <title>李响：这里想对年轻的工程师提一些个人建议。 - Xiangjy&#39;s Blog</title>
+    <title> - Xiangjy&#39;s Blog</title>
     <meta name="author" content="Xiangjy">
     
     
@@ -15,19 +15,18 @@
     
         <link rel="alternate" type="application/atom+xml" title="RSS" href="/atom.xml">
     
-    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"],"image":"dx.png"},"articleBody":"##李响：这里想对年轻的工程师提一些个人建议。\n\n一定要多读代码。尤其是语言的标准库代码，知名的开源项目代码，或者其它超高使用频率的代码，提高自己的代码品味。\n\n一定要多写代码。尤其是写可读性高、可维护性好的代码，尽量寻找有经验的工程师帮助自己 Review 代码，提高自己的代码能力和质量。\n\n一定要多看、多想，看经典的系统设计，思考自己项目的架构和演进路线，找到志同道合的朋友一起探讨和研究，提高自己的设计、架构能力。\n\n一定要多学，学习前沿的技术，为未来做好技术储备；学习领域内的顶会的论文，能够对未来有所预判；学习一些领域外的知识，比如市场、经济等，更多的了解通用事物的发展规律。每个人都有最适合自己的成长路线，对于年轻工程师来讲，最重要的还是能够专注在自己热爱的领域上，以最大的热情投入每天的工作，每天都能进步一点点。\n\n\n","dateCreated":"2017-08-21T18:41:40+08:00","dateModified":"2019-06-03T00:19:41+08:00","datePublished":"2017-08-21T18:41:40+08:00","description":"","headline":"李响：这里想对年轻的工程师提一些个人建议。","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2017/08/21/阿里P9 李响/"},"publisher":{"@type":"Organization","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"],"image":"dx.png","logo":{"@type":"ImageObject","url":"dx.png"}},"url":"http://localhost:4000/2017/08/21/阿里P9 李响/","keywords":"收藏"}</script>
-    <meta name="description" content="##李响：这里想对年轻的工程师提一些个人建议。  一定要多读代码。尤其是语言的标准库代码，知名的开源项目代码，或者其它超高使用频率的代码，提高自己的代码品味。  一定要多写代码。尤其是写可读性高、可维护性好的代码，尽量寻找有经验的工程师帮助自己 Review 代码，提高自己的代码能力和质量。  一定要多看、多想，看经典的系统设计，思考自己项目的架构和演进路线，找到志同道合的朋友一起探讨和研究，提高">
-<meta name="keywords" content="收藏">
+    <script type="application/ld+json">{"@context":"http://schema.org","@type":"BlogPosting","author":{"@type":"Person","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"],"image":"dx.png"},"articleBody":"Redis Sentinel1.port 26379\nsentinel监听端口，默认是26379，可以修改。\n2.sentinel monitor    \n告诉sentinel去监听地址为ip:port的一个master，这里的master-name可以自定义，quorum是一个数字，指明当有多少个sentinel认为一个master失效时，master才算真正失效。master-name只能包含英文字母，数字，和“.-_”这三个字符需要注意的是master-ip 要写真实的ip地址而不要用回环地址（127.0.0.1）。\n配置示例：\nsentinel monitor mymaster 192.168.0.5 6379 2\n3.sentinel auth-pass  \n设置连接master和slave时的密码，注意的是sentinel不能分别为master和slave设置不同的密码，因此master和slave的密码应该设置相同。\n配置示例：\nsentinel auth-pass mymaster 0123passw0rd\n4.sentinel down-after-milliseconds   \n这个配置项指定了需要多少失效时间，一个master才会被这个sentinel主观地认为是不可用的。 单位是毫秒，默认为30秒\n配置示例：\nsentinel down-after-milliseconds mymaster 30000\n5.sentinel parallel-syncs   \n这个配置项指定了在发生failover主备切换时最多可以有多少个slave同时对新的master进行 同步，这个数字越小，完成failover所需的时间就越长，但是如果这个数字越大，就意味着越 多的slave因为replication而不可用。可以通过将这个值设为 1 来保证每次只有一个slave 处于不能处理命令请求的状态。\n配置示例：\nsentinel parallel-syncs mymaster 1\n\\6. sentinel failover-timeout  \nfailover-timeout 可以用在以下这些方面： \n​      \\1. 同一个sentinel对同一个master两次failover之间的间隔时间。\n​      \\2. 当一个slave从一个错误的master那里同步数据开始计算时间。直到slave被纠正为向正确的master那里同步数据时。\n​      3.当想要取消一个正在进行的failover所需要的时间。  \n​      4.当进行failover时，配置所有slaves指向新的master所需的最大时间。不过，即使过了这个超时，slaves依然会被正确配置为指向master，但是就不按parallel-syncs所配置的规则来了。\n配置示例：\nsentinel failover-timeout mymaster1 20000\n7.sentinel的notification-script和reconfig-script是用来配置当某一事件发生时所需要执行的脚本，可以通过脚本来通知管理员，例如当系统运行不正常时发邮件通知相关人员。对于脚本的运行结果有以下规则：\n​        若脚本执行后返回1，那么该脚本稍后将会被再次执行，重复次数目前默认为10\n​        若脚本执行后返回2，或者比2更高的一个返回值，脚本将不会重复执行。\n​        如果脚本在执行过程中由于收到系统中断信号被终止了，则同返回值为1时的行为相同。\n​        一个脚本的最大执行时间为60s，如果超过这个时间，脚本将会被一个SIGKILL信号终止，之后重新执行。\n1).sentinel notification-script   \n通知型脚本:当sentinel有任何警告级别的事件发生时（比如说redis实例的主观失效和客观失效等等），将会去调用这个脚本，这时这个脚本应该通过邮件，SMS等方式去通知系统管理员关于系统不正常运行的信息。调用该脚本时，将传给脚本两个参数，一个是事件的类型，一个是事件的描述。如果sentinel.conf配置文件中配置了这个脚本路径，那么必须保证这个脚本存在于这个路径，并且是可执行的，否则sentinel无法正常启动成功。\n  配置示例：\n sentinel notification-script mymaster /var/redis/notify.sh\n2).sentinel client-reconfig-script  \n 当一个master由于failover而发生改变时，这个脚本将会被调用，通知相关的客户端关于master地址已经发生改变的信息。以下参数将会在调用脚本时传给脚本:\n​             \n目前总是“failover”, 是“leader”或者“observer”中的一个。 参数 from-ip, from-port, to-ip, to-port是用来和旧的master和新的master(即旧的slave)通信的。这个脚本应该是通用的，能被多次调用，不是针对性的。\n   配置示例：\n   sentinel client-reconfig-script mymaster /var/redis/reconfig.sh\n其他文章http://shouce.jb51.net/redis-all-about/HAClusterArchPractice/ms/event-noti.html\n","dateCreated":"2019-06-05T11:23:30+08:00","dateModified":"2019-06-05T11:27:33+08:00","datePublished":"2019-06-05T11:23:30+08:00","description":"","headline":"","image":[],"mainEntityOfPage":{"@type":"WebPage","@id":"http://localhost:4000/2019/06/05/Redis Sentinel/"},"publisher":{"@type":"Organization","name":"Xiangjy","sameAs":["https://github.com/","http://stackoverflow.com/users","https://twitter.com/","https://facebook.com/","https://plus.google.com/","https://www.linkedin.com/profile/","mailto"],"image":"dx.png","logo":{"@type":"ImageObject","url":"dx.png"}},"url":"http://localhost:4000/2019/06/05/Redis Sentinel/"}</script>
+    <meta name="description" content="Redis Sentinel1.port 26379 sentinel监听端口，默认是26379，可以修改。 2.sentinel monitor     告诉sentinel去监听地址为ip:port的一个master，这里的master-name可以自定义，quorum是一个数字，指明当有多少个sentinel认为一个master失效时，master才算真正失效。master-name只能包含">
 <meta property="og:type" content="blog">
-<meta property="og:title" content="李响：这里想对年轻的工程师提一些个人建议。">
-<meta property="og:url" content="http://localhost:4000/2017/08/21/阿里P9 李响/index.html">
+<meta property="og:title" content="Xiangjy&#39;s Blog">
+<meta property="og:url" content="http://localhost:4000/2019/06/05/Redis Sentinel/index.html">
 <meta property="og:site_name" content="Xiangjy&#39;s Blog">
-<meta property="og:description" content="##李响：这里想对年轻的工程师提一些个人建议。  一定要多读代码。尤其是语言的标准库代码，知名的开源项目代码，或者其它超高使用频率的代码，提高自己的代码品味。  一定要多写代码。尤其是写可读性高、可维护性好的代码，尽量寻找有经验的工程师帮助自己 Review 代码，提高自己的代码能力和质量。  一定要多看、多想，看经典的系统设计，思考自己项目的架构和演进路线，找到志同道合的朋友一起探讨和研究，提高">
+<meta property="og:description" content="Redis Sentinel1.port 26379 sentinel监听端口，默认是26379，可以修改。 2.sentinel monitor     告诉sentinel去监听地址为ip:port的一个master，这里的master-name可以自定义，quorum是一个数字，指明当有多少个sentinel认为一个master失效时，master才算真正失效。master-name只能包含">
 <meta property="og:locale" content="zh-cn">
-<meta property="og:updated_time" content="2019-06-02T16:19:41.592Z">
+<meta property="og:updated_time" content="2019-06-05T03:27:33.508Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="李响：这里想对年轻的工程师提一些个人建议。">
-<meta name="twitter:description" content="##李响：这里想对年轻的工程师提一些个人建议。  一定要多读代码。尤其是语言的标准库代码，知名的开源项目代码，或者其它超高使用频率的代码，提高自己的代码品味。  一定要多写代码。尤其是写可读性高、可维护性好的代码，尽量寻找有经验的工程师帮助自己 Review 代码，提高自己的代码能力和质量。  一定要多看、多想，看经典的系统设计，思考自己项目的架构和演进路线，找到志同道合的朋友一起探讨和研究，提高">
+<meta name="twitter:title" content="Xiangjy&#39;s Blog">
+<meta name="twitter:description" content="Redis Sentinel1.port 26379 sentinel监听端口，默认是26379，可以修改。 2.sentinel monitor     告诉sentinel去监听地址为ip:port的一个master，这里的master-name可以自定义，quorum是一个数字，指明当有多少个sentinel认为一个master失效时，master才算真正失效。master-name只能包含">
     
     
         
@@ -248,14 +247,14 @@
         <div class="post-header main-content-wrap text-left">
     
         <h1 class="post-title">
-            李响：这里想对年轻的工程师提一些个人建议。
+            (无标题)
         </h1>
     
     
         <div class="post-meta">
-    <time datetime="2017-08-21T18:41:40+08:00">
+    <time datetime="2019-06-05T11:23:30+08:00">
 	
-		    8月 21, 2017
+		    6月 05, 2019
     	
     </time>
     
@@ -267,17 +266,48 @@
     
     <div class="post-content markdown">
         <div class="main-content-wrap">
-            <p>##李响：这里想对年轻的工程师提一些个人建议。</p>
-<ul>
-<li><p>一定要多读代码。尤其是语言的标准库代码，知名的开源项目代码，或者其它超高使用频率的代码，提高自己的代码品味。</p>
-</li>
-<li><p>一定要多写代码。尤其是写可读性高、可维护性好的代码，尽量寻找有经验的工程师帮助自己 Review 代码，提高自己的代码能力和质量。</p>
-</li>
-<li><p>一定要多看、多想，看经典的系统设计，思考自己项目的架构和演进路线，找到志同道合的朋友一起探讨和研究，提高自己的设计、架构能力。</p>
-</li>
-<li><p>一定要多学，学习前沿的技术，为未来做好技术储备；学习领域内的顶会的论文，能够对未来有所预判；学习一些领域外的知识，比如市场、经济等，更多的了解通用事物的发展规律。每个人都有最适合自己的成长路线，对于年轻工程师来讲，最重要的还是能够专注在自己热爱的领域上，以最大的热情投入每天的工作，每天都能进步一点点。</p>
-</li>
-</ul>
+            <h1 id="Redis-Sentinel"><a href="#Redis-Sentinel" class="headerlink" title="Redis Sentinel"></a>Redis Sentinel</h1><p>1.port 26379</p>
+<p>sentinel监听端口，默认是26379，可以修改。</p>
+<p>2.sentinel monitor <master-name> <ip> <redis-port> <quorum></quorum></redis-port></ip></master-name></p>
+<p>告诉sentinel去监听地址为ip:port的一个master，这里的master-name可以自定义，quorum是一个数字，指明当有多少个sentinel认为一个master失效时，master才算真正失效。master-name只能包含英文字母，数字，和“.-_”这三个字符需要注意的是master-ip 要写真实的ip地址而不要用回环地址（127.0.0.1）。</p>
+<p>配置示例：</p>
+<p>sentinel monitor mymaster 192.168.0.5 6379 2</p>
+<p>3.sentinel auth-pass <master-name> <password></password></master-name></p>
+<p>设置连接master和slave时的密码，注意的是sentinel不能分别为master和slave设置不同的密码，因此master和slave的密码应该设置相同。</p>
+<p>配置示例：</p>
+<p>sentinel auth-pass mymaster 0123passw0rd</p>
+<p>4.sentinel down-after-milliseconds <master-name> <milliseconds> </milliseconds></master-name></p>
+<p>这个配置项指定了需要多少失效时间，一个master才会被这个sentinel主观地认为是不可用的。 单位是毫秒，默认为30秒</p>
+<p>配置示例：</p>
+<p>sentinel down-after-milliseconds mymaster 30000</p>
+<p>5.sentinel parallel-syncs <master-name> <numslaves> </numslaves></master-name></p>
+<p>这个配置项指定了在发生failover主备切换时最多可以有多少个slave同时对新的master进行 同步，这个数字越小，完成failover所需的时间就越长，但是如果这个数字越大，就意味着越 多的slave因为replication而不可用。可以通过将这个值设为 1 来保证每次只有一个slave 处于不能处理命令请求的状态。</p>
+<p>配置示例：</p>
+<p>sentinel parallel-syncs mymaster 1</p>
+<p>\6. sentinel failover-timeout <master-name> <milliseconds></milliseconds></master-name></p>
+<p>failover-timeout 可以用在以下这些方面： </p>
+<p>​      \1. 同一个sentinel对同一个master两次failover之间的间隔时间。</p>
+<p>​      \2. 当一个slave从一个错误的master那里同步数据开始计算时间。直到slave被纠正为向正确的master那里同步数据时。</p>
+<p>​      3.当想要取消一个正在进行的failover所需要的时间。  </p>
+<p>​      4.当进行failover时，配置所有slaves指向新的master所需的最大时间。不过，即使过了这个超时，slaves依然会被正确配置为指向master，但是就不按parallel-syncs所配置的规则来了。</p>
+<p>配置示例：</p>
+<p>sentinel failover-timeout mymaster1 20000</p>
+<p>7.sentinel的notification-script和reconfig-script是用来配置当某一事件发生时所需要执行的脚本，可以通过脚本来通知管理员，例如当系统运行不正常时发邮件通知相关人员。对于脚本的运行结果有以下规则：</p>
+<p>​        若脚本执行后返回1，那么该脚本稍后将会被再次执行，重复次数目前默认为10</p>
+<p>​        若脚本执行后返回2，或者比2更高的一个返回值，脚本将不会重复执行。</p>
+<p>​        如果脚本在执行过程中由于收到系统中断信号被终止了，则同返回值为1时的行为相同。</p>
+<p>​        一个脚本的最大执行时间为60s，如果超过这个时间，脚本将会被一个SIGKILL信号终止，之后重新执行。</p>
+<p>1).sentinel notification-script <master-name> <script-path> </script-path></master-name></p>
+<p>通知型脚本:当sentinel有任何警告级别的事件发生时（比如说redis实例的主观失效和客观失效等等），将会去调用这个脚本，这时这个脚本应该通过邮件，SMS等方式去通知系统管理员关于系统不正常运行的信息。调用该脚本时，将传给脚本两个参数，一个是事件的类型，一个是事件的描述。如果sentinel.conf配置文件中配置了这个脚本路径，那么必须保证这个脚本存在于这个路径，并且是可执行的，否则sentinel无法正常启动成功。</p>
+<p>  配置示例：</p>
+<p> sentinel notification-script mymaster /var/redis/notify.sh</p>
+<p>2).sentinel client-reconfig-script <master-name> <script-path></script-path></master-name></p>
+<p> 当一个master由于failover而发生改变时，这个脚本将会被调用，通知相关的客户端关于master地址已经发生改变的信息。以下参数将会在调用脚本时传给脚本:</p>
+<p>​       <master-name> <role> <state> <from-ip> <from-port> <to-ip> <to-port></to-port></to-ip></from-port></from-ip></state></role></master-name></p>
+<p>目前<state>总是“failover”, <role>是“leader”或者“observer”中的一个。 参数 from-ip, from-port, to-ip, to-port是用来和旧的master和新的master(即旧的slave)通信的。这个脚本应该是通用的，能被多次调用，不是针对性的。</role></state></p>
+<p>   配置示例：</p>
+<p>   sentinel client-reconfig-script mymaster /var/redis/reconfig.sh</p>
+<h3 id="其他文章"><a href="#其他文章" class="headerlink" title="其他文章"></a>其他文章</h3><p><a href="http://shouce.jb51.net/redis-all-about/HAClusterArchPractice/ms/event-noti.html" target="_blank" rel="noopener">http://shouce.jb51.net/redis-all-about/HAClusterArchPractice/ms/event-noti.html</a></p>
 
             
 
@@ -285,21 +315,13 @@
     </div>
     <div id="post-footer" class="post-footer main-content-wrap">
         
-            <div class="post-footer-tags">
-                <span class="text-color-light text-small">标签</span><br>
-                
-    <a class="tag tag--primary tag--small t-link" href="/tags/收藏/">收藏</a>
-
-            </div>
-        
         
             <div class="post-actions-wrap">
     <nav>
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/08/21/好用小工具/" data-tooltip="好用小工具" aria-label="上一篇: 好用小工具">
+                    <a class="post-action-btn btn btn--disabled">
                 
                     <i class="fa fa-angle-left" aria-hidden="true"></i>
                     <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
@@ -308,7 +330,7 @@
             <li class="post-action">
                 
                     
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/08/21/了解软件架构：Serverless架构、微服务架构、分布式架构、单体架构/" data-tooltip="serverLess文章转载" aria-label="下一篇: serverLess文章转载">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/06/03/Gitlab 免密/" data-tooltip="(无标题)" aria-label="下一篇: (无标题)">
                 
                     <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
@@ -326,7 +348,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/2017/08/21/阿里P9 李响/" title="分享到 Facebook">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/2019/06/05/Redis Sentinel/" title="分享到 Facebook">
                     <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
@@ -334,7 +356,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://localhost:4000/2017/08/21/阿里P9 李响/" title="分享到 Twitter">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://localhost:4000/2019/06/05/Redis Sentinel/" title="分享到 Twitter">
                     <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
@@ -342,7 +364,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://localhost:4000/2017/08/21/阿里P9 李响/" title="分享到 Google+">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://localhost:4000/2019/06/05/Redis Sentinel/" title="分享到 Google+">
                     <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
@@ -384,8 +406,7 @@
         <ul class="post-actions post-action-nav">
             <li class="post-action">
                 
-                    
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/08/21/好用小工具/" data-tooltip="好用小工具" aria-label="上一篇: 好用小工具">
+                    <a class="post-action-btn btn btn--disabled">
                 
                     <i class="fa fa-angle-left" aria-hidden="true"></i>
                     <span class="hide-xs hide-sm text-small icon-ml">上一篇</span>
@@ -394,7 +415,7 @@
             <li class="post-action">
                 
                     
-                    <a class="post-action-btn btn btn--default tooltip--top" href="/2017/08/21/了解软件架构：Serverless架构、微服务架构、分布式架构、单体架构/" data-tooltip="serverLess文章转载" aria-label="下一篇: serverLess文章转载">
+                    <a class="post-action-btn btn btn--default tooltip--top" href="/2019/06/03/Gitlab 免密/" data-tooltip="(无标题)" aria-label="下一篇: (无标题)">
                 
                     <span class="hide-xs hide-sm text-small icon-mr">下一篇</span>
                     <i class="fa fa-angle-right" aria-hidden="true"></i>
@@ -412,7 +433,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/2017/08/21/阿里P9 李响/" title="分享到 Facebook">
+                <a class="post-action-btn btn btn--default" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/2019/06/05/Redis Sentinel/" title="分享到 Facebook">
                     <i class="fab fa-facebook" aria-hidden="true"></i>
                 </a>
             </li>
@@ -420,7 +441,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://localhost:4000/2017/08/21/阿里P9 李响/" title="分享到 Twitter">
+                <a class="post-action-btn btn btn--default" target="new" href="https://twitter.com/intent/tweet?text=http://localhost:4000/2019/06/05/Redis Sentinel/" title="分享到 Twitter">
                     <i class="fab fa-twitter" aria-hidden="true"></i>
                 </a>
             </li>
@@ -428,7 +449,7 @@
             
             
             <li class="post-action hide-xs">
-                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://localhost:4000/2017/08/21/阿里P9 李响/" title="分享到 Google+">
+                <a class="post-action-btn btn btn--default" target="new" href="https://plus.google.com/share?url=http://localhost:4000/2019/06/05/Redis Sentinel/" title="分享到 Google+">
                     <i class="fab fa-google-plus" aria-hidden="true"></i>
                 </a>
             </li>
@@ -456,7 +477,7 @@
                 
                 
                 <li class="share-option">
-                    <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/2017/08/21/阿里P9 李响/">
+                    <a class="share-option-btn" target="new" href="https://www.facebook.com/sharer/sharer.php?u=http://localhost:4000/2019/06/05/Redis Sentinel/">
                         <i class="fab fa-facebook" aria-hidden="true"></i><span>分享到 Facebook</span>
                     </a>
                 </li>
@@ -464,7 +485,7 @@
                 
                 
                 <li class="share-option">
-                    <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http://localhost:4000/2017/08/21/阿里P9 李响/">
+                    <a class="share-option-btn" target="new" href="https://twitter.com/intent/tweet?text=http://localhost:4000/2019/06/05/Redis Sentinel/">
                         <i class="fab fa-twitter" aria-hidden="true"></i><span>分享到 Twitter</span>
                     </a>
                 </li>
@@ -472,7 +493,7 @@
                 
                 
                 <li class="share-option">
-                    <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http://localhost:4000/2017/08/21/阿里P9 李响/">
+                    <a class="share-option-btn" target="new" href="https://plus.google.com/share?url=http://localhost:4000/2019/06/05/Redis Sentinel/">
                         <i class="fab fa-google-plus" aria-hidden="true"></i><span>分享到 Google+</span>
                     </a>
                 </li>

@@ -246,6 +246,147 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2019/06/05/Redis Sentinel/">
+                            (无标题)
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-06-05T11:23:30+08:00">
+	
+		    6月 05, 2019
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h1 id="Redis-Sentinel"><a href="#Redis-Sentinel" class="headerlink" title="Redis Sentinel"></a>Redis Sentinel</h1><p>1.port 26379</p>
+<p>sentinel监听端口，默认是26379，可以修改。</p>
+<p>2.sentinel monitor <master-name> <ip> <redis-port> <quorum></quorum></redis-port></ip></master-name></p>
+<p>告诉sentinel去监听地址为ip:port的一个master，这里的master-name可以自定义，quorum是一个数字，指明当有多少个sentinel认为一个master失效时，master才算真正失效。master-name只能包含英文字母，数字，和“.-_”这三个字符需要注意的是master-ip 要写真实的ip地址而不要用回环地址（127.0.0.1）。</p>
+<p>配置示例：</p>
+<p>sentinel monitor mymaster 192.168.0.5 6379 2</p>
+<p>3.sentinel auth-pass <master-name> <password></password></master-name></p>
+<p>设置连接master和slave时的密码，注意的是sentinel不能分别为master和slave设置不同的密码，因此master和slave的密码应该设置相同。</p>
+<p>配置示例：</p>
+<p>sentinel auth-pass mymaster 0123passw0rd</p>
+<p>4.sentinel down-after-milliseconds <master-name> <milliseconds> </milliseconds></master-name></p>
+<p>这个配置项指定了需要多少失效时间，一个master才会被这个sentinel主观地认为是不可用的。 单位是毫秒，默认为30秒</p>
+<p>配置示例：</p>
+<p>sentinel down-after-milliseconds mymaster 30000</p>
+<p>5.sentinel parallel-syncs <master-name> <numslaves> </numslaves></master-name></p>
+<p>这个配置项指定了在发生failover主备切换时最多可以有多少个slave同时对新的master进行 同步，这个数字越小，完成failover所需的时间就越长，但是如果这个数字越大，就意味着越 多的slave因为replication而不可用。可以通过将这个值设为 1 来保证每次只有一个slave 处于不能处理命令请求的状态。</p>
+<p>配置示例：</p>
+<p>sentinel parallel-syncs mymaster 1</p>
+<p>\6. sentinel failover-timeout <master-name> <milliseconds></milliseconds></master-name></p>
+<p>failover-timeout 可以用在以下这些方面： </p>
+<p>​      \1. 同一个sentinel对同一个master两次failover之间的间隔时间。</p>
+<p>​      \2. 当一个slave从一个错误的master那里同步数据开始计算时间。直到slave被纠正为向正确的master那里同步数据时。</p>
+<p>​      3.当想要取消一个正在进行的failover所需要的时间。  </p>
+<p>​      4.当进行failover时，配置所有slaves指向新的master所需的最大时间。不过，即使过了这个超时，slaves依然会被正确配置为指向master，但是就不按parallel-syncs所配置的规则来了。</p>
+<p>配置示例：</p>
+<p>sentinel failover-timeout mymaster1 20000</p>
+<p>7.sentinel的notification-script和reconfig-script是用来配置当某一事件发生时所需要执行的脚本，可以通过脚本来通知管理员，例如当系统运行不正常时发邮件通知相关人员。对于脚本的运行结果有以下规则：</p>
+<p>​        若脚本执行后返回1，那么该脚本稍后将会被再次执行，重复次数目前默认为10</p>
+<p>​        若脚本执行后返回2，或者比2更高的一个返回值，脚本将不会重复执行。</p>
+<p>​        如果脚本在执行过程中由于收到系统中断信号被终止了，则同返回值为1时的行为相同。</p>
+<p>​        一个脚本的最大执行时间为60s，如果超过这个时间，脚本将会被一个SIGKILL信号终止，之后重新执行。</p>
+<p>1).sentinel notification-script <master-name> <script-path> </script-path></master-name></p>
+<p>通知型脚本:当sentinel有任何警告级别的事件发生时（比如说redis实例的主观失效和客观失效等等），将会去调用这个脚本，这时这个脚本应该通过邮件，SMS等方式去通知系统管理员关于系统不正常运行的信息。调用该脚本时，将传给脚本两个参数，一个是事件的类型，一个是事件的描述。如果sentinel.conf配置文件中配置了这个脚本路径，那么必须保证这个脚本存在于这个路径，并且是可执行的，否则sentinel无法正常启动成功。</p>
+<p>  配置示例：</p>
+<p> sentinel notification-script mymaster /var/redis/notify.sh</p>
+<p>2).sentinel client-reconfig-script <master-name> <script-path></script-path></master-name></p>
+<p> 当一个master由于failover而发生改变时，这个脚本将会被调用，通知相关的客户端关于master地址已经发生改变的信息。以下参数将会在调用脚本时传给脚本:</p>
+<p>​       <master-name> <role> <state> <from-ip> <from-port> <to-ip> <to-port></to-port></to-ip></from-port></from-ip></state></role></master-name></p>
+<p>目前<state>总是“failover”, <role>是“leader”或者“observer”中的一个。 参数 from-ip, from-port, to-ip, to-port是用来和旧的master和新的master(即旧的slave)通信的。这个脚本应该是通用的，能被多次调用，不是针对性的。</role></state></p>
+<p>   配置示例：</p>
+<p>   sentinel client-reconfig-script mymaster /var/redis/reconfig.sh</p>
+<h3 id="其他文章"><a href="#其他文章" class="headerlink" title="其他文章"></a>其他文章</h3><p><a href="http://shouce.jb51.net/redis-all-about/HAClusterArchPractice/ms/event-noti.html" target="_blank" rel="noopener">http://shouce.jb51.net/redis-all-about/HAClusterArchPractice/ms/event-noti.html</a></p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2019/06/05/Redis Sentinel/#post-footer" class="postShorten-excerpt_link link">
+                                评论和共享
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2019/06/03/Gitlab 免密/">
+                            (无标题)
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-06-03T23:34:48+08:00">
+	
+		    6月 03, 2019
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h1 id="Gitlab-免密"><a href="#Gitlab-免密" class="headerlink" title="Gitlab 免密"></a>Gitlab 免密</h1><p>1、创建一个 SSH key</p>
+<p>$ ssh-keygen -t rsa -f xxxx -C “xiangjy@outlook.com”</p>
+<p>代码参数含义：</p>
+<p>-t 指定密钥类型，默认是 rsa ，可以省略。</p>
+<p>-C 设置注释文字，比如邮箱。</p>
+<p>-f 指定密钥文件存储文件名。</p>
+<p>生成 id_rsa 和 id_rsa.pub 两个秘钥文件。</p>
+<p>2、添加SSH key 到 Gitlab</p>
+<p>$ clip &lt; ~/.ssh/id_rsa.pub</p>
+<p>Account settings -&gt; SSH key</p>
+<p>3、Gitlab 自定义SSH 端口全局配置</p>
+<p>Gitlab自定义端口设置：</p>
+<p>~/.ssh目录下创建config文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Host git域名</span><br><span class="line">HostName git域名</span><br><span class="line">Port 2800</span><br><span class="line">PreferredAuthentications publickey</span><br><span class="line">IdentityFile ~/.ssh/id_rsa</span><br></pre></td></tr></table></figure>
+<p>4、ssh文件夹及文件权限</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ cd ~</span><br><span class="line">$ chmod 700 .ssh</span><br><span class="line">$ cd ~/.ssh</span><br><span class="line">$ chmod 600 *</span><br></pre></td></tr></table></figure>
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2019/06/03/Gitlab 免密/#post-footer" class="postShorten-excerpt_link link">
+                                评论和共享
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2019/04/12/Nginx/">
                             (无标题)
                         </a>
@@ -318,6 +459,7 @@
 <p>yum remove mariadb-server<br>cd /var/lib &amp;&amp; rm -rfv mysql<br>yum install mariadb-server</p>
 <p>###添加远程访问用户</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">USER</span> <span class="string">'new_root'</span>@<span class="string">'%'</span> <span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'***'</span>;</span><br><span class="line">  <span class="keyword">GRANT</span> ALL <span class="keyword">PRIVILEGES</span> <span class="keyword">ON</span> *.* <span class="keyword">TO</span> <span class="string">'new_root'</span>@<span class="string">'%'</span> <span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'***'</span> <span class="keyword">WITH</span> <span class="keyword">GRANT</span> <span class="keyword">OPTION</span> MAX_QUERIES_PER_HOUR <span class="number">0</span> MAX_CONNECTIONS_PER_HOUR <span class="number">0</span> MAX_UPDATES_PER_HOUR <span class="number">0</span> MAX_USER_CONNECTIONS <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+
                     
                         
 

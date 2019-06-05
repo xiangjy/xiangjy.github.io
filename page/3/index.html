@@ -245,6 +245,144 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2017/08/21/阿里P9 李响/">
+                            李响：这里想对年轻的工程师提一些个人建议。
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2017-08-21T18:41:40+08:00">
+	
+		    8月 21, 2017
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <p>##李响：这里想对年轻的工程师提一些个人建议。</p>
+<ul>
+<li><p>一定要多读代码。尤其是语言的标准库代码，知名的开源项目代码，或者其它超高使用频率的代码，提高自己的代码品味。</p>
+</li>
+<li><p>一定要多写代码。尤其是写可读性高、可维护性好的代码，尽量寻找有经验的工程师帮助自己 Review 代码，提高自己的代码能力和质量。</p>
+</li>
+<li><p>一定要多看、多想，看经典的系统设计，思考自己项目的架构和演进路线，找到志同道合的朋友一起探讨和研究，提高自己的设计、架构能力。</p>
+</li>
+<li><p>一定要多学，学习前沿的技术，为未来做好技术储备；学习领域内的顶会的论文，能够对未来有所预判；学习一些领域外的知识，比如市场、经济等，更多的了解通用事物的发展规律。每个人都有最适合自己的成长路线，对于年轻工程师来讲，最重要的还是能够专注在自己热爱的领域上，以最大的热情投入每天的工作，每天都能进步一点点。</p>
+</li>
+</ul>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2017/08/21/阿里P9 李响/#post-footer" class="postShorten-excerpt_link link">
+                                评论和共享
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2017/08/21/了解软件架构：Serverless架构、微服务架构、分布式架构、单体架构/">
+                            serverLess文章转载
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2017-08-21T18:41:40+08:00">
+	
+		    8月 21, 2017
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h2 id="了解软件架构：Serverless架构、微服务架构、分布式架构、单体架构"><a href="#了解软件架构：Serverless架构、微服务架构、分布式架构、单体架构" class="headerlink" title="了解软件架构：Serverless架构、微服务架构、分布式架构、单体架构"></a>了解软件架构：Serverless架构、微服务架构、分布式架构、单体架构</h2><p>SimpleEasy talkwithtrend  <em>今天</em></p>
+<p>如果一个软件开发人员，不了解软件架构的演进，会制约技术的选型和开发人员的生存、晋升空间。这里列举了目前主要的四种软件架构以及他们的优缺点，希望能够帮助软件开发人员拓展知识面。</p>
+<h2 id="一、单体架构"><a href="#一、单体架构" class="headerlink" title="一、单体架构"></a><strong>一、单体架构</strong></h2><p>单体架构比较初级，典型的三级架构，前端(Web/手机端)+中间业务逻辑层+数据库层。这是一种典型的Java Spring mvc或者Python Drango框架的应用。其架构图如下所示：</p>
+<p><img src="https://file.mmdry.com/image/jpg/serverless-single.jpeg" alt="img"></p>
+<p>单体架构的应用比较容易部署、测试， 在项目的初期，单体应用可以很好地运行。然而，随着需求的不断增加， 越来越多的人加入开发团队，代码库也在飞速地膨胀。慢慢地，单体应用变得越来越臃肿，可维护性、灵活性逐渐降低，维护成本越来越高。下面是单体架构应用的一些<strong>缺点：</strong></p>
+<p>复杂性高：以一个百万行级别的单体应用为例，整个项目包含的模块非常多、模块的边界模糊、 依赖关系不清晰、 代码质量参差不齐、 混乱地堆砌在一起。可想而知整个项目非常复杂。每次修改代码都心惊胆战， 甚至添加一个简单的功能， 或者修改一个Bug都会带来隐含的缺陷。</p>
+<p>技术债务：随着时间推移、需求变更和人员更迭，会逐渐形成应用程序的技术债务， 并且越积 越多。“ 不坏不修”， 这在软件开发中非常常见， 在单体应用中这种思想更甚。已使用的系统设计或代码难以被修改，因为应用程序中的其他模块可能会以意料之外的方式使用它。</p>
+<p>部署频率低：随着代码的增多，构建和部署的时间也会增加。而在单体应用中， 每次功能的变更或缺陷的修复都会导致需要重新部署整个应用。全量部署的方式耗时长、 影响范围大、 风险高， 这使得单体应用项目上线部署的频率较低。而部署频率低又导致两次发布之间会有大量的功能变更和缺陷修复，出错率比较高。</p>
+<p>可靠性差：某个应用Bug，例如死循环、内存溢出等， 可能会导致整个应用的崩溃。</p>
+<p>扩展能力受限：单体应用只能作为一个整体进行扩展，无法根据业务模块的需要进行伸缩。例如，应用中有的模块是计算密集型的，它需要强劲的CPU；有的模块则是IO密集型的，需要更大的内存。由于这些模块部署在一起，不得不在硬件的选择上做出妥协。</p>
+<p>阻碍技术创新：单体应用往往使用统一的技术平台或方案解决所有的问题， 团队中的每个成员 都必须使用相同的开发语言和框架，要想引入新框架或新技术平台会非常困难。</p>
+<h2 id="二、分布式应用"><a href="#二、分布式应用" class="headerlink" title="二、分布式应用"></a><strong>二、分布式应用</strong></h2><p>中级架构，分布式应用，中间层分布式+数据库分布式，是单体架构的并发扩展，将一个大的系统划分为多个业务模块，业务模块分别部署在不同的服务器上，各个业务模块之间通过接口进行数据交互。数据库也大量采用分布式数据库，如redis、ES、solor等。通过LVS/Nginx代理应用，将用户请求均衡的负载到不同的服务器上。其架构图如下所示：</p>
+<p><img src="https://file.mmdry.com/image/jpg/serverless-distributed.jpeg" alt="img"></p>
+<p>该架构相对于单体架构来说，这种架构提供了负载均衡的能力，大大提高了系统负载能力，解决了网站高并发的需求。另外还有以下特点：</p>
+<p>降低了耦合度：把模块拆分,使用接口通信,降低模块之间的耦合度。</p>
+<p>责任清晰：把项目拆分成若干个子项目,不同的团队负责不同的子项目。</p>
+<p>扩展方便：增加功能时只需要再增加一个子项目,调用其他系统的接口就可以。</p>
+<p>部署方便:可以灵活的进行分布式部署。</p>
+<p>提高代码的复用性：比如service层,如果不采用分布式rest服务方式架构就会在手机wap商城,微信商城,pc,android，ios每个端都要写一个service层逻辑,开发量大,难以维护一起升级,这时候就可以采用分布式rest服务方式,公用一个service层。</p>
+<p><strong>缺点 :</strong> 系统之间的交互要使用远程通信,接口开发增大工作量,但是利大于弊。</p>
+<h2 id="三、微服务架构"><a href="#三、微服务架构" class="headerlink" title="三、微服务架构"></a><strong>三、微服务架构</strong></h2><p>微服务架构，主要是中间层分解，将系统拆分成很多小应用（微服务），微服务可以部署在不同的服务器上，也可以部署在相同的服务器不同的容器上。当应用的故障不会影响到其他应用，单应用的负载也不会影响到其他应用，其代表框架有Spring cloud、Dubbo等。其架构图如下所示：</p>
+<p><img src="https://file.mmdry.com/image/jpg/serverless-microservice.jpeg" alt="img"></p>
+<p>易于开发和维护：一个微服务只会关注一个特定的业务功能，所以它业务清晰、代码量较少。开发和维护单个微服务相对简单。而整个应用是由若干个微服务构建而成的，所以整个应用也会被维持在一个可控状态。</p>
+<p>单个微服务启动较快：单个微服务代码量较少， 所以启动会比较快。</p>
+<p>局部修改容易部署：单体应用只要有修改，就得重新部署整个应用，微服务解决了这样的问题。一般来说，对某个微服务进行修改，只需要重新部署这个服务即可。</p>
+<p>技术栈不受限：在微服务架构中，可以结合项目业务及团队的特点，合理地选择技术栈。例如某些服务可使用关系型数据库MySQL；某些微服务有图形计算的需求，可以使用Neo4j；甚至可根据需要，部分微服务使用Java开发，部分微服务使用Node.js开发。</p>
+<p>微服务虽然有很多吸引人的地方，但它并不是免费的午餐，使用它是有代价的。使用微服务架构面临的挑战。</p>
+<p>运维要求较高：更多的服务意味着更多的运维投入。在单体架构中，只需要保证一个应用的正常运行。而在微服务中，需要保证几十甚至几百个服务服务的正常运行与协作，这给运维带来了很大的挑战。</p>
+<p>分布式固有的复杂性：使用微服务构建的是分布式系统。对于一个分布式系统，系统容错、网络延迟、分布式事务等都会带来巨大的挑战。</p>
+<p>接口调整成本高：微服务之间通过接口进行通信。如果修改某一个微服务的API，可能所有使用了该接口的微服务都需要做调整。</p>
+<p>重复劳动：很多服务可能都会使用到相同的功能，而这个功能并没有达到分解为一个微服务的程度，这个时候，可能各个服务都会开发这一功能，从而导致代码重复。尽管可以使用共享库来解决这个问题（例如可以将这个功能封装成公共组件，需要该功能的微服务引用该组件），但共享库在多语言环境下就不一定行得通了。</p>
+<h2 id="四、Serverless架构"><a href="#四、Serverless架构" class="headerlink" title="四、Serverless架构"></a><strong>四、Serverless架构</strong></h2><p><img src="https://file.mmdry.com/image/jpg/serverless.jpeg" alt="img"></p>
+<p>2014年11月14日，亚马逊AWS发布了Lambda。当时Lambda被描述为：一种计算服务，根据时间运行用户的代码，无需关心底层的计算资源。从某种意义上来说，Lambda姗姗来迟，它像云计算的PaaS理念：客户只管业务，无需担心存储和计算资源。2014年10月22日，谷歌收购了实时后端数据库创业公司Firebase。Firebase声称开发者只需引用一个API库文件就可以使用标准REST API的各种接口对数据进行读写操作，只需编写HTML＋CSS＋JavaScrip前端代码，不需要服务器端代码（如需整合，也极其简单）。</p>
+<p>相对于上两者，Facebook 在2014年二月收购的 Parse，则侧重于提供一个通用的后台服务。这些服务被称为Serverless或no sever。想到PaaS（平台即服务）了是吗？很像，用户不需要关心基础设施，只需要关心业务，这是迟到的PaaS，也是更实用的PaaS。这很有可能将会变革整个开发过程和传统的应用生命周期，一旦开发者们习惯了这种全自动的云上资源的创建和分配，或许就再也回不到那些需要微应用配置资源的时代里去了。</p>
+<p>Serverless架构能够让开发者在构建应用的过程中无需关注计算资源的获取和运维，由平台来按需分配计算资源并保证应用执行的SLA（服务等级协议），按照调用次数进行计费，有效的节省应用成本。ServerLess的架构如上图所示。其优点如下所示：</p>
+<p>低运营成本：在业务突发性极高的场景下，系统为了应对业务高峰，必须构建能够应对峰值需求的系统，这个系统在大部分时间是空闲的，这就导致了严重的资源浪费和成本上升。在微服务架构中，服务需要一直运行，实际上在高负载情况下每个服务都不止一个实例，这样才能完成高可用性；在Serverless架构下，服务将根据用户的调用次数进行计费，按照云计算pay-as-you-go原则，如果没有东西运行，你就不必付款，节省了使用成本。同时，用户能够通过共享网络、硬盘、CPU等计算资源，在业务高峰期通过弹性扩容方式有效的应对业务峰值，在业务波谷期将资源分享给其他用户，有效的节约了成本。</p>
+<p>简化设备运维：在原有的IT体系中，开发团队即需要维护应用程序，同时还要维护硬件基础设施；Serverless架构中，开发人员面对的将是第三方开发或自定义的API 和URL，底层硬件对于开发人员透明化了，技术团队无需再关注运维工作，能够更加专注于应用系统开发。</p>
+<p>提升可维护性：Serverless架构中，应用程序将调用多种第三方功能服务，组成最终的应用逻辑。目前，例如登陆鉴权服务，云数据库服务等第三方服务在安全性、可用性、性能方面都进行了大量优化，开发团队直接集成第三方的服务，能够有效的降低开发成本，同时使得应用的运维过程变得更加清晰，有效的提升了应用的可维护性。</p>
+<p>更快的开发速度：这一点在现在互联网创业公司得到很好的体现，创业公司往往开始由于人员和资金等问题，不可能每个产品线都同时进行，这时候就可以考虑第三方的Baas平台，比如使用微信的用户认证、阿里云提供的RDS，第三方支付及地理位置等等，能够很快进行产品开发的速度，把工作重点放在业务实现上，把产品更快的推向市场。</p>
+<p>但ServerLess架构也有其<strong>缺点：</strong></p>
+<p>厂商平台绑定：平台会提供Serverless架构给大玩家，比如AWS Lambda，运行它需要使用AWS指定的服务，比如API网关，DynamoDB，S3等等，一旦你在这些服务上开发一个复杂系统，你会粘牢AWS，以后只好任由他们涨价定价或者下架等操作，个性化需求很难满足，不能进行随意的迁移或者迁移的成本比较大，同时不可避免带来一些损失。Baas行业内一个比较典型的事件，2016年1月19日Facebook关闭曾经花巨额资金收购的Parse，造成用户不得不迁移在这个平台中产生一年多的数据，无疑需要花费比较大的人力和时间成本。</p>
+<p>成功案例比较少，没有行业标准：目前的情况也只适合简单的应用开发，缺乏大型成功案例的推动。对于Serverless缺乏统一的认知以及相应的标准，无法适应所有的云平台。</p>
+<p>目前微服务架构在四种架构中处于主流地位，很多应用第一、第二种架构的企业也开始慢慢转向微服务架构。到目前为止微服务的技术相对于二三年前已经比较成熟，第四种架构将是未来发展的一种趋势。</p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2017/08/21/了解软件架构：Serverless架构、微服务架构、分布式架构、单体架构/#post-footer" class="postShorten-excerpt_link link">
+                                评论和共享
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2017/08/21/抖音数据抓取/">
                             抖音数据抓取
                         </a>
@@ -356,8 +494,8 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
-                        <a class="link-unstyled" href="/2017/08/18/docker/">
-                            docker
+                        <a class="link-unstyled" href="/2017/08/18/docker-compose/">
+                            docker compose
                         </a>
                     
                 </h1>
@@ -373,14 +511,131 @@
             </div>
             
                 <div class="postShorten-content">
-                    
+                    <h1 id="Docker-Compose-配置文件详解"><a href="#Docker-Compose-配置文件详解" class="headerlink" title="Docker Compose 配置文件详解"></a>Docker Compose 配置文件详解</h1><p>docker volume出现ls: cannot open directory .: Permission denied</p>
+<p>网上查找几种情况：</p>
+<ul>
+<li>SELinux开启导致(CentOS和Ubuntu有区别)</li>
+<li>Docker版本问题</li>
+<li>privileged设置问题(Docker默认root权限非真root)</li>
+</ul>
+<p>设置privileged:true后解决问题，整理了docker compose相关配置(<a href="https://www.jianshu.com/p/2217cfed29d7" target="_blank" rel="noopener">网上搜刮的</a>)</p>
+<p>docker-compose.yml 文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">version: &apos;2&apos;</span><br><span class="line">services:</span><br><span class="line">  web:</span><br><span class="line">    image: dockercloud/hello-world</span><br><span class="line">    ports:</span><br><span class="line">      - 8080</span><br><span class="line">    networks:</span><br><span class="line">      - front-tier</span><br><span class="line">      - back-tier</span><br><span class="line"></span><br><span class="line">  redis:</span><br><span class="line">    image: redis</span><br><span class="line">    links:</span><br><span class="line">      - web</span><br><span class="line">    networks:</span><br><span class="line">      - back-tier</span><br><span class="line"></span><br><span class="line">  lb:</span><br><span class="line">    image: dockercloud/haproxy</span><br><span class="line">    ports:</span><br><span class="line">      - 80:80</span><br><span class="line">    links:</span><br><span class="line">      - web</span><br><span class="line">    networks:</span><br><span class="line">      - front-tier</span><br><span class="line">      - back-tier</span><br><span class="line">    volumes:</span><br><span class="line">      - /var/run/docker.sock:/var/run/docker.sock </span><br><span class="line"></span><br><span class="line">networks:</span><br><span class="line">  front-tier:</span><br><span class="line">    driver: bridge</span><br><span class="line">  back-tier:</span><br><span class="line">driver: bridge</span><br></pre></td></tr></table></figure>
+<p>可以看到一份标准配置文件应该包含 version、services、networks 三大部分，其中最关键的就是 services 和 networks 两个部分，下面先来看 services 的书写规则。</p>
+<h2 id="1-image"><a href="#1-image" class="headerlink" title="1. image"></a>1. image</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">services:</span><br><span class="line">  web:</span><br><span class="line">    image: hello-world</span><br></pre></td></tr></table></figure>
+<p>在 services 标签下的第二级标签是 web，这个名字是用户自己自定义，它就是服务名称。<br>image 则是指定服务的镜像名称或镜像 ID。如果镜像在本地不存在，Compose 将会尝试拉取这个镜像。<br>例如下面这些格式都是可以的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">image: redis</span><br><span class="line">image: ubuntu:14.04</span><br><span class="line">image: tutum/influxdb</span><br><span class="line">image: example-registry.com:4000/postgresql</span><br><span class="line">image: a4bc65fd</span><br></pre></td></tr></table></figure>
+<h2 id="2-build"><a href="#2-build" class="headerlink" title="2. build"></a>2. build</h2><p>服务除了可以基于指定的镜像，还可以基于一份 Dockerfile，在使用 up 启动之时执行构建任务，这个构建标签就是 build，它可以指定 Dockerfile 所在文件夹的路径。Compose 将会利用它自动构建这个镜像，然后使用这个镜像启动服务容器。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">build: /path/to/build/dir</span><br></pre></td></tr></table></figure>
+<p>也可以是相对路径，只要上下文确定就可以读取到 Dockerfile。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">build: ./dir</span><br></pre></td></tr></table></figure>
+<p>设定上下文根目录，然后以该目录为准指定 Dockerfile。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">build:</span><br><span class="line">  context: ../</span><br><span class="line">  dockerfile: path/of/Dockerfile</span><br></pre></td></tr></table></figure>
+<p>注意 build 都是一个目录，如果你要指定 Dockerfile 文件需要在 build 标签的子级标签中使用 dockerfile 标签指定，如上面的例子。<br>如果你同时指定了 image 和 build 两个标签，那么 Compose 会构建镜像并且把镜像命名为 image 后面的那个名字。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">build: ./dir</span><br><span class="line">image: webapp:tag</span><br></pre></td></tr></table></figure>
+<p>既然可以在 docker-compose.yml 中定义构建任务，那么一定少不了 arg 这个标签，就像 Dockerfile 中的 ARG 指令，它可以在构建过程中指定环境变量，但是在构建成功后取消，在 docker-compose.yml 文件中也支持这样的写法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">build:</span><br><span class="line">  context: .</span><br><span class="line">  args:</span><br><span class="line">    buildno: 1</span><br><span class="line">    password: secret</span><br></pre></td></tr></table></figure>
+<p>下面这种写法也是支持的，一般来说下面的写法更适合阅读。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">build:</span><br><span class="line">  context: .</span><br><span class="line">  args:</span><br><span class="line">    - buildno=1</span><br><span class="line">    - password=secret</span><br></pre></td></tr></table></figure>
+<p>与 ENV 不同的是，ARG 是允许空值的。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">args:</span><br><span class="line">  - buildno</span><br><span class="line">  - password</span><br></pre></td></tr></table></figure>
+<p>这样构建过程可以向它们赋值。</p>
+<blockquote>
+<p>注意：YAML 的布尔值（true, false, yes, no, on, off）必须要使用引号引起来（单引号、双引号均可），否则会当成字符串解析。</p>
+</blockquote>
+<h2 id="3-command"><a href="#3-command" class="headerlink" title="3. command"></a>3. command</h2><p>使用 command 可以覆盖容器启动后默认执行的命令。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">command: bundle exec thin -p 3000</span><br></pre></td></tr></table></figure>
+<p>也可以写成类似 Dockerfile 中的格式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">command: [bundle, exec, thin, -p, 3000]</span><br></pre></td></tr></table></figure>
+<h2 id="4-container-name"><a href="#4-container-name" class="headerlink" title="4.container_name"></a>4.container_name</h2><p>前面说过 Compose 的容器名称格式是：&lt;项目名称&gt;<em>&lt;服务名称&gt;</em>&lt;序号&gt;<br>虽然可以自定义项目名称、服务名称，但是如果你想完全控制容器的命名，可以使用这个标签指定：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">container_name: app</span><br></pre></td></tr></table></figure>
+<p>这样容器的名字就指定为 app 了。</p>
+<h2 id="5-depends-on"><a href="#5-depends-on" class="headerlink" title="5.depends_on"></a>5.depends_on</h2><p>在使用 Compose 时，最大的好处就是少打启动命令，但是一般项目容器启动的顺序是有要求的，如果直接从上到下启动容器，必然会因为容器依赖问题而启动失败。<br>例如在没启动数据库容器的时候启动了应用容器，这时候应用容器会因为找不到数据库而退出，为了避免这种情况我们需要加入一个标签，就是 depends_on，这个标签解决了容器的依赖、启动先后的问题。<br>例如下面容器会先启动 redis 和 db 两个服务，最后才启动 web 服务：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">version: &apos;2&apos;</span><br><span class="line">services:</span><br><span class="line">  web:</span><br><span class="line">    build: .</span><br><span class="line">    depends_on:</span><br><span class="line">      - db</span><br><span class="line">      - redis</span><br><span class="line">  redis:</span><br><span class="line">    image: redis</span><br><span class="line">  db:</span><br><span class="line">    image: postgres</span><br></pre></td></tr></table></figure>
+<p>注意的是，默认情况下使用 docker-compose up web 这样的方式启动 web 服务时，也会启动 redis 和 db 两个服务，因为在配置文件中定义了依赖关系。</p>
+<h2 id="6-dns"><a href="#6-dns" class="headerlink" title="6.dns"></a>6.dns</h2><p>和 –dns 参数一样用途，格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dns: 8.8.8.8</span><br></pre></td></tr></table></figure>
+<p>也可以是一个列表：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">dns:</span><br><span class="line">  - 8.8.8.8</span><br><span class="line">  - 9.9.9.9</span><br></pre></td></tr></table></figure>
+<p>此外 dns_search 的配置也类似：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">dns_search: example.com</span><br><span class="line">dns_search:</span><br><span class="line">  - dc1.example.com</span><br><span class="line">  - dc2.example.com</span><br></pre></td></tr></table></figure>
+<h2 id="7-tmpfs"><a href="#7-tmpfs" class="headerlink" title="7. tmpfs"></a>7. tmpfs</h2><p>挂载临时目录到容器内部，与 run 的参数一样效果：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">tmpfs: /run</span><br><span class="line">tmpfs:</span><br><span class="line">  - /run</span><br><span class="line">  - /tmp</span><br></pre></td></tr></table></figure>
+<h2 id="8-entrypoint"><a href="#8-entrypoint" class="headerlink" title="8. entrypoint"></a>8. entrypoint</h2><p>在 Dockerfile 中有一个指令叫做 ENTRYPOINT 指令，用于指定接入点，第四章有对比过与 CMD 的区别。<br>在 docker-compose.yml 中可以定义接入点，覆盖 Dockerfile 中的定义：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">entrypoint: /code/entrypoint.sh</span><br></pre></td></tr></table></figure>
+<p>格式和 Docker 类似，不过还可以写成这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">entrypoint:</span><br><span class="line">    - php</span><br><span class="line">    - -d</span><br><span class="line">    - zend_extension=/usr/local/lib/php/extensions/no-debug-non-zts-20100525/xdebug.so</span><br><span class="line">    - -d</span><br><span class="line">    - memory_limit=-1</span><br><span class="line">    - vendor/bin/phpunit</span><br></pre></td></tr></table></figure>
+<h2 id="9-env-file"><a href="#9-env-file" class="headerlink" title="9.env_file"></a>9.env_file</h2><p>还记得前面提到的 .env 文件吧，这个文件可以设置 Compose 的变量。而在 docker-compose.yml 中可以定义一个专门存放变量的文件。<br>如果通过 docker-compose -f FILE 指定了配置文件，则 env_file 中路径会使用配置文件路径。</p>
+<p>如果有变量名称与 environment 指令冲突，则以后者为准。格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">env_file: .env</span><br></pre></td></tr></table></figure>
+<p>或者根据 docker-compose.yml 设置多个：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">env_file:</span><br><span class="line">  - ./common.env</span><br><span class="line">  - ./apps/web.env</span><br><span class="line">  - /opt/secrets.env</span><br></pre></td></tr></table></figure>
+<p>注意的是这里所说的环境变量是对宿主机的 Compose 而言的，如果在配置文件中有 build 操作，这些变量并不会进入构建过程中，如果要在构建中使用变量还是首选前面刚讲的 arg 标签。</p>
+<h2 id="10-environment"><a href="#10-environment" class="headerlink" title="10. environment"></a>10. environment</h2><p>与上面的 env_file 标签完全不同，反而和 arg 有几分类似，这个标签的作用是设置镜像变量，它可以保存变量到镜像里面，也就是说启动的容器也会包含这些变量设置，这是与 arg 最大的不同。<br>一般 arg 标签的变量仅用在构建过程中。而 environment 和 Dockerfile 中的 ENV 指令一样会把变量一直保存在镜像、容器中，类似 docker run -e 的效果。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">environment:</span><br><span class="line">  RACK_ENV: development</span><br><span class="line">  SHOW: &apos;true&apos;</span><br><span class="line">  SESSION_SECRET:</span><br><span class="line"></span><br><span class="line">environment:</span><br><span class="line">  - RACK_ENV=development</span><br><span class="line">  - SHOW=true</span><br><span class="line">  - SESSION_SECRET</span><br></pre></td></tr></table></figure>
+<h2 id="11-expose"><a href="#11-expose" class="headerlink" title="11. expose"></a>11. expose</h2><p>这个标签与Dockerfile中的EXPOSE指令一样，用于指定暴露的端口，但是只是作为一种参考，实际上docker-compose.yml的端口映射还得ports这样的标签。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">expose:</span><br><span class="line"> - &quot;3000&quot;</span><br><span class="line"> - &quot;8000&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="12-external-links"><a href="#12-external-links" class="headerlink" title="12. external_links"></a>12. external_links</h2><p>在使用Docker过程中，我们会有许多单独使用docker run启动的容器，为了使Compose能够连接这些不在docker-compose.yml中定义的容器，我们需要一个特殊的标签，就是external_links，它可以让Compose项目里面的容器连接到那些项目配置外部的容器（前提是外部容器中必须至少有一个容器是连接到与项目内的服务的同一个网络里面）。<br>格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">external_links:</span><br><span class="line"> - redis_1</span><br><span class="line"> - project_db_1:mysql</span><br><span class="line"> - project_db_1:postgresql</span><br></pre></td></tr></table></figure>
+<h2 id="13-extra-hosts"><a href="#13-extra-hosts" class="headerlink" title="13. extra_hosts"></a>13. extra_hosts</h2><p>添加主机名的标签，就是往/etc/hosts文件中添加一些记录，与Docker client的–add-host类似：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">extra_hosts:</span><br><span class="line"> - &quot;somehost:162.242.195.82&quot;</span><br><span class="line"> - &quot;otherhost:50.31.209.229&quot;</span><br></pre></td></tr></table></figure>
+<p>启动之后查看容器内部hosts：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">162.242.195.82  somehost</span><br><span class="line">50.31.209.229   otherhost</span><br></pre></td></tr></table></figure>
+<h2 id="14-labels"><a href="#14-labels" class="headerlink" title="14. labels"></a>14. labels</h2><p>向容器添加元数据，和Dockerfile的LABEL指令一个意思，格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">labels:</span><br><span class="line">  com.example.description: &quot;Accounting webapp&quot;</span><br><span class="line">  com.example.department: &quot;Finance&quot;</span><br><span class="line">  com.example.label-with-empty-value: &quot;&quot;</span><br><span class="line">labels:</span><br><span class="line">  - &quot;com.example.description=Accounting webapp&quot;</span><br><span class="line">  - &quot;com.example.department=Finance&quot;</span><br><span class="line">  - &quot;com.example.label-with-empty-value&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="15-links"><a href="#15-links" class="headerlink" title="15. links"></a>15. links</h2><p>还记得上面的depends_on吧，那个标签解决的是启动顺序问题，这个标签解决的是容器连接问题，与Docker client的–link一样效果，会连接到其它服务中的容器。<br>格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">links:</span><br><span class="line"> - db</span><br><span class="line"> - db:database</span><br><span class="line"> - redis</span><br></pre></td></tr></table></figure>
+<p>使用的别名将会自动在服务容器中的/etc/hosts里创建。例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">172.12.2.186  db</span><br><span class="line">172.12.2.186  database</span><br><span class="line">172.12.2.187  redis</span><br></pre></td></tr></table></figure>
+<p>相应的环境变量也将被创建。</p>
+<h2 id="16-logging"><a href="#16-logging" class="headerlink" title="16. logging"></a>16. logging</h2><p>这个标签用于配置日志服务。格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">logging:</span><br><span class="line">  driver: syslog</span><br><span class="line">  options:</span><br><span class="line">    syslog-address: &quot;tcp://192.168.0.42:123&quot;</span><br></pre></td></tr></table></figure>
+<p>默认的driver是json-file。只有json-file和journald可以通过docker-compose logs显示日志，其他方式有其他日志查看方式，但目前Compose不支持。对于可选值可以使用options指定。<br>有关更多这方面的信息可以阅读官方文档：<br><a href="https://link.jianshu.com/?t=https://docs.docker.com/engine/admin/logging/overview/" target="_blank" rel="noopener">https://docs.docker.com/engine/admin/logging/overview/</a></p>
+<h2 id="17-pid"><a href="#17-pid" class="headerlink" title="17. pid"></a>17. pid</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pid: &quot;host&quot;</span><br></pre></td></tr></table></figure>
+<p>将PID模式设置为主机PID模式，跟主机系统共享进程命名空间。容器使用这个标签将能够访问和操纵其他容器和宿主机的名称空间。</p>
+<h2 id="18-ports"><a href="#18-ports" class="headerlink" title="18. ports"></a>18. ports</h2><p>映射端口的标签。<br>使用HOST:CONTAINER格式或者只是指定容器的端口，宿主机会随机映射端口。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ports:</span><br><span class="line"> - &quot;3000&quot;</span><br><span class="line"> - &quot;8000:8000&quot;</span><br><span class="line"> - &quot;49100:22&quot;</span><br><span class="line"> - &quot;127.0.0.1:8001:8001&quot;</span><br></pre></td></tr></table></figure>
+<blockquote>
+<p>注意：当使用HOST:CONTAINER格式来映射端口时，如果你使用的容器端口小于60你可能会得到错误得结果，因为YAML将会解析xx:yy这种数字格式为60进制。所以建议采用字符串格式。</p>
+</blockquote>
+<h2 id="19-security-opt"><a href="#19-security-opt" class="headerlink" title="19. security_opt"></a>19. security_opt</h2><p>为每个容器覆盖默认的标签。简单说来就是管理全部服务的标签。比如设置全部服务的user标签值为USER。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">security_opt:</span><br><span class="line">  - label:user:USER</span><br><span class="line">  - label:role:ROLE</span><br></pre></td></tr></table></figure>
+<h2 id="20-stop-signal"><a href="#20-stop-signal" class="headerlink" title="20. stop_signal"></a>20. stop_signal</h2><p>设置另一个信号来停止容器。在默认情况下使用的是SIGTERM停止容器。设置另一个信号可以使用stop_signal标签。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">stop_signal: SIGUSR1</span><br></pre></td></tr></table></figure>
+<h2 id="21-volumes"><a href="#21-volumes" class="headerlink" title="21. volumes"></a>21. volumes</h2><p>挂载一个目录或者一个已存在的数据卷容器，可以直接使用 [HOST:CONTAINER] 这样的格式，或者使用 [HOST:CONTAINER:ro] 这样的格式，后者对于容器来说，数据卷是只读的，这样可以有效保护宿主机的文件系统。<br>Compose的数据卷指定路径可以是相对路径，使用 . 或者 .. 来指定相对目录。<br>数据卷的格式可以是下面多种形式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">volumes:</span><br><span class="line">  // 只是指定一个路径，Docker 会自动在创建一个数据卷（这个路径是容器内部的）。</span><br><span class="line">  - /var/lib/mysql</span><br><span class="line"></span><br><span class="line">  // 使用绝对路径挂载数据卷</span><br><span class="line">  - /opt/data:/var/lib/mysql</span><br><span class="line"></span><br><span class="line">  // 以 Compose 配置文件为中心的相对路径作为数据卷挂载到容器。</span><br><span class="line">  - ./cache:/tmp/cache</span><br><span class="line"></span><br><span class="line">  // 使用用户的相对路径（~/ 表示的目录是 /home/&lt;用户目录&gt;/ 或者 /root/）。</span><br><span class="line">  - ~/configs:/etc/configs/:ro</span><br><span class="line"></span><br><span class="line">  // 已经存在的命名的数据卷。</span><br><span class="line">  - datavolume:/var/lib/mysql</span><br></pre></td></tr></table></figure>
+<p>如果你不使用宿主机的路径，你可以指定一个volume_driver。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">volume_driver: mydriver</span><br></pre></td></tr></table></figure>
+<h2 id="22-volumes-from"><a href="#22-volumes-from" class="headerlink" title="22. volumes_from"></a>22. volumes_from</h2><p>从其它容器或者服务挂载数据卷，可选的参数是 :ro或者 :rw，前者表示容器只读，后者表示容器对数据卷是可读可写的。默认情况下是可读可写的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">volumes_from:</span><br><span class="line">  - service_name</span><br><span class="line">  - service_name:ro</span><br><span class="line">  - container:container_name</span><br><span class="line">  - container:container_name:rw</span><br></pre></td></tr></table></figure>
+<h2 id="23-cap-add-cap-drop"><a href="#23-cap-add-cap-drop" class="headerlink" title="23. cap_add, cap_drop"></a>23. cap_add, cap_drop</h2><p>添加或删除容器的内核功能。详细信息在前面容器章节有讲解，此处不再赘述。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">cap_add:</span><br><span class="line">  - ALL</span><br><span class="line"></span><br><span class="line">cap_drop:</span><br><span class="line">  - NET_ADMIN</span><br><span class="line">  - SYS_ADMIN</span><br></pre></td></tr></table></figure>
+<h2 id="24-cgroup-parent"><a href="#24-cgroup-parent" class="headerlink" title="24. cgroup_parent"></a>24. cgroup_parent</h2><p>指定一个容器的父级cgroup。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">cgroup_parent: m-executor-abcd</span><br></pre></td></tr></table></figure>
+<h2 id="25-devices"><a href="#25-devices" class="headerlink" title="25. devices"></a>25. devices</h2><p>设备映射列表。与Docker client的–device参数类似。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">devices:</span><br><span class="line">  - &quot;/dev/ttyUSB0:/dev/ttyUSB0&quot;</span><br></pre></td></tr></table></figure>
+<h2 id="26-extends"><a href="#26-extends" class="headerlink" title="26. extends"></a>26. extends</h2><p>这个标签可以扩展另一个服务，扩展内容可以是来自在当前文件，也可以是来自其他文件，相同服务的情况下，后来者会有选择地覆盖原有配置。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">extends:</span><br><span class="line">  file: common.yml</span><br><span class="line">  service: webapp</span><br></pre></td></tr></table></figure>
+<p>用户可以在任何地方使用这个标签，只要标签内容包含file和service两个值就可以了。file的值可以是相对或者绝对路径，如果不指定file的值，那么Compose会读取当前YML文件的信息。<br>更多的操作细节在后面的12.3.4小节有介绍。</p>
+<h2 id="27-network-mode"><a href="#27-network-mode" class="headerlink" title="27. network_mode"></a>27. network_mode</h2><p>网络模式，与Docker client的–net参数类似，只是相对多了一个service:[service name] 的格式。<br>例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">network_mode: &quot;bridge&quot;</span><br><span class="line">network_mode: &quot;host&quot;</span><br><span class="line">network_mode: &quot;none&quot;</span><br><span class="line">network_mode: &quot;service:[service name]&quot;</span><br><span class="line">network_mode: &quot;container:[container name/id]&quot;</span><br></pre></td></tr></table></figure>
+<p>可以指定使用服务或者容器的网络。</p>
+<h2 id="28-networks"><a href="#28-networks" class="headerlink" title="28. networks"></a>28. networks</h2><p>加入指定网络，格式如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">services:</span><br><span class="line">  some-service:</span><br><span class="line">    networks:</span><br><span class="line">     - some-network</span><br><span class="line">     - other-network</span><br></pre></td></tr></table></figure>
+<p>关于这个标签还有一个特别的子标签aliases，这是一个用来设置服务别名的标签，例如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">services:</span><br><span class="line">  some-service:</span><br><span class="line">    networks:</span><br><span class="line">      some-network:</span><br><span class="line">        aliases:</span><br><span class="line">         - alias1</span><br><span class="line">         - alias3</span><br><span class="line">      other-network:</span><br><span class="line">        aliases:</span><br><span class="line">         - alias2</span><br></pre></td></tr></table></figure>
+<p>相同的服务可以在不同的网络有不同的别名。</p>
+<h2 id="29-其它"><a href="#29-其它" class="headerlink" title="29. 其它"></a>29. 其它</h2><p>还有这些标签：cpu_shares, cpu_quota, cpuset, domainname, hostname, ipc, mac_address, mem_limit, memswap_limit, privileged, read_only, restart, shm_size, stdin_open, tty, user, working_dir<br>上面这些都是一个单值的标签，类似于使用docker run的效果。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">cpu_shares: 73</span><br><span class="line">cpu_quota: 50000</span><br><span class="line">cpuset: 0,1</span><br><span class="line"></span><br><span class="line">user: postgresql</span><br><span class="line">working_dir: /code</span><br><span class="line"></span><br><span class="line">domainname: foo.com</span><br><span class="line">hostname: foo</span><br><span class="line">ipc: host</span><br><span class="line">mac_address: 02:42:ac:11:65:43</span><br><span class="line"></span><br><span class="line">mem_limit: 1000000000</span><br><span class="line">memswap_limit: 2000000000</span><br><span class="line">privileged: true</span><br><span class="line"></span><br><span class="line">restart: always</span><br><span class="line"></span><br><span class="line">read_only: true</span><br><span class="line">shm_size: 64M</span><br><span class="line">stdin_open: true</span><br><span class="line">tty: true</span><br></pre></td></tr></table></figure>
+<h3 id="其他文章"><a href="#其他文章" class="headerlink" title="其他文章"></a>其他文章</h3><p><a href="https://www.hi-linux.com/posts/12554.html" target="_blank" rel="noopener">https://www.hi-linux.com/posts/12554.html</a></p>
+
                     
                         
 
                     
                     
                         <p>
-                            <a href="/2017/08/18/docker/#post-footer" class="postShorten-excerpt_link link">
+                            <a href="/2017/08/18/docker-compose/#post-footer" class="postShorten-excerpt_link link">
                                 评论和共享
                             </a>
                         </p>
@@ -705,7 +960,7 @@
     </article>
     
     
-    <article class="postShorten postShorten--thumbnailimg-bottom">
+    <article class="postShorten postShorten--thumbnailimg-right">
         <div class="postShorten-wrap">
             
             <div class="postShorten-header">
@@ -727,22 +982,13 @@
 
             </div>
             
-                <div class="postShorten-content">
-                    <a id="more"></a>
-<p>支持向量机(SVM)简单了解</p>
-<h1 id="table-of-contents">目录</h1>
-<p>什么是支持向量机(SVM)<br>1、支持向量机(Support Vector Machine，常简称SVM)是一种监督式学习的方法，可广泛的应用与统计分类以及回归分析。支持向量机属于一般化线性分类器，这种分类器的特点是他们能够同时最小化经验误差与最大化几何边缘区，因此支持向量机也被称为最大边缘区分类器。<br>2、支持向量机将向量映射到一个更高维的空间里，在这个空间里建立有一个最大间隔超平面。在分开数据的超平面两边建有两个互相平行的超平面，分隔超平面使两个平行超平面的距离最大化。假定平行超平面间的距离或差距越大，分类器的总误差越小。</p>
-
+                <div class="postShorten-excerpt">
+                    <p>支持向量机(SVM)简单了解</p>
                     
+                        <a href="/2017/08/15/svm/" class="postShorten-excerpt_link link">
+                            阅读全文
+                        </a>
                         
-
-                    
-                    
-                        <p>
-                            <a href="/2017/08/15/svm/#post-footer" class="postShorten-excerpt_link link">
-                                评论和共享
-                            </a>
-                        </p>
                     
                 </div>
             

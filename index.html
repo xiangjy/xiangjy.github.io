@@ -245,6 +245,147 @@
             <div class="postShorten-header">
                 <h1 class="postShorten-title">
                     
+                        <a class="link-unstyled" href="/2019/06/05/Redis Sentinel/">
+                            (无标题)
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-06-05T11:23:30+08:00">
+	
+		    6月 05, 2019
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h1 id="Redis-Sentinel"><a href="#Redis-Sentinel" class="headerlink" title="Redis Sentinel"></a>Redis Sentinel</h1><p>1.port 26379</p>
+<p>sentinel监听端口，默认是26379，可以修改。</p>
+<p>2.sentinel monitor <master-name> <ip> <redis-port> <quorum></quorum></redis-port></ip></master-name></p>
+<p>告诉sentinel去监听地址为ip:port的一个master，这里的master-name可以自定义，quorum是一个数字，指明当有多少个sentinel认为一个master失效时，master才算真正失效。master-name只能包含英文字母，数字，和“.-_”这三个字符需要注意的是master-ip 要写真实的ip地址而不要用回环地址（127.0.0.1）。</p>
+<p>配置示例：</p>
+<p>sentinel monitor mymaster 192.168.0.5 6379 2</p>
+<p>3.sentinel auth-pass <master-name> <password></password></master-name></p>
+<p>设置连接master和slave时的密码，注意的是sentinel不能分别为master和slave设置不同的密码，因此master和slave的密码应该设置相同。</p>
+<p>配置示例：</p>
+<p>sentinel auth-pass mymaster 0123passw0rd</p>
+<p>4.sentinel down-after-milliseconds <master-name> <milliseconds> </milliseconds></master-name></p>
+<p>这个配置项指定了需要多少失效时间，一个master才会被这个sentinel主观地认为是不可用的。 单位是毫秒，默认为30秒</p>
+<p>配置示例：</p>
+<p>sentinel down-after-milliseconds mymaster 30000</p>
+<p>5.sentinel parallel-syncs <master-name> <numslaves> </numslaves></master-name></p>
+<p>这个配置项指定了在发生failover主备切换时最多可以有多少个slave同时对新的master进行 同步，这个数字越小，完成failover所需的时间就越长，但是如果这个数字越大，就意味着越 多的slave因为replication而不可用。可以通过将这个值设为 1 来保证每次只有一个slave 处于不能处理命令请求的状态。</p>
+<p>配置示例：</p>
+<p>sentinel parallel-syncs mymaster 1</p>
+<p>\6. sentinel failover-timeout <master-name> <milliseconds></milliseconds></master-name></p>
+<p>failover-timeout 可以用在以下这些方面： </p>
+<p>​      \1. 同一个sentinel对同一个master两次failover之间的间隔时间。</p>
+<p>​      \2. 当一个slave从一个错误的master那里同步数据开始计算时间。直到slave被纠正为向正确的master那里同步数据时。</p>
+<p>​      3.当想要取消一个正在进行的failover所需要的时间。  </p>
+<p>​      4.当进行failover时，配置所有slaves指向新的master所需的最大时间。不过，即使过了这个超时，slaves依然会被正确配置为指向master，但是就不按parallel-syncs所配置的规则来了。</p>
+<p>配置示例：</p>
+<p>sentinel failover-timeout mymaster1 20000</p>
+<p>7.sentinel的notification-script和reconfig-script是用来配置当某一事件发生时所需要执行的脚本，可以通过脚本来通知管理员，例如当系统运行不正常时发邮件通知相关人员。对于脚本的运行结果有以下规则：</p>
+<p>​        若脚本执行后返回1，那么该脚本稍后将会被再次执行，重复次数目前默认为10</p>
+<p>​        若脚本执行后返回2，或者比2更高的一个返回值，脚本将不会重复执行。</p>
+<p>​        如果脚本在执行过程中由于收到系统中断信号被终止了，则同返回值为1时的行为相同。</p>
+<p>​        一个脚本的最大执行时间为60s，如果超过这个时间，脚本将会被一个SIGKILL信号终止，之后重新执行。</p>
+<p>1).sentinel notification-script <master-name> <script-path> </script-path></master-name></p>
+<p>通知型脚本:当sentinel有任何警告级别的事件发生时（比如说redis实例的主观失效和客观失效等等），将会去调用这个脚本，这时这个脚本应该通过邮件，SMS等方式去通知系统管理员关于系统不正常运行的信息。调用该脚本时，将传给脚本两个参数，一个是事件的类型，一个是事件的描述。如果sentinel.conf配置文件中配置了这个脚本路径，那么必须保证这个脚本存在于这个路径，并且是可执行的，否则sentinel无法正常启动成功。</p>
+<p>  配置示例：</p>
+<p> sentinel notification-script mymaster /var/redis/notify.sh</p>
+<p>2).sentinel client-reconfig-script <master-name> <script-path></script-path></master-name></p>
+<p> 当一个master由于failover而发生改变时，这个脚本将会被调用，通知相关的客户端关于master地址已经发生改变的信息。以下参数将会在调用脚本时传给脚本:</p>
+<p>​       <master-name> <role> <state> <from-ip> <from-port> <to-ip> <to-port></to-port></to-ip></from-port></from-ip></state></role></master-name></p>
+<p>目前<state>总是“failover”, <role>是“leader”或者“observer”中的一个。 参数 from-ip, from-port, to-ip, to-port是用来和旧的master和新的master(即旧的slave)通信的。这个脚本应该是通用的，能被多次调用，不是针对性的。</role></state></p>
+<p>   配置示例：</p>
+<p>   sentinel client-reconfig-script mymaster /var/redis/reconfig.sh</p>
+<h3 id="其他文章"><a href="#其他文章" class="headerlink" title="其他文章"></a>其他文章</h3><p><a href="http://shouce.jb51.net/redis-all-about/HAClusterArchPractice/ms/event-noti.html" target="_blank" rel="noopener">http://shouce.jb51.net/redis-all-about/HAClusterArchPractice/ms/event-noti.html</a></p>
+
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2019/06/05/Redis Sentinel/#post-footer" class="postShorten-excerpt_link link">
+                                评论和共享
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
+                        <a class="link-unstyled" href="/2019/06/03/Gitlab 免密/">
+                            (无标题)
+                        </a>
+                    
+                </h1>
+                <div class="postShorten-meta">
+    <time datetime="2019-06-03T23:34:48+08:00">
+	
+		    6月 03, 2019
+    	
+    </time>
+    
+</div>
+
+            </div>
+            
+                <div class="postShorten-content">
+                    <h1 id="Gitlab-免密"><a href="#Gitlab-免密" class="headerlink" title="Gitlab 免密"></a>Gitlab 免密</h1><p>1、创建一个 SSH key</p>
+<p>$ ssh-keygen -t rsa -f xxxx -C “xiangjy@outlook.com”</p>
+<p>代码参数含义：</p>
+<p>-t 指定密钥类型，默认是 rsa ，可以省略。</p>
+<p>-C 设置注释文字，比如邮箱。</p>
+<p>-f 指定密钥文件存储文件名。</p>
+<p>生成 id_rsa 和 id_rsa.pub 两个秘钥文件。</p>
+<p>2、添加SSH key 到 Gitlab</p>
+<p>$ clip &lt; ~/.ssh/id_rsa.pub</p>
+<p>Account settings -&gt; SSH key</p>
+<p>3、Gitlab 自定义SSH 端口全局配置</p>
+<p>Gitlab自定义端口设置：</p>
+<p>~/.ssh目录下创建config文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Host git域名</span><br><span class="line">HostName git域名</span><br><span class="line">Port 2800</span><br><span class="line">PreferredAuthentications publickey</span><br><span class="line">IdentityFile ~/.ssh/id_rsa</span><br></pre></td></tr></table></figure>
+<p>4、ssh文件夹及文件权限</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ cd ~</span><br><span class="line">$ chmod 700 .ssh</span><br><span class="line">$ cd ~/.ssh</span><br><span class="line">$ chmod 600 *</span><br></pre></td></tr></table></figure>
+                    
+                        
+
+                    
+                    
+                        <p>
+                            <a href="/2019/06/03/Gitlab 免密/#post-footer" class="postShorten-excerpt_link link">
+                                评论和共享
+                            </a>
+                        </p>
+                    
+                </div>
+            
+        </div>
+        
+    </article>
+    
+    
+    <article class="postShorten postShorten--thumbnailimg-bottom">
+        <div class="postShorten-wrap">
+            
+            <div class="postShorten-header">
+                <h1 class="postShorten-title">
+                    
                         <a class="link-unstyled" href="/2019/04/12/Nginx/">
                             (无标题)
                         </a>
@@ -317,6 +458,7 @@
 <p>yum remove mariadb-server<br>cd /var/lib &amp;&amp; rm -rfv mysql<br>yum install mariadb-server</p>
 <p>###添加远程访问用户</p>
 <figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">USER</span> <span class="string">'new_root'</span>@<span class="string">'%'</span> <span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'***'</span>;</span><br><span class="line">  <span class="keyword">GRANT</span> ALL <span class="keyword">PRIVILEGES</span> <span class="keyword">ON</span> *.* <span class="keyword">TO</span> <span class="string">'new_root'</span>@<span class="string">'%'</span> <span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'***'</span> <span class="keyword">WITH</span> <span class="keyword">GRANT</span> <span class="keyword">OPTION</span> MAX_QUERIES_PER_HOUR <span class="number">0</span> MAX_CONNECTIONS_PER_HOUR <span class="number">0</span> MAX_UPDATES_PER_HOUR <span class="number">0</span> MAX_USER_CONNECTIONS <span class="number">0</span>;</span><br></pre></td></tr></table></figure>
+
                     
                         
 
@@ -812,178 +954,6 @@
                     
                         <p>
                             <a href="/2017/09/19/algorithm/#post-footer" class="postShorten-excerpt_link link">
-                                评论和共享
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2017/09/19/HTML5 惊艳 demo/">
-                            HTML5 惊艳 demo
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2017-09-19T15:42:24+08:00">
-	
-		    9月 19, 2017
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h4 id="HTML5-惊艳-demo"><a href="#HTML5-惊艳-demo" class="headerlink" title="HTML5 惊艳 demo"></a>HTML5 惊艳 demo</h4><p>链接：<a href="https://www.zhihu.com/question/24398907/answer/30239864" target="_blank" rel="noopener">https://www.zhihu.com/question/24398907/answer/30239864</a></p>
-<p>来源：知乎</p>
-<p>著作权归作者所有。商业转载请联系作者获得授权，非商业转载请注明出处。</p>
-<p>找不到之前所见过的网页，深有同感！<br><a href="https://link.zhihu.com/?target=http%3A//tympanus.net/Development/AnimatedBooks/" target="_blank" rel="noopener">Animated Books with CSS 3D Transforms</a>  这是一个3D书本，CSS3完成</p>
-<p>=========HTML5特效聚集网站========<br><a href="https://link.zhihu.com/?target=http%3A//christmasexperiments.com/" target="_blank" rel="noopener">christmasexperiments.com 的页面</a><br><a href="https://link.zhihu.com/?target=http%3A//www.chromeexperiments.com/" target="_blank" rel="noopener">chromeexperiments.com 的页面</a><br><a href="https://link.zhihu.com/?target=http%3A//www.mrdoob.com/" target="_blank" rel="noopener">Mr.doob</a><br><a href="https://link.zhihu.com/?target=http%3A//litewerx.dk/" target="_blank" rel="noopener">litewerx.showcase</a><br><a href="https://link.zhihu.com/?target=http%3A//fff.cmiscm.com/%23%21/main" target="_blank" rel="noopener">Form Follows Function</a><br><a href="https://link.zhihu.com/?target=http%3A//alteredqualia.com/" target="_blank" rel="noopener">AlteredQualia</a><br><a href="https://link.zhihu.com/?target=http%3A//www.html5rocks.com/en/resources" target="_blank" rel="noopener">html5rocks.com 的页面</a></p>
-<p>===========视觉特效与交互式视频============<br><a href="https://link.zhihu.com/?target=http%3A//www.thewildernessdowntown.com/" target="_blank" rel="noopener">http://www.thewildernessdowntown.com/</a><br><a href="https://link.zhihu.com/?target=http%3A//www.itsumokawaii.jp/en/" target="_blank" rel="noopener">Interactive Film “itsumo kawaii”</a><br><a href="https://link.zhihu.com/?target=http%3A//www.beonlineb.com/" target="_blank" rel="noopener">http://www.beonlineb.com/</a><br><a href="https://link.zhihu.com/?target=http%3A//www.justareflektor.com/" target="_blank" rel="noopener">Arcade Fire / Just a Reflektor</a><br><a href="https://link.zhihu.com/?target=http%3A//www.aaronkoblin.com/Aaronetrope/" target="_blank" rel="noopener">Aaronetrope</a>  3D科幻视频投影对话<br><a href="https://link.zhihu.com/?target=http%3A//aleksandarrodic.com/" target="_blank" rel="noopener">Aleksandar Rodic</a> 3D立体博客<br><a href="https://link.zhihu.com/?target=http%3A//inear.se/beanstalk/" target="_blank" rel="noopener">Beanstalk</a><br><a href="https://link.zhihu.com/?target=http%3A//www.ro.me/" target="_blank" rel="noopener">http://www.ro.me/</a><br><a href="https://link.zhihu.com/?target=http%3A//alteredqualia.com/three/examples/webgl_terrain_dynamic.html" target="_blank" rel="noopener">three.js webgl</a> 动态地图<br><a href="https://link.zhihu.com/?target=http%3A//ogreen.special-t.com/en/" target="_blank" rel="noopener">Ô Green by SPECIAL.T</a> 水中植物广告<br><a href="https://link.zhihu.com/?target=http%3A//kimatica.net/%23/leafs/" target="_blank" rel="noopener">Kimatica - Creative Connections</a> 树脉<br><a href="https://link.zhihu.com/?target=http%3A//callhimecho.com/%23" target="_blank" rel="noopener">Earth to Echo</a> 电影科幻宣传网站<br><a href="https://link.zhihu.com/?target=http%3A//middle-earth.thehobbit.com/map" target="_blank" rel="noopener">http://middle-earth.thehobbit.com/map</a> 霍比特人<br><a href="https://link.zhihu.com/?target=http%3A//hellorun.helloenjoy.com/" target="_blank" rel="noopener">HelloRun™</a>  线稿房间，第一人称动<br><a href="https://link.zhihu.com/?target=http%3A//letters-inc.jp/%3Ft%3Dd" target="_blank" rel="noopener">LETTERS, INC.</a> 集成电路<br><a href="https://link.zhihu.com/?target=http%3A//dataveyes.com/%23%21/en" target="_blank" rel="noopener">Dataveyes | Human Data Interactions</a> 视觉粒子</p>
-<p>=========音乐与可视化==========<br><a href="https://link.zhihu.com/?target=http%3A//do.adive.in/" target="_blank" rel="noopener">http://do.adive.in/</a><br><a href="https://link.zhihu.com/?target=http%3A//www.clicktorelease.com/code/rocking-dendrites/" target="_blank" rel="noopener">Rocking dendrites</a> 摇滚与触手<br><a href="https://link.zhihu.com/?target=http%3A//jabtunes.com/labs/arabesque/" target="_blank" rel="noopener">Arabesque - Music Colour Particles</a> 优美的纯音乐与彩色烟雾<br><a href="https://link.zhihu.com/?target=http%3A//blackpawn.com/demos/vrtx-01-compo-filler/" target="_blank" rel="noopener">compo.filler</a>  蓝电之音<br><a href="https://link.zhihu.com/?target=http%3A//lights.helloenjoy.com/" target="_blank" rel="noopener">Lights</a> 波点<br><a href="https://link.zhihu.com/?target=http%3A//www.airtightinteractive.com/demos/js/uberviz/wordproblems/" target="_blank" rel="noopener">ĂberViz</a> 电子<br>[A <a href="https://link.zhihu.com/?target=http%3A//www.nihilogic.dk/labs/canvas_music_visualization/" target="_blank" rel="noopener"> Radiohead</a>   音乐画画</p>
-<p>=========物理特性元素============<br><a href="https://link.zhihu.com/?target=http%3A//hakim.se/experiments/html5/blob/03/" target="_blank" rel="noopener">Blob </a> 大水球<br><a href="https://link.zhihu.com/?target=http%3A//andrew-hoyer.com/experiments/cloth/" target="_blank" rel="noopener">Andrew Hoyer</a> 布-骨架<br><a href="https://link.zhihu.com/?target=http%3A//ie.microsoft.com/testdrive/Performance/FishBowl/" target="_blank" rel="noopener">HTML5 Fish Bowl</a> IE-鱼缸<br><a href="https://link.zhihu.com/?target=http%3A//webglsamples.googlecode.com/hg/aquarium/aquarium.html" target="_blank" rel="noopener">googlecode.com 的页面</a> chrome-水族馆<br><a href="https://link.zhihu.com/?target=http%3A//alteredqualia.com/three/examples/webgl_animals.html" target="_blank" rel="noopener">three.js webgl</a> 动物<br><a href="https://link.zhihu.com/?target=http%3A//www.spielzeugz.de/html5/liquid-particles-3D/" target="_blank" rel="noopener">Liquid Particles 3D</a> 3D粒子流</p>
-<p>==========画绘与生成===========<br><a href="https://link.zhihu.com/?target=http%3A//www.queness.com/post/4650/10-jaw-dropping-html5-and-javascript-effects" target="_blank" rel="noopener">10 Jaw Dropping HTML5 and Javascript Effects</a>  10个画绘特效<br><a href="https://link.zhihu.com/?target=http%3A//html5-pro.com/wormz/" target="_blank" rel="noopener">wormz . html5 canvas experiment</a> 图片生成毛毛虫~~<br><a href="https://link.zhihu.com/?target=http%3A//weavesilk.com/" target="_blank" rel="noopener">Silk – Interactive Generative Art</a>  光效<br><a href="https://link.zhihu.com/?target=http%3A//sketchtoy.com/" target="_blank" rel="noopener">Sketch Toy: Draw sketches and share replays with friends!</a> 记录线稿步骤<br><a href="https://link.zhihu.com/?target=http%3A//asciiflow.com/" target="_blank" rel="noopener">ASCIIFlow Infinity</a> ASCII字符生成图表</p>
-<p>========一些融入了HTML5的网站=======<br><a href="https://link.zhihu.com/?target=http%3A//andrevv.com/" target="_blank" rel="noopener">Andrew McCarthy</a>  滚动动物奔跑<br><a href="https://link.zhihu.com/?target=http%3A//tokyomildfoundation.com/" target="_blank" rel="noopener">http://tokyomildfoundation.com/</a>  东京温柔基金<br><a href="https://link.zhihu.com/?target=http%3A//www.fifty-five.com/" target="_blank" rel="noopener">fifty-five | the data agency</a>  垂直分割<br><a href="https://link.zhihu.com/?target=http%3A//aprilzero.com/" target="_blank" rel="noopener">A P R I L Z E R O</a>  数据分析<br><a href="https://link.zhihu.com/?target=http%3A//gamingmedia.ru/" target="_blank" rel="noopener">Gaming Media</a> 创意横向滚动<br><a href="https://link.zhihu.com/?target=http%3A//www.luxaqua-design.com/" target="_blank" rel="noopener">Luxaqua | Aquarium Design</a> 深邃海底纵向滚动<br><a href="https://link.zhihu.com/?target=http%3A//www.kilfish.com/" target="_blank" rel="noopener">KILFISH</a>  鬼畜纵向滚动<br><a href="https://link.zhihu.com/?target=http%3A//fullten-plums.com.tw/" target="_blank" rel="noopener">有顆梅，在台灣</a>  食品纵向滚动<br><a href="https://link.zhihu.com/?target=http%3A//www.vespillo-lefilm.com/" target="_blank" rel="noopener">Vespillo le film</a>  Vespillo纵向滚动<br><a href="https://link.zhihu.com/?target=http%3A//moonbear.animalsasia.org/ie/en/" target="_blank" rel="noopener">Exploring Moon Bears</a> IE-月熊志<br><a href="https://link.zhihu.com/?target=http%3A//metaljunkthegame.com/" target="_blank" rel="noopener">Metal Junk: The Game</a> HTML5游戏：金属废墟，游戏就不展开了~~</p>
-<p>最近写的 基于 HTML5 的指南针和水平仪：<a href="https://link.zhihu.com/?target=http%3A//island205.github.io/H5Compass/" target="_blank" rel="noopener">H5Compass</a> iPhone 5s/5c 测试可用</p>
-<p>最近看到一个惊艳的HTML5网站，<a href="https://link.zhihu.com/?target=http%3A//species-in-pieces.com/%23" target="_blank" rel="noopener">In Pieces - 30 Endangered Species, 30 Pieces.</a></p>
-<p><a href="https://link.zhihu.com/?target=http%3A//tympanus.net/codrops/" target="_blank" rel="noopener">Codrops | Useful resources and inspiration for creative minds</a><br><a href="https://link.zhihu.com/?target=http%3A//tutorialzine.com/" target="_blank" rel="noopener">Tutorialzine</a><br>上面有很多的Demo，质量都很高，开源免费可商用</p>
-<p>还有<a href="https://link.zhihu.com/?target=http%3A//codepen.io/" target="_blank" rel="noopener">CodePen - Front End Developer Playground &amp; Code Editor in the Browser</a>，像是前端界的github</p>
-<p>3D立体书Codrops上有几个，不知道是不是你找的：<br><a href="https://link.zhihu.com/?target=http%3A//tympanus.net/Development/AnimatedBooks/index.html" target="_blank" rel="noopener">Animated Books with CSS 3D Transforms</a><br><a href="https://link.zhihu.com/?target=http%3A//tympanus.net/Tutorials/3DShadingWithBoxShadows/" target="_blank" rel="noopener">3D Shading with Box-Shadows</a><br><a href="https://link.zhihu.com/?target=http%3A//tympanus.net/Development/3DBookShowcase/index.html" target="_blank" rel="noopener">3D Book Showcase</a></p>
-<p><a href="https://www.uisdc.com/10-best-free-animation-libraries" target="_blank" rel="noopener">https://www.uisdc.com/10-best-free-animation-libraries</a></p>
-<h5 id="WOW-js-–-让页面滚动更有趣"><a href="#WOW-js-–-让页面滚动更有趣" class="headerlink" title="WOW.js – 让页面滚动更有趣"></a><a href="https://link.jianshu.com?t=https%3A%2F%2Fgithub.com%2Fmatthieua%2FWOW" target="_blank" rel="noopener">WOW.js – 让页面滚动更有趣</a></h5><p>使用说明：<a href="https://link.jianshu.com?t=http%3A%2F%2Fwww.dowebok.com%2F131.html" target="_blank" rel="noopener">链接地址</a><br> 演示地址：<a href="https://link.jianshu.com?t=http%3A%2F%2Fwww.dowebok.com%2Fdemo%2F131%2Findex2.html" target="_blank" rel="noopener">OW.js演示-oppo官网首页</a></p>
-<h5 id="jQuery全屏滚动插件fullPage-js"><a href="#jQuery全屏滚动插件fullPage-js" class="headerlink" title="jQuery全屏滚动插件fullPage.js"></a><a href="https://link.jianshu.com?t=https%3A%2F%2Fgithub.com%2Falvarotrigo%2Ffullpage.js%2F" target="_blank" rel="noopener">jQuery全屏滚动插件<em>fullPage.js</em></a></h5><p>官网地址：<a href="https://link.jianshu.com?t=https%3A%2F%2Falvarotrigo.com%2FfullPage%2F" target="_blank" rel="noopener">链接地址</a><br> 使用说明：<a href="https://link.jianshu.com?t=http%3A%2F%2Fwww.jq22.com%2Fjquery-info1124" target="_blank" rel="noopener">链接地址</a><br> 演示地址：<a href="https://link.jianshu.com?t=http%3A%2F%2Fwww.jq22.com%2Fyanshi1124" target="_blank" rel="noopener">链接地址</a></p>
-<h5 id="Animate-css-一款强大的预设css3动画库"><a href="#Animate-css-一款强大的预设css3动画库" class="headerlink" title="Animate.css 一款强大的预设css3动画库"></a><a href="https://link.jianshu.com?t=https%3A%2F%2Fgithub.com%2Fdaneden%2Fanimate.css" target="_blank" rel="noopener">Animate.css 一款强大的预设css3动画库</a></h5><p>官网地址：<a href="https://link.jianshu.com?t=https%3A%2F%2Fdaneden.github.io%2Fanimate.css%2F" target="_blank" rel="noopener">链接地址</a><br> 使用说明：<a href="https://link.jianshu.com?t=https%3A%2F%2Fwww.awesomes.cn%2Frepo%2Fdaneden%2Fanimate-css" target="_blank" rel="noopener">链接地址</a><br> 演示地址：<a href="https://link.jianshu.com?t=http%3A%2F%2Fwww.jq22.com%2Fyanshi819" target="_blank" rel="noopener">链接地址</a></p>
-<p>Loading</p>
-<p><a href="https://loading.io/" target="_blank" rel="noopener">https://loading.io/</a></p>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2017/09/19/HTML5 惊艳 demo/#post-footer" class="postShorten-excerpt_link link">
-                                评论和共享
-                            </a>
-                        </p>
-                    
-                </div>
-            
-        </div>
-        
-    </article>
-    
-    
-    <article class="postShorten postShorten--thumbnailimg-bottom">
-        <div class="postShorten-wrap">
-            
-            <div class="postShorten-header">
-                <h1 class="postShorten-title">
-                    
-                        <a class="link-unstyled" href="/2017/09/19/java 如何实现一个简单的RPC/">
-                            Java 如何实现一个简单的RPC
-                        </a>
-                    
-                </h1>
-                <div class="postShorten-meta">
-    <time datetime="2017-09-19T15:42:24+08:00">
-	
-		    9月 19, 2017
-    	
-    </time>
-    
-</div>
-
-            </div>
-            
-                <div class="postShorten-content">
-                    <h1 id="Java-如何实现一个简单的RPC"><a href="#Java-如何实现一个简单的RPC" class="headerlink" title="Java 如何实现一个简单的RPC"></a>Java 如何实现一个简单的RPC</h1><p>###RPC的实现原理</p>
-<p>正如上一讲所说，RPC主要是为了解决的两个问题：</p>
-<ul>
-<li>解决分布式系统中，服务之间的调用问题。</li>
-<li>远程调用时，要能够像本地调用一样方便，让调用者感知不到远程调用的逻辑。</li>
-</ul>
-<p>还是以计算器Calculator为例，如果实现类CalculatorImpl是放在本地的，那么直接调用即可：</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/7143349-69563e8ebc25c77c.png?imageMogr2/auto-orient/" alt="img"></p>
-<p>现在系统变成分布式了，CalculatorImpl和调用方不在同一个地址空间，那么就必须要进行远程过程调用：</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/7143349-d5f7290907ce3cca.png?imageMogr2/auto-orient/" alt="img"></p>
-<p>那么如何实现远程过程调用，也就是RPC呢，一个完整的RPC流程，可以用下面这张图来描述：</p>
-<p><img src="https://upload-images.jianshu.io/upload_images/7143349-a9db3c3c85194c6e.png?imageMogr2/auto-orient/" alt="img"></p>
-<p>其中左边的Client，对应的就是前面的Service A，而右边的Server，对应的则是Service B。<br>下面一步一步详细解释一下。</p>
-<ol>
-<li>Service A的应用层代码中，调用了Calculator的一个实现类的add方法，希望执行一个加法运算；</li>
-<li>这个Calculator实现类，内部并不是直接实现计算器的加减乘除逻辑，而是通过远程调用Service B的RPC接口，来获取运算结果，因此称之为<strong>Stub</strong>；</li>
-<li>Stub怎么和Service B建立远程通讯呢？这时候就要用到<strong>远程通讯工具</strong>了，也就是图中的<strong>Run-time Library</strong>，这个工具将帮你实现远程通讯的功能，比如Java的<strong>Socket</strong>，就是这样一个库，当然，你也可以用基于Http协议的<strong>HttpClient</strong>，或者其他通讯工具类，都可以，<strong>RPC并没有规定说你要用何种协议进行通讯</strong>；</li>
-<li>Stub通过调用通讯工具提供的方法，和Service B建立起了通讯，然后将请求数据发给Service B。需要注意的是，由于底层的网络通讯是基于<strong>二进制格式</strong>的，因此这里Stub传给通讯工具类的数据也必须是二进制，比如calculator.add(1,2)，你必须把参数值1和2放到一个Request对象里头（这个Request对象当然不只这些信息，还包括要调用哪个服务的哪个RPC接口等其他信息），然后<strong>序列化</strong>为二进制，再传给通讯工具类，这一点也将在下面的代码实现中体现；</li>
-<li>二进制的数据传到Service B这一边了，Service B当然也有自己的通讯工具，通过这个通讯工具接收二进制的请求；</li>
-<li>既然数据是二进制的，那么自然要进行<strong>反序列化</strong>了，将二进制的数据反序列化为请求对象，然后将这个请求对象交给Service B的Stub处理；</li>
-<li>和之前的Service A的Stub一样，这里的Stub也同样是个“假玩意”，它所负责的，只是去解析请求对象，知道调用方要调的是哪个RPC接口，传进来的参数又是什么，然后再把这些参数传给对应的RPC接口，也就是Calculator的实际实现类去执行。很明显，如果是Java，那这里肯定用到了<strong>反射</strong>。</li>
-<li>RPC接口执行完毕，返回执行结果，现在轮到Service B要把数据发给Service A了，怎么发？一样的道理，一样的流程，只是现在Service B变成了Client，Service A变成了Server而已：Service B反序列化执行结果-&gt;传输给Service A-&gt;Service A反序列化执行结果 -&gt; 将结果返回给Application，完毕。</li>
-</ol>
-<p>理论的讲完了，是时候把理论变成实践了。</p>
-<p>###把理论变成实践</p>
-<blockquote>
-<p>本文的示例代码，可到<a href="https://github.com/hzy38324/simple-rpc" target="_blank" rel="noopener">Github</a>下载。</p>
-</blockquote>
-<p>首先是Client端的应用层怎么发起RPC，ComsumerApp：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ComsumerApp</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> </span>&#123;</span><br><span class="line">        Calculator calculator = <span class="keyword">new</span> CalculatorRemoteImpl();</span><br><span class="line">        <span class="keyword">int</span> result = calculator.add(<span class="number">1</span>, <span class="number">2</span>);</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>通过一个CalculatorRemoteImpl，我们把RPC的逻辑封装进去了，客户端调用时感知不到远程调用的麻烦</strong>。下面再来看看CalculatorRemoteImpl，代码有些多，但是其实就是把上面的2、3、4几个步骤用代码实现了而已，CalculatorRemoteImpl：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">CalculatorRemoteImpl</span> <span class="keyword">implements</span> <span class="title">Calculator</span> </span>&#123;</span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">add</span><span class="params">(<span class="keyword">int</span> a, <span class="keyword">int</span> b)</span> </span>&#123;</span><br><span class="line">        List&lt;String&gt; addressList = lookupProviders(<span class="string">"Calculator.add"</span>);</span><br><span class="line">        String address = chooseTarget(addressList);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            Socket socket = <span class="keyword">new</span> Socket(address, PORT);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 将请求序列化</span></span><br><span class="line">            CalculateRpcRequest calculateRpcRequest = generateRequest(a, b);</span><br><span class="line">            ObjectOutputStream objectOutputStream = <span class="keyword">new</span> ObjectOutputStream(socket.getOutputStream());</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 将请求发给服务提供方</span></span><br><span class="line">            objectOutputStream.writeObject(calculateRpcRequest);</span><br><span class="line"></span><br><span class="line">            <span class="comment">// 将响应体反序列化</span></span><br><span class="line">            ObjectInputStream objectInputStream = <span class="keyword">new</span> ObjectInputStream(socket.getInputStream());</span><br><span class="line">            Object response = objectInputStream.readObject();</span><br><span class="line"></span><br><span class="line">            <span class="keyword">if</span> (response <span class="keyword">instanceof</span> Integer) &#123;</span><br><span class="line">                <span class="keyword">return</span> (Integer) response;</span><br><span class="line">            &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                <span class="keyword">throw</span> <span class="keyword">new</span> InternalError();</span><br><span class="line">            &#125;</span><br><span class="line"></span><br><span class="line">        &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">            log.error(<span class="string">"fail"</span>, e);</span><br><span class="line">            <span class="keyword">throw</span> <span class="keyword">new</span> InternalError();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>add方法的前面两行，lookupProviders和chooseTarget，可能大家会觉得不明觉厉。</p>
-<p>分布式应用下，一个服务可能有多个实例，比如Service B，可能有ip地址为198.168.1.11和198.168.1.13两个实例，lookupProviders，其实就是在寻找要调用的服务的实例列表。在分布式应用下，通常会有一个<strong>服务注册中心</strong>，来提供查询实例列表的功能。</p>
-<p>查到实例列表之后要调用哪一个实例呢，只时候就需要chooseTarget了，其实内部就是一个<strong>负载均衡</strong>策略。</p>
-<p>由于我们这里只是想实现一个简单的RPC，所以暂时不考虑服务注册中心和负载均衡，因此代码里写死了返回ip地址为127.0.0.1。</p>
-<p>代码继续往下走，我们这里用到了Socket来进行远程通讯，同时利用<strong>ObjectOutputStream</strong>的writeObject和<strong>ObjectInputStream</strong>的readObject，来实现序列化和反序列化。</p>
-<p>最后再来看看Server端的实现，和Client端非常类似，ProviderApp：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">ProviderApp</span> </span>&#123;</span><br><span class="line">    <span class="keyword">private</span> Calculator calculator = <span class="keyword">new</span> CalculatorImpl();</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">static</span> <span class="keyword">void</span> <span class="title">main</span><span class="params">(String[] args)</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        <span class="keyword">new</span> ProviderApp().run();</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">run</span><span class="params">()</span> <span class="keyword">throws</span> IOException </span>&#123;</span><br><span class="line">        ServerSocket listener = <span class="keyword">new</span> ServerSocket(<span class="number">9090</span>);</span><br><span class="line">        <span class="keyword">try</span> &#123;</span><br><span class="line">            <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;</span><br><span class="line">                Socket socket = listener.accept();</span><br><span class="line">                <span class="keyword">try</span> &#123;</span><br><span class="line">                    <span class="comment">// 将请求反序列化</span></span><br><span class="line">                    ObjectInputStream objectInputStream = <span class="keyword">new</span> ObjectInputStream(socket.getInputStream());</span><br><span class="line">                    Object object = objectInputStream.readObject();</span><br><span class="line"></span><br><span class="line">                    log.info(<span class="string">"request is &#123;&#125;"</span>, object);</span><br><span class="line"></span><br><span class="line">                    <span class="comment">// 调用服务</span></span><br><span class="line">                    <span class="keyword">int</span> result = <span class="number">0</span>;</span><br><span class="line">                    <span class="keyword">if</span> (object <span class="keyword">instanceof</span> CalculateRpcRequest) &#123;</span><br><span class="line">                        CalculateRpcRequest calculateRpcRequest = (CalculateRpcRequest) object;</span><br><span class="line">                        <span class="keyword">if</span> (<span class="string">"add"</span>.equals(calculateRpcRequest.getMethod())) &#123;</span><br><span class="line">                            result = calculator.add(calculateRpcRequest.getA(), calculateRpcRequest.getB());</span><br><span class="line">                        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">                            <span class="keyword">throw</span> <span class="keyword">new</span> UnsupportedOperationException();</span><br><span class="line">                        &#125;</span><br><span class="line">                    &#125;</span><br><span class="line"></span><br><span class="line">                    <span class="comment">// 返回结果</span></span><br><span class="line">                    ObjectOutputStream objectOutputStream = <span class="keyword">new</span> ObjectOutputStream(socket.getOutputStream());</span><br><span class="line">                    objectOutputStream.writeObject(<span class="keyword">new</span> Integer(result));</span><br><span class="line">                &#125; <span class="keyword">catch</span> (Exception e) &#123;</span><br><span class="line">                    log.error(<span class="string">"fail"</span>, e);</span><br><span class="line">                &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">                    socket.close();</span><br><span class="line">                &#125;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125; <span class="keyword">finally</span> &#123;</span><br><span class="line">            listener.close();</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>Server端主要是通过ServerSocket的accept方法，来接收Client端的请求，接着就是反序列化请求-&gt;执行-&gt;序列化执行结果，最后将二进制格式的执行结果返回给Client。</p>
-<p><strong>就这样我们实现了一个简陋而又详细的RPC。</strong><br>说它简陋，是因为这个实现确实比较挫，在下一小节会说它为什么挫。<br>说它详细，是因为它一步一步的演示了一个RPC的执行流程，方便大家了解RPC的内部机制。</p>
-<p>###为什么说这个RPC实现很挫</p>
-<p>这个RPC实现只是为了给大家演示一下RPC的原理，要是想放到生产环境去用，那是绝对不行的。</p>
-<p>1、缺乏通用性<br>我通过给Calculator接口写了一个CalculatorRemoteImpl，来实现计算器的远程调用，下一次要是有别的接口需要远程调用，是不是又得再写对应的远程调用实现类？这肯定是很不方便的。</p>
-<p>那该如何解决呢？先来看看使用Dubbo时是如何实现RPC调用的：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">@Reference</span></span><br><span class="line"><span class="keyword">private</span> Calculator calculator;</span><br><span class="line"></span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">calculator.add(<span class="number">1</span>,<span class="number">2</span>);</span><br><span class="line"></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-<p>Dubbo通过和Spring的集成，在Spring容器初始化的时候，如果扫描到对象加了@Reference注解，那么就给这个对象生成一个代理对象，这个代理对象会负责远程通讯，然后将代理对象放进容器中。所以代码运行期用到的calculator就是那个代理对象了。</p>
-<p>我们可以先不和Spring集成，也就是先不采用依赖注入，但是我们要做到像Dubbo一样，无需自己手动写代理对象，怎么做呢？那自然是要求所有的远程调用都遵循一套模板，<strong>把远程调用的信息放到一个RpcRequest对象里面，发给Server端，Server端解析之后就知道你要调用的是哪个RPC接口、以及入参是什么类型、入参的值又是什么</strong>，就像Dubbo的RpcInvocation：</p>
-<figure class="highlight java"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">RpcInvocation</span> <span class="keyword">implements</span> <span class="title">Invocation</span>, <span class="title">Serializable</span> </span>&#123;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">static</span> <span class="keyword">final</span> <span class="keyword">long</span> serialVersionUID = -<span class="number">4355285085441097045L</span>;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> String methodName;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Class&lt;?&gt;[] parameterTypes;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Object[] arguments;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> Map&lt;String, String&gt; attachments;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">private</span> <span class="keyword">transient</span> Invoker&lt;?&gt; invoker;</span><br></pre></td></tr></table></figure>
-<p>2、集成Spring<br>在实现了代理对象通用化之后，下一步就可以考虑集成Spring的IOC功能了，通过Spring来创建代理对象，这一点就需要对Spring的bean初始化有一定掌握了。</p>
-<p>3、长连接or短连接<br>总不能每次要调用RPC接口时都去开启一个Socket建立连接吧？是不是可以保持若干个长连接，然后每次有rpc请求时，把请求放到任务队列中，然后由线程池去消费执行？只是一个思路，后续可以参考一下Dubbo是如何实现的。</p>
-<p>4、 服务端线程池<br>我们现在的Server端，是单线程的，每次都要等一个请求处理完，才能去accept另一个socket的连接，这样性能肯定很差，是不是可以通过一个线程池，来实现同时处理多个RPC请求？同样只是一个思路。</p>
-<p>5、服务注册中心<br>正如之前提到的，要调用服务，首先你需要一个服务注册中心，告诉你对方服务都有哪些实例。Dubbo的服务注册中心是可以配置的，官方推荐使用Zookeeper。如果使用Zookeeper的话，要怎样往上面注册实例，又要怎样获取实例，这些都是要实现的。</p>
-<p>6、负载均衡<br>如何从多个实例里挑选一个出来，进行调用，这就要用到负载均衡了。负载均衡的策略肯定不只一种，要怎样把策略做成可配置的？又要如何实现这些策略？同样可以参考Dubbo，<a href="http://dubbo.apache.org/zh-cn/docs/user/quick-start.html" target="_blank" rel="noopener">Dubbo - 负载均衡</a></p>
-<p>7、结果缓存<br>每次调用查询接口时都要真的去Server端查询吗？是不是要考虑一下支持缓存？</p>
-<p>8、多版本控制<br>服务端接口修改了，旧的接口怎么办？</p>
-<p>9、异步调用<br>客户端调用完接口之后，不想等待服务端返回，想去干点别的事，可以支持不？</p>
-<p>10、优雅停机<br>服务端要停机了，还没处理完的请求，怎么办？</p>
-<p>……</p>
-<p>诸如此类的优化点还有很多，这也是为什么实现一个高性能高可用的RPC框架那么难的原因。</p>
-<p>当然，我们现在已经有很多很不错的RPC框架可以参考了，我们完全可以借鉴一下前人的智慧。</p>
-<p>###参考</p>
-<ul>
-<li>一本很棒的分布式书籍：《大型网站系统与Java中间件实践》</li>
-<li><a href="http://dubbo.apache.org/zh-cn/docs/user/quick-start.html" target="_blank" rel="noopener">Dubbo 使用文档</a></li>
-<li><a href="http://dubbo.apache.org/zh-cn/docs/user/quick-start.html" target="_blank" rel="noopener">Dubbo 源码开发手册</a></li>
-</ul>
-
-                    
-                        
-
-                    
-                    
-                        <p>
-                            <a href="/2017/09/19/java 如何实现一个简单的RPC/#post-footer" class="postShorten-excerpt_link link">
                                 评论和共享
                             </a>
                         </p>

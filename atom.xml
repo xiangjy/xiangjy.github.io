@@ -6,7 +6,7 @@
   <link href="/atom.xml" rel="self"/>
   
   <link href="http://localhost:4000/"/>
-  <updated>2019-04-12T01:54:52.983Z</updated>
+  <updated>2019-06-05T03:27:33.508Z</updated>
   <id>http://localhost:4000/</id>
   
   <author>
@@ -15,6 +15,50 @@
   </author>
   
   <generator uri="http://hexo.io/">Hexo</generator>
+  
+  <entry>
+    <title></title>
+    <link href="http://localhost:4000/2019/06/05/Redis%20Sentinel/"/>
+    <id>http://localhost:4000/2019/06/05/Redis Sentinel/</id>
+    <published>2019-06-05T03:23:30.674Z</published>
+    <updated>2019-06-05T03:27:33.508Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Redis-Sentinel"><a href="#Redis-Sentinel" class="headerlink" title="Redis Sentinel"></a>Redis Sentinel</h1><p>1.port 26379</p><p>sentinel监听端口，默认是26379，可以修改。</p><p>2.sentinel monitor <master-name> <ip> <redis-port> <quorum></quorum></redis-port></ip></master-name></p><p>告诉sentinel去监听地址为ip:port的一个master，这里的master-name可以自定义，quorum是一个数字，指明当有多少个sentinel认为一个master失效时，master才算真正失效。master-name只能包含英文字母，数字，和“.-_”这三个字符需要注意的是master-ip 要写真实的ip地址而不要用回环地址（127.0.0.1）。</p><p>配置示例：</p><p>sentinel monitor mymaster 192.168.0.5 6379 2</p><p>3.sentinel auth-pass <master-name> <password></password></master-name></p><p>设置连接master和slave时的密码，注意的是sentinel不能分别为master和slave设置不同的密码，因此master和slave的密码应该设置相同。</p><p>配置示例：</p><p>sentinel auth-pass mymaster 0123passw0rd</p><p>4.sentinel down-after-milliseconds <master-name> <milliseconds> </milliseconds></master-name></p><p>这个配置项指定了需要多少失效时间，一个master才会被这个sentinel主观地认为是不可用的。 单位是毫秒，默认为30秒</p><p>配置示例：</p><p>sentinel down-after-milliseconds mymaster 30000</p><p>5.sentinel parallel-syncs <master-name> <numslaves> </numslaves></master-name></p><p>这个配置项指定了在发生failover主备切换时最多可以有多少个slave同时对新的master进行 同步，这个数字越小，完成failover所需的时间就越长，但是如果这个数字越大，就意味着越 多的slave因为replication而不可用。可以通过将这个值设为 1 来保证每次只有一个slave 处于不能处理命令请求的状态。</p><p>配置示例：</p><p>sentinel parallel-syncs mymaster 1</p><p>\6. sentinel failover-timeout <master-name> <milliseconds></milliseconds></master-name></p><p>failover-timeout 可以用在以下这些方面： </p><p>​      \1. 同一个sentinel对同一个master两次failover之间的间隔时间。</p><p>​      \2. 当一个slave从一个错误的master那里同步数据开始计算时间。直到slave被纠正为向正确的master那里同步数据时。</p><p>​      3.当想要取消一个正在进行的failover所需要的时间。  </p><p>​      4.当进行failover时，配置所有slaves指向新的master所需的最大时间。不过，即使过了这个超时，slaves依然会被正确配置为指向master，但是就不按parallel-syncs所配置的规则来了。</p><p>配置示例：</p><p>sentinel failover-timeout mymaster1 20000</p><p>7.sentinel的notification-script和reconfig-script是用来配置当某一事件发生时所需要执行的脚本，可以通过脚本来通知管理员，例如当系统运行不正常时发邮件通知相关人员。对于脚本的运行结果有以下规则：</p><p>​        若脚本执行后返回1，那么该脚本稍后将会被再次执行，重复次数目前默认为10</p><p>​        若脚本执行后返回2，或者比2更高的一个返回值，脚本将不会重复执行。</p><p>​        如果脚本在执行过程中由于收到系统中断信号被终止了，则同返回值为1时的行为相同。</p><p>​        一个脚本的最大执行时间为60s，如果超过这个时间，脚本将会被一个SIGKILL信号终止，之后重新执行。</p><p>1).sentinel notification-script <master-name> <script-path> </script-path></master-name></p><p>通知型脚本:当sentinel有任何警告级别的事件发生时（比如说redis实例的主观失效和客观失效等等），将会去调用这个脚本，这时这个脚本应该通过邮件，SMS等方式去通知系统管理员关于系统不正常运行的信息。调用该脚本时，将传给脚本两个参数，一个是事件的类型，一个是事件的描述。如果sentinel.conf配置文件中配置了这个脚本路径，那么必须保证这个脚本存在于这个路径，并且是可执行的，否则sentinel无法正常启动成功。</p><p>  配置示例：</p><p> sentinel notification-script mymaster /var/redis/notify.sh</p><p>2).sentinel client-reconfig-script <master-name> <script-path></script-path></master-name></p><p> 当一个master由于failover而发生改变时，这个脚本将会被调用，通知相关的客户端关于master地址已经发生改变的信息。以下参数将会在调用脚本时传给脚本:</p><p>​       <master-name> <role> <state> <from-ip> <from-port> <to-ip> <to-port></to-port></to-ip></from-port></from-ip></state></role></master-name></p><p>目前<state>总是“failover”, <role>是“leader”或者“observer”中的一个。 参数 from-ip, from-port, to-ip, to-port是用来和旧的master和新的master(即旧的slave)通信的。这个脚本应该是通用的，能被多次调用，不是针对性的。</role></state></p><p>   配置示例：</p><p>   sentinel client-reconfig-script mymaster /var/redis/reconfig.sh</p><h3 id="其他文章"><a href="#其他文章" class="headerlink" title="其他文章"></a>其他文章</h3><p><a href="http://shouce.jb51.net/redis-all-about/HAClusterArchPractice/ms/event-noti.html" target="_blank" rel="noopener">http://shouce.jb51.net/redis-all-about/HAClusterArchPractice/ms/event-noti.html</a></p>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;Redis-Sentinel&quot;&gt;&lt;a href=&quot;#Redis-Sentinel&quot; class=&quot;headerlink&quot; title=&quot;Redis Sentinel&quot;&gt;&lt;/a&gt;Redis Sentinel&lt;/h1&gt;&lt;p&gt;1.port 26379&lt;/p&gt;
+&lt;p&gt;se
+      
+    
+    </summary>
+    
+    
+  </entry>
+  
+  <entry>
+    <title></title>
+    <link href="http://localhost:4000/2019/06/03/Gitlab%20%E5%85%8D%E5%AF%86/"/>
+    <id>http://localhost:4000/2019/06/03/Gitlab 免密/</id>
+    <published>2019-06-03T15:34:48.744Z</published>
+    <updated>2019-06-03T15:44:37.133Z</updated>
+    
+    <content type="html"><![CDATA[<h1 id="Gitlab-免密"><a href="#Gitlab-免密" class="headerlink" title="Gitlab 免密"></a>Gitlab 免密</h1><p>1、创建一个 SSH key</p><p>$ ssh-keygen -t rsa -f xxxx -C “xiangjy@outlook.com”</p><p>代码参数含义：</p><p>-t 指定密钥类型，默认是 rsa ，可以省略。</p><p>-C 设置注释文字，比如邮箱。</p><p>-f 指定密钥文件存储文件名。</p><p>生成 id_rsa 和 id_rsa.pub 两个秘钥文件。</p><p>2、添加SSH key 到 Gitlab</p><p>$ clip &lt; ~/.ssh/id_rsa.pub</p><p>Account settings -&gt; SSH key</p><p>3、Gitlab 自定义SSH 端口全局配置</p><p>Gitlab自定义端口设置：</p><p>~/.ssh目录下创建config文件</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Host git域名</span><br><span class="line">HostName git域名</span><br><span class="line">Port 2800</span><br><span class="line">PreferredAuthentications publickey</span><br><span class="line">IdentityFile ~/.ssh/id_rsa</span><br></pre></td></tr></table></figure><p>4、ssh文件夹及文件权限</p><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">$ cd ~</span><br><span class="line">$ chmod 700 .ssh</span><br><span class="line">$ cd ~/.ssh</span><br><span class="line">$ chmod 600 *</span><br></pre></td></tr></table></figure>]]></content>
+    
+    <summary type="html">
+    
+      
+      
+        &lt;h1 id=&quot;Gitlab-免密&quot;&gt;&lt;a href=&quot;#Gitlab-免密&quot; class=&quot;headerlink&quot; title=&quot;Gitlab 免密&quot;&gt;&lt;/a&gt;Gitlab 免密&lt;/h1&gt;&lt;p&gt;1、创建一个 SSH key&lt;/p&gt;
+&lt;p&gt;$ ssh-keygen -t rsa 
+      
+    
+    </summary>
+    
+    
+  </entry>
   
   <entry>
     <title></title>
@@ -42,7 +86,7 @@
     <link href="http://localhost:4000/2019/04/08/MySQL/"/>
     <id>http://localhost:4000/2019/04/08/MySQL/</id>
     <published>2019-04-08T02:45:33.012Z</published>
-    <updated>2019-06-02T15:29:30.101Z</updated>
+    <updated>2019-06-05T02:31:46.416Z</updated>
     
     <content type="html"><![CDATA[<h1 id="MySQL"><a href="#MySQL" class="headerlink" title="MySQL"></a>MySQL</h1><p>###安装mysql</p><p>CentOS默认不支持mysql</p><p>yum remove mariadb-server<br>cd /var/lib &amp;&amp; rm -rfv mysql<br>yum install mariadb-server</p><p>###添加远程访问用户</p><figure class="highlight sql"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">CREATE</span> <span class="keyword">USER</span> <span class="string">'new_root'</span>@<span class="string">'%'</span> <span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'***'</span>;</span><br><span class="line">  <span class="keyword">GRANT</span> ALL <span class="keyword">PRIVILEGES</span> <span class="keyword">ON</span> *.* <span class="keyword">TO</span> <span class="string">'new_root'</span>@<span class="string">'%'</span> <span class="keyword">IDENTIFIED</span> <span class="keyword">BY</span> <span class="string">'***'</span> <span class="keyword">WITH</span> <span class="keyword">GRANT</span> <span class="keyword">OPTION</span> MAX_QUERIES_PER_HOUR <span class="number">0</span> MAX_CONNECTIONS_PER_HOUR <span class="number">0</span> MAX_UPDATES_PER_HOUR <span class="number">0</span> MAX_USER_CONNECTIONS <span class="number">0</span>;</span><br></pre></td></tr></table></figure>]]></content>
     
@@ -346,37 +390,13 @@
   </entry>
   
   <entry>
-    <title>好用小工具</title>
-    <link href="http://localhost:4000/2017/08/21/%E5%A5%BD%E7%94%A8%E5%B0%8F%E5%B7%A5%E5%85%B7/"/>
-    <id>http://localhost:4000/2017/08/21/好用小工具/</id>
-    <published>2017-08-21T10:41:40.000Z</published>
-    <updated>2019-06-02T16:19:43.319Z</updated>
-    
-    <content type="html"><![CDATA[<h1 id="好用小工具"><a href="#好用小工具" class="headerlink" title="好用小工具"></a>好用小工具</h1><p>图片压缩</p><p><a href="https://www.bejson.com/ui/compress_img/" target="_blank" rel="noopener">https://www.bejson.com/ui/compress_img/</a></p><p><a href="https://tinypng.com/" target="_blank" rel="noopener">https://tinypng.com/</a></p><p>音频压缩</p><p><a href="https://online-audio-converter.com/cn/" target="_blank" rel="noopener">https://online-audio-converter.com/cn/</a></p><p>抠图</p><p><a href="https://www.gaoding.com/" target="_blank" rel="noopener">https://www.gaoding.com/</a></p><p>PDF</p><p><a href="https://smallpdf.com" target="_blank" rel="noopener">https://smallpdf.com</a></p><p>二维码</p><p><a href="https://cli.im" target="_blank" rel="noopener">https://cli.im</a></p><p><a href="http://qrmake.cn/" target="_blank" rel="noopener">http://qrmake.cn</a></p><p><a href="https://github.com/252860883/Art-QRCode-min" target="_blank" rel="noopener">https://github.com/252860883/Art-QRCode-min</a></p><p><a href="https://github.com/sylnsfar/qrcode" target="_blank" rel="noopener">https://github.com/sylnsfar/qrcode</a></p><p>图片处理</p><p><a href="https://www.remove.bg/" target="_blank" rel="noopener">https://www.remove.bg/</a></p><p><a href="https://burner.bonanza.com/" target="_blank" rel="noopener">https://burner.bonanza.com/</a></p><p><a href="https://www.fotor.com.cn/zhaopian/zaixiankoutu.html" target="_blank" rel="noopener">https://www.fotor.com.cn/zhaopian/zaixiankoutu.html</a></p><p><a href="https://github.com/foamliu/Deep-Image-Matting" target="_blank" rel="noopener">https://github.com/foamliu/Deep-Image-Matting</a></p><p><a href="https://github.com/egoist/logo-maker" target="_blank" rel="noopener">https://github.com/egoist/logo-maker</a></p><p><a href="https://www.bejson.com/ui/compress_img/" target="_blank" rel="noopener">https://www.bejson.com/ui/compress_img/</a></p><p>根据文字生成字符画</p><p><a href="https://link.jianshu.com?t=http://patorjk.com/software/taag" target="_blank" rel="noopener">http://patorjk.com/software/taag</a><br> <a href="https://link.jianshu.com?t=http://www.network-science.de/ascii/" target="_blank" rel="noopener">http://www.network-science.de/ascii/</a></p><p>根据图片生成字符画</p><p><a href="https://link.jianshu.com?t=http://www.degraeve.com/img2txt.php" target="_blank" rel="noopener">http://www.degraeve.com/img2txt.php</a><br> <a href="https://link.jianshu.com?t=http://life.chacuo.net/convertphoto2char" target="_blank" rel="noopener">http://life.chacuo.net/convertphoto2char</a></p><p>根据流程图生成字符画</p><p><a href="https://link.jianshu.com?t=http://asciiflow.com/" target="_blank" rel="noopener">http://asciiflow.com/</a></p><p>博客评论</p><p><a href="https://valine.js.org/" target="_blank" rel="noopener">https://valine.js.org</a></p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h1 id=&quot;好用小工具&quot;&gt;&lt;a href=&quot;#好用小工具&quot; class=&quot;headerlink&quot; title=&quot;好用小工具&quot;&gt;&lt;/a&gt;好用小工具&lt;/h1&gt;&lt;p&gt;图片压缩&lt;/p&gt;
-&lt;p&gt;&lt;a href=&quot;https://www.bejson.com/ui/compress_im
-      
-    
-    </summary>
-    
-    
-      <category term="小工具" scheme="http://localhost:4000/tags/%E5%B0%8F%E5%B7%A5%E5%85%B7/"/>
-    
-  </entry>
-  
-  <entry>
     <title>竞品分析</title>
     <link href="http://localhost:4000/2017/08/21/%E4%BA%A7%E5%93%81%E5%88%86%E6%9E%90/"/>
     <id>http://localhost:4000/2017/08/21/产品分析/</id>
     <published>2017-08-21T10:41:40.000Z</published>
-    <updated>2019-06-02T16:19:40.955Z</updated>
+    <updated>2019-06-05T08:26:44.071Z</updated>
     
-    <content type="html"><![CDATA[<h1 id="互动现场"><a href="#互动现场" class="headerlink" title="互动现场"></a>互动现场</h1><p>##竞品</p><p>竞迪微现场：<a href="http://wxc.vshangtong.com" target="_blank" rel="noopener">http://wxc.vshangtong.com</a> </p><p>有娱：<a href="http://screen.weijuju.com/admin/meeting/main.jsp" target="_blank" rel="noopener">http://screen.weijuju.com/admin/meeting/main.jsp</a> </p><p>趣现场：<a href="http://www.quxianchang.com/mall" target="_blank" rel="noopener">http://www.quxianchang.com/mall</a> </p><p>欢乐现场：<a href="https://www.huanle001.com/my#/activity" target="_blank" rel="noopener">https://www.huanle001.com/my#/activity</a> </p><p>思迅互动：<a href="https://www.sessionhd.com/charge.html" target="_blank" rel="noopener">https://www.sessionhd.com/charge.html</a> </p><p>开心大屏：<a href="http://www.kxdpm.com" target="_blank" rel="noopener">http://www.kxdpm.com</a> </p><p>嗨现场：<a href="https://www.hixianchang.com" target="_blank" rel="noopener">https://www.hixianchang.com</a> </p><p>乐现场： <a href="http://scene.ledouya.com/#vote" target="_blank" rel="noopener">http://scene.ledouya.com/#vote</a> </p><p>简互动：<a href="https://www.jianhudong.com/" target="_blank" rel="noopener">https://www.jianhudong.com/</a> </p><p>会易行：<a href="https://www.huiyixing.com/YearMeeting" target="_blank" rel="noopener">https://www.huiyixing.com/YearMeeting</a> </p><p>31会议：<a href="https://www.31huiyi.com/" target="_blank" rel="noopener">https://www.31huiyi.com/</a></p><h1 id="互动营销"><a href="#互动营销" class="headerlink" title="互动营销"></a>互动营销</h1><h2 id="竞品"><a href="#竞品" class="headerlink" title="竞品"></a>竞品</h2><p>抽奖乐：<a href="http://www.choujiangle.cn/" target="_blank" rel="noopener">http://www.choujiangle.cn/</a></p><p>简互动：<a href="https://www.jianhudong.com/" target="_blank" rel="noopener">https://www.jianhudong.com/</a></p><p>活动盒子：<a href="http://www.huodonghezi.com/" target="_blank" rel="noopener">http://www.huodonghezi.com/</a></p><p>抽奖管家：<a href="http://cj.bianxianguanjia.com" target="_blank" rel="noopener">http://cj.bianxianguanjia.com</a></p><p>赢销+：<a href="http://www.beetobees.com" target="_blank" rel="noopener">http://www.beetobees.com</a></p><p>凡科：<a href="https://www.fkw.com/" target="_blank" rel="noopener">https://www.fkw.com/</a></p><p>活动H5之家：<a href="http://www.h5huodong.com/" target="_blank" rel="noopener">http://www.h5huodong.com/</a></p><p>嘉尚科技：<a href="http://www.stjscz.com/" target="_blank" rel="noopener">http://www.stjscz.com/</a>    凡科代理</p><p>竞迪互动：<a href="http://www.shangjiahai.com" target="_blank" rel="noopener">http://www.shangjiahai.com</a></p><p>易速推：<a href="http://www.yisutui.com" target="_blank" rel="noopener">http://www.yisutui.com</a></p><p>有娱：<a href="http://youyu.weijuju.com" target="_blank" rel="noopener">http://youyu.weijuju.com</a></p><p>人人秀：<a href="https://www.rrxiu.net" target="_blank" rel="noopener">https://www.rrxiu.net</a></p><p>秀赞：<a href="http://www.xiuzan.com" target="_blank" rel="noopener">http://www.xiuzan.com</a></p><p>易起玩：<a href="http://www.17koko.com/" target="_blank" rel="noopener">http://www.17koko.com/</a></p><p>开心推：<a href="https://www.kxtui.com/gset.jsp" target="_blank" rel="noopener">https://www.kxtui.com/gset.jsp</a></p><p>24好玩：<a href="https://www.24haowan.com/games" target="_blank" rel="noopener">https://www.24haowan.com/games</a></p><p>型科科技：<a href="https://www.wan9527.com/" target="_blank" rel="noopener">https://www.wan9527.com/</a>    偏定制，如有和案例相同的需求，可直接联系客服询价</p><p>意派：<a href="https://www.epub360.com/" target="_blank" rel="noopener">https://www.epub360.com/</a>    根据单个游戏模板收费</p><p>亿众互动：<a href="http://www.easy-all.net（定制，非SAAS）" target="_blank" rel="noopener">http://www.easy-all.net（定制，非SAAS）</a></p><h1 id="SEO地址"><a href="#SEO地址" class="headerlink" title="SEO地址"></a>SEO地址</h1><p><a href="https://cn.china.cn/" target="_blank" rel="noopener">https://cn.china.cn/</a>    用户名：xiangjy1982 密码：zhengyi123456</p><p><a href="https://www.21food.cn/" target="_blank" rel="noopener">https://www.21food.cn/</a>    用户名：xiangjy 密码：zhengyi123456</p><p><a href="https://www.jb51.net" target="_blank" rel="noopener">https://www.jb51.net</a></p>]]></content>
+    <content type="html"><![CDATA[<h1 id="互动现场"><a href="#互动现场" class="headerlink" title="互动现场"></a>互动现场</h1><p>##竞品</p><p>竞迪微现场：<a href="http://wxc.vshangtong.com" target="_blank" rel="noopener">http://wxc.vshangtong.com</a> </p><p>有娱：<a href="http://screen.weijuju.com/admin/meeting/main.jsp" target="_blank" rel="noopener">http://screen.weijuju.com/admin/meeting/main.jsp</a> </p><p>趣现场：<a href="http://www.quxianchang.com/mall" target="_blank" rel="noopener">http://www.quxianchang.com/mall</a> </p><p>欢乐现场：<a href="https://www.huanle001.com/my#/activity" target="_blank" rel="noopener">https://www.huanle001.com/my#/activity</a> </p><p>思迅互动：<a href="https://www.sessionhd.com/charge.html" target="_blank" rel="noopener">https://www.sessionhd.com/charge.html</a> </p><p>开心大屏：<a href="http://www.kxdpm.com" target="_blank" rel="noopener">http://www.kxdpm.com</a> </p><p>嗨现场：<a href="https://www.hixianchang.com" target="_blank" rel="noopener">https://www.hixianchang.com</a> </p><p>乐现场： <a href="http://scene.ledouya.com/#vote" target="_blank" rel="noopener">http://scene.ledouya.com/#vote</a> </p><p>简互动：<a href="https://www.jianhudong.com/" target="_blank" rel="noopener">https://www.jianhudong.com/</a> </p><p>会易行：<a href="https://www.huiyixing.com/YearMeeting" target="_blank" rel="noopener">https://www.huiyixing.com/YearMeeting</a> </p><p>31会议：<a href="https://www.31huiyi.com/" target="_blank" rel="noopener">https://www.31huiyi.com/</a></p><h1 id="互动营销"><a href="#互动营销" class="headerlink" title="互动营销"></a>互动营销</h1><h2 id="竞品"><a href="#竞品" class="headerlink" title="竞品"></a>竞品</h2><p>抽奖乐：<a href="http://www.choujiangle.cn/" target="_blank" rel="noopener">http://www.choujiangle.cn/</a></p><p>简互动：<a href="https://www.jianhudong.com/" target="_blank" rel="noopener">https://www.jianhudong.com/</a></p><p>活动盒子：<a href="http://www.huodonghezi.com/" target="_blank" rel="noopener">http://www.huodonghezi.com/</a></p><p>抽奖管家：<a href="http://cj.bianxianguanjia.com" target="_blank" rel="noopener">http://cj.bianxianguanjia.com</a></p><p>赢销+：<a href="http://www.beetobees.com" target="_blank" rel="noopener">http://www.beetobees.com</a></p><p>凡科：<a href="https://www.fkw.com/" target="_blank" rel="noopener">https://www.fkw.com/</a></p><p>活动H5之家：<a href="http://www.h5huodong.com/" target="_blank" rel="noopener">http://www.h5huodong.com/</a></p><p>嘉尚科技：<a href="http://www.stjscz.com/" target="_blank" rel="noopener">http://www.stjscz.com/</a>    凡科代理</p><p>竞迪互动：<a href="http://www.shangjiahai.com" target="_blank" rel="noopener">http://www.shangjiahai.com</a></p><p>易速推：<a href="http://www.yisutui.com" target="_blank" rel="noopener">http://www.yisutui.com</a></p><p>有娱：<a href="http://youyu.weijuju.com" target="_blank" rel="noopener">http://youyu.weijuju.com</a></p><p>人人秀：<a href="https://www.rrxiu.net" target="_blank" rel="noopener">https://www.rrxiu.net</a></p><p>秀赞：<a href="http://www.xiuzan.com" target="_blank" rel="noopener">http://www.xiuzan.com</a></p><p>易起玩：<a href="http://www.17koko.com/" target="_blank" rel="noopener">http://www.17koko.com/</a></p><p>开心推：<a href="https://www.kxtui.com/gset.jsp" target="_blank" rel="noopener">https://www.kxtui.com/gset.jsp</a></p><p>24好玩：<a href="https://www.24haowan.com/games" target="_blank" rel="noopener">https://www.24haowan.com/games</a></p><p>型科科技：<a href="https://www.wan9527.com/" target="_blank" rel="noopener">https://www.wan9527.com/</a>    偏定制，如有和案例相同的需求，可直接联系客服询价</p><p>意派：<a href="https://www.epub360.com/" target="_blank" rel="noopener">https://www.epub360.com/</a>    根据单个游戏模板收费</p><p>亿众互动：<a href="http://www.easy-all.net（定制，非SAAS）" target="_blank" rel="noopener">http://www.easy-all.net（定制，非SAAS）</a></p>]]></content>
     
     <summary type="html">
     
@@ -420,52 +440,26 @@
   </entry>
   
   <entry>
-    <title>李响：这里想对年轻的工程师提一些个人建议。</title>
-    <link href="http://localhost:4000/2017/08/21/%E9%98%BF%E9%87%8CP9%20%E6%9D%8E%E5%93%8D/"/>
-    <id>http://localhost:4000/2017/08/21/阿里P9 李响/</id>
+    <title>好用小工具</title>
+    <link href="http://localhost:4000/2017/08/21/%E5%A5%BD%E7%94%A8%E5%B0%8F%E5%B7%A5%E5%85%B7/"/>
+    <id>http://localhost:4000/2017/08/21/好用小工具/</id>
     <published>2017-08-21T10:41:40.000Z</published>
-    <updated>2019-06-02T16:19:41.592Z</updated>
+    <updated>2019-06-02T16:19:43.319Z</updated>
     
-    <content type="html"><![CDATA[<p>##李响：这里想对年轻的工程师提一些个人建议。</p><ul><li><p>一定要多读代码。尤其是语言的标准库代码，知名的开源项目代码，或者其它超高使用频率的代码，提高自己的代码品味。</p></li><li><p>一定要多写代码。尤其是写可读性高、可维护性好的代码，尽量寻找有经验的工程师帮助自己 Review 代码，提高自己的代码能力和质量。</p></li><li><p>一定要多看、多想，看经典的系统设计，思考自己项目的架构和演进路线，找到志同道合的朋友一起探讨和研究，提高自己的设计、架构能力。</p></li><li><p>一定要多学，学习前沿的技术，为未来做好技术储备；学习领域内的顶会的论文，能够对未来有所预判；学习一些领域外的知识，比如市场、经济等，更多的了解通用事物的发展规律。每个人都有最适合自己的成长路线，对于年轻工程师来讲，最重要的还是能够专注在自己热爱的领域上，以最大的热情投入每天的工作，每天都能进步一点点。</p></li></ul>]]></content>
+    <content type="html"><![CDATA[<h1 id="好用小工具"><a href="#好用小工具" class="headerlink" title="好用小工具"></a>好用小工具</h1><p>图片压缩</p><p><a href="https://www.bejson.com/ui/compress_img/" target="_blank" rel="noopener">https://www.bejson.com/ui/compress_img/</a></p><p><a href="https://tinypng.com/" target="_blank" rel="noopener">https://tinypng.com/</a></p><p>音频压缩</p><p><a href="https://online-audio-converter.com/cn/" target="_blank" rel="noopener">https://online-audio-converter.com/cn/</a></p><p>抠图</p><p><a href="https://www.gaoding.com/" target="_blank" rel="noopener">https://www.gaoding.com/</a></p><p>PDF</p><p><a href="https://smallpdf.com" target="_blank" rel="noopener">https://smallpdf.com</a></p><p>二维码</p><p><a href="https://cli.im" target="_blank" rel="noopener">https://cli.im</a></p><p><a href="http://qrmake.cn/" target="_blank" rel="noopener">http://qrmake.cn</a></p><p><a href="https://github.com/252860883/Art-QRCode-min" target="_blank" rel="noopener">https://github.com/252860883/Art-QRCode-min</a></p><p><a href="https://github.com/sylnsfar/qrcode" target="_blank" rel="noopener">https://github.com/sylnsfar/qrcode</a></p><p>图片处理</p><p><a href="https://www.remove.bg/" target="_blank" rel="noopener">https://www.remove.bg/</a></p><p><a href="https://burner.bonanza.com/" target="_blank" rel="noopener">https://burner.bonanza.com/</a></p><p><a href="https://www.fotor.com.cn/zhaopian/zaixiankoutu.html" target="_blank" rel="noopener">https://www.fotor.com.cn/zhaopian/zaixiankoutu.html</a></p><p><a href="https://github.com/foamliu/Deep-Image-Matting" target="_blank" rel="noopener">https://github.com/foamliu/Deep-Image-Matting</a></p><p><a href="https://github.com/egoist/logo-maker" target="_blank" rel="noopener">https://github.com/egoist/logo-maker</a></p><p><a href="https://www.bejson.com/ui/compress_img/" target="_blank" rel="noopener">https://www.bejson.com/ui/compress_img/</a></p><p>根据文字生成字符画</p><p><a href="https://link.jianshu.com?t=http://patorjk.com/software/taag" target="_blank" rel="noopener">http://patorjk.com/software/taag</a><br> <a href="https://link.jianshu.com?t=http://www.network-science.de/ascii/" target="_blank" rel="noopener">http://www.network-science.de/ascii/</a></p><p>根据图片生成字符画</p><p><a href="https://link.jianshu.com?t=http://www.degraeve.com/img2txt.php" target="_blank" rel="noopener">http://www.degraeve.com/img2txt.php</a><br> <a href="https://link.jianshu.com?t=http://life.chacuo.net/convertphoto2char" target="_blank" rel="noopener">http://life.chacuo.net/convertphoto2char</a></p><p>根据流程图生成字符画</p><p><a href="https://link.jianshu.com?t=http://asciiflow.com/" target="_blank" rel="noopener">http://asciiflow.com/</a></p><p>博客评论</p><p><a href="https://valine.js.org/" target="_blank" rel="noopener">https://valine.js.org</a></p>]]></content>
     
     <summary type="html">
     
       
       
-        &lt;p&gt;##李响：这里想对年轻的工程师提一些个人建议。&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;p&gt;一定要多读代码。尤其是语言的标准库代码，知名的开源项目代码，或者其它超高使用频率的代码，提高自己的代码品味。&lt;/p&gt;
-&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;一定要多写代码。尤其是写可读性高、可维护性好的代码
+        &lt;h1 id=&quot;好用小工具&quot;&gt;&lt;a href=&quot;#好用小工具&quot; class=&quot;headerlink&quot; title=&quot;好用小工具&quot;&gt;&lt;/a&gt;好用小工具&lt;/h1&gt;&lt;p&gt;图片压缩&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;https://www.bejson.com/ui/compress_im
       
     
     </summary>
     
     
-      <category term="收藏" scheme="http://localhost:4000/tags/%E6%94%B6%E8%97%8F/"/>
-    
-  </entry>
-  
-  <entry>
-    <title>serverLess文章转载</title>
-    <link href="http://localhost:4000/2017/08/21/%E4%BA%86%E8%A7%A3%E8%BD%AF%E4%BB%B6%E6%9E%B6%E6%9E%84%EF%BC%9AServerless%E6%9E%B6%E6%9E%84%E3%80%81%E5%BE%AE%E6%9C%8D%E5%8A%A1%E6%9E%B6%E6%9E%84%E3%80%81%E5%88%86%E5%B8%83%E5%BC%8F%E6%9E%B6%E6%9E%84%E3%80%81%E5%8D%95%E4%BD%93%E6%9E%B6%E6%9E%84/"/>
-    <id>http://localhost:4000/2017/08/21/了解软件架构：Serverless架构、微服务架构、分布式架构、单体架构/</id>
-    <published>2017-08-21T10:41:40.000Z</published>
-    <updated>2019-06-02T16:19:43.909Z</updated>
-    
-    <content type="html"><![CDATA[<h2 id="了解软件架构：Serverless架构、微服务架构、分布式架构、单体架构"><a href="#了解软件架构：Serverless架构、微服务架构、分布式架构、单体架构" class="headerlink" title="了解软件架构：Serverless架构、微服务架构、分布式架构、单体架构"></a>了解软件架构：Serverless架构、微服务架构、分布式架构、单体架构</h2><p>SimpleEasy talkwithtrend  <em>今天</em></p><p>如果一个软件开发人员，不了解软件架构的演进，会制约技术的选型和开发人员的生存、晋升空间。这里列举了目前主要的四种软件架构以及他们的优缺点，希望能够帮助软件开发人员拓展知识面。</p><h2 id="一、单体架构"><a href="#一、单体架构" class="headerlink" title="一、单体架构"></a><strong>一、单体架构</strong></h2><p>单体架构比较初级，典型的三级架构，前端(Web/手机端)+中间业务逻辑层+数据库层。这是一种典型的Java Spring mvc或者Python Drango框架的应用。其架构图如下所示：</p><p><img src="https://file.mmdry.com/image/jpg/serverless-single.jpeg" alt="img"></p><p>单体架构的应用比较容易部署、测试， 在项目的初期，单体应用可以很好地运行。然而，随着需求的不断增加， 越来越多的人加入开发团队，代码库也在飞速地膨胀。慢慢地，单体应用变得越来越臃肿，可维护性、灵活性逐渐降低，维护成本越来越高。下面是单体架构应用的一些<strong>缺点：</strong></p><p>复杂性高：以一个百万行级别的单体应用为例，整个项目包含的模块非常多、模块的边界模糊、 依赖关系不清晰、 代码质量参差不齐、 混乱地堆砌在一起。可想而知整个项目非常复杂。每次修改代码都心惊胆战， 甚至添加一个简单的功能， 或者修改一个Bug都会带来隐含的缺陷。</p><p>技术债务：随着时间推移、需求变更和人员更迭，会逐渐形成应用程序的技术债务， 并且越积 越多。“ 不坏不修”， 这在软件开发中非常常见， 在单体应用中这种思想更甚。已使用的系统设计或代码难以被修改，因为应用程序中的其他模块可能会以意料之外的方式使用它。</p><p>部署频率低：随着代码的增多，构建和部署的时间也会增加。而在单体应用中， 每次功能的变更或缺陷的修复都会导致需要重新部署整个应用。全量部署的方式耗时长、 影响范围大、 风险高， 这使得单体应用项目上线部署的频率较低。而部署频率低又导致两次发布之间会有大量的功能变更和缺陷修复，出错率比较高。</p><p>可靠性差：某个应用Bug，例如死循环、内存溢出等， 可能会导致整个应用的崩溃。</p><p>扩展能力受限：单体应用只能作为一个整体进行扩展，无法根据业务模块的需要进行伸缩。例如，应用中有的模块是计算密集型的，它需要强劲的CPU；有的模块则是IO密集型的，需要更大的内存。由于这些模块部署在一起，不得不在硬件的选择上做出妥协。</p><p>阻碍技术创新：单体应用往往使用统一的技术平台或方案解决所有的问题， 团队中的每个成员 都必须使用相同的开发语言和框架，要想引入新框架或新技术平台会非常困难。</p><h2 id="二、分布式应用"><a href="#二、分布式应用" class="headerlink" title="二、分布式应用"></a><strong>二、分布式应用</strong></h2><p>中级架构，分布式应用，中间层分布式+数据库分布式，是单体架构的并发扩展，将一个大的系统划分为多个业务模块，业务模块分别部署在不同的服务器上，各个业务模块之间通过接口进行数据交互。数据库也大量采用分布式数据库，如redis、ES、solor等。通过LVS/Nginx代理应用，将用户请求均衡的负载到不同的服务器上。其架构图如下所示：</p><p><img src="https://file.mmdry.com/image/jpg/serverless-distributed.jpeg" alt="img"></p><p>该架构相对于单体架构来说，这种架构提供了负载均衡的能力，大大提高了系统负载能力，解决了网站高并发的需求。另外还有以下特点：</p><p>降低了耦合度：把模块拆分,使用接口通信,降低模块之间的耦合度。</p><p>责任清晰：把项目拆分成若干个子项目,不同的团队负责不同的子项目。</p><p>扩展方便：增加功能时只需要再增加一个子项目,调用其他系统的接口就可以。</p><p>部署方便:可以灵活的进行分布式部署。</p><p>提高代码的复用性：比如service层,如果不采用分布式rest服务方式架构就会在手机wap商城,微信商城,pc,android，ios每个端都要写一个service层逻辑,开发量大,难以维护一起升级,这时候就可以采用分布式rest服务方式,公用一个service层。</p><p><strong>缺点 :</strong> 系统之间的交互要使用远程通信,接口开发增大工作量,但是利大于弊。</p><h2 id="三、微服务架构"><a href="#三、微服务架构" class="headerlink" title="三、微服务架构"></a><strong>三、微服务架构</strong></h2><p>微服务架构，主要是中间层分解，将系统拆分成很多小应用（微服务），微服务可以部署在不同的服务器上，也可以部署在相同的服务器不同的容器上。当应用的故障不会影响到其他应用，单应用的负载也不会影响到其他应用，其代表框架有Spring cloud、Dubbo等。其架构图如下所示：</p><p><img src="https://file.mmdry.com/image/jpg/serverless-microservice.jpeg" alt="img"></p><p>易于开发和维护：一个微服务只会关注一个特定的业务功能，所以它业务清晰、代码量较少。开发和维护单个微服务相对简单。而整个应用是由若干个微服务构建而成的，所以整个应用也会被维持在一个可控状态。</p><p>单个微服务启动较快：单个微服务代码量较少， 所以启动会比较快。</p><p>局部修改容易部署：单体应用只要有修改，就得重新部署整个应用，微服务解决了这样的问题。一般来说，对某个微服务进行修改，只需要重新部署这个服务即可。</p><p>技术栈不受限：在微服务架构中，可以结合项目业务及团队的特点，合理地选择技术栈。例如某些服务可使用关系型数据库MySQL；某些微服务有图形计算的需求，可以使用Neo4j；甚至可根据需要，部分微服务使用Java开发，部分微服务使用Node.js开发。</p><p>微服务虽然有很多吸引人的地方，但它并不是免费的午餐，使用它是有代价的。使用微服务架构面临的挑战。</p><p>运维要求较高：更多的服务意味着更多的运维投入。在单体架构中，只需要保证一个应用的正常运行。而在微服务中，需要保证几十甚至几百个服务服务的正常运行与协作，这给运维带来了很大的挑战。</p><p>分布式固有的复杂性：使用微服务构建的是分布式系统。对于一个分布式系统，系统容错、网络延迟、分布式事务等都会带来巨大的挑战。</p><p>接口调整成本高：微服务之间通过接口进行通信。如果修改某一个微服务的API，可能所有使用了该接口的微服务都需要做调整。</p><p>重复劳动：很多服务可能都会使用到相同的功能，而这个功能并没有达到分解为一个微服务的程度，这个时候，可能各个服务都会开发这一功能，从而导致代码重复。尽管可以使用共享库来解决这个问题（例如可以将这个功能封装成公共组件，需要该功能的微服务引用该组件），但共享库在多语言环境下就不一定行得通了。</p><h2 id="四、Serverless架构"><a href="#四、Serverless架构" class="headerlink" title="四、Serverless架构"></a><strong>四、Serverless架构</strong></h2><p><img src="https://file.mmdry.com/image/jpg/serverless.jpeg" alt="img"></p><p>2014年11月14日，亚马逊AWS发布了Lambda。当时Lambda被描述为：一种计算服务，根据时间运行用户的代码，无需关心底层的计算资源。从某种意义上来说，Lambda姗姗来迟，它像云计算的PaaS理念：客户只管业务，无需担心存储和计算资源。2014年10月22日，谷歌收购了实时后端数据库创业公司Firebase。Firebase声称开发者只需引用一个API库文件就可以使用标准REST API的各种接口对数据进行读写操作，只需编写HTML＋CSS＋JavaScrip前端代码，不需要服务器端代码（如需整合，也极其简单）。</p><p>相对于上两者，Facebook 在2014年二月收购的 Parse，则侧重于提供一个通用的后台服务。这些服务被称为Serverless或no sever。想到PaaS（平台即服务）了是吗？很像，用户不需要关心基础设施，只需要关心业务，这是迟到的PaaS，也是更实用的PaaS。这很有可能将会变革整个开发过程和传统的应用生命周期，一旦开发者们习惯了这种全自动的云上资源的创建和分配，或许就再也回不到那些需要微应用配置资源的时代里去了。</p><p>Serverless架构能够让开发者在构建应用的过程中无需关注计算资源的获取和运维，由平台来按需分配计算资源并保证应用执行的SLA（服务等级协议），按照调用次数进行计费，有效的节省应用成本。ServerLess的架构如上图所示。其优点如下所示：</p><p>低运营成本：在业务突发性极高的场景下，系统为了应对业务高峰，必须构建能够应对峰值需求的系统，这个系统在大部分时间是空闲的，这就导致了严重的资源浪费和成本上升。在微服务架构中，服务需要一直运行，实际上在高负载情况下每个服务都不止一个实例，这样才能完成高可用性；在Serverless架构下，服务将根据用户的调用次数进行计费，按照云计算pay-as-you-go原则，如果没有东西运行，你就不必付款，节省了使用成本。同时，用户能够通过共享网络、硬盘、CPU等计算资源，在业务高峰期通过弹性扩容方式有效的应对业务峰值，在业务波谷期将资源分享给其他用户，有效的节约了成本。</p><p>简化设备运维：在原有的IT体系中，开发团队即需要维护应用程序，同时还要维护硬件基础设施；Serverless架构中，开发人员面对的将是第三方开发或自定义的API 和URL，底层硬件对于开发人员透明化了，技术团队无需再关注运维工作，能够更加专注于应用系统开发。</p><p>提升可维护性：Serverless架构中，应用程序将调用多种第三方功能服务，组成最终的应用逻辑。目前，例如登陆鉴权服务，云数据库服务等第三方服务在安全性、可用性、性能方面都进行了大量优化，开发团队直接集成第三方的服务，能够有效的降低开发成本，同时使得应用的运维过程变得更加清晰，有效的提升了应用的可维护性。</p><p>更快的开发速度：这一点在现在互联网创业公司得到很好的体现，创业公司往往开始由于人员和资金等问题，不可能每个产品线都同时进行，这时候就可以考虑第三方的Baas平台，比如使用微信的用户认证、阿里云提供的RDS，第三方支付及地理位置等等，能够很快进行产品开发的速度，把工作重点放在业务实现上，把产品更快的推向市场。</p><p>但ServerLess架构也有其<strong>缺点：</strong></p><p>厂商平台绑定：平台会提供Serverless架构给大玩家，比如AWS Lambda，运行它需要使用AWS指定的服务，比如API网关，DynamoDB，S3等等，一旦你在这些服务上开发一个复杂系统，你会粘牢AWS，以后只好任由他们涨价定价或者下架等操作，个性化需求很难满足，不能进行随意的迁移或者迁移的成本比较大，同时不可避免带来一些损失。Baas行业内一个比较典型的事件，2016年1月19日Facebook关闭曾经花巨额资金收购的Parse，造成用户不得不迁移在这个平台中产生一年多的数据，无疑需要花费比较大的人力和时间成本。</p><p>成功案例比较少，没有行业标准：目前的情况也只适合简单的应用开发，缺乏大型成功案例的推动。对于Serverless缺乏统一的认知以及相应的标准，无法适应所有的云平台。</p><p>目前微服务架构在四种架构中处于主流地位，很多应用第一、第二种架构的企业也开始慢慢转向微服务架构。到目前为止微服务的技术相对于二三年前已经比较成熟，第四种架构将是未来发展的一种趋势。</p>]]></content>
-    
-    <summary type="html">
-    
-      
-      
-        &lt;h2 id=&quot;了解软件架构：Serverless架构、微服务架构、分布式架构、单体架构&quot;&gt;&lt;a href=&quot;#了解软件架构：Serverless架构、微服务架构、分布式架构、单体架构&quot; class=&quot;headerlink&quot; title=&quot;了解软件架构：Serverless架构、
-      
-    
-    </summary>
-    
-    
-      <category term="架构" scheme="http://localhost:4000/tags/%E6%9E%B6%E6%9E%84/"/>
+      <category term="小工具" scheme="http://localhost:4000/tags/%E5%B0%8F%E5%B7%A5%E5%85%B7/"/>
     
   </entry>
   
